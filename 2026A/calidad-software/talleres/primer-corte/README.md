@@ -1,3 +1,6 @@
 # Calidad de Software
 
-Repositorio para los Talleres de Primer Corte
+Integrantes:
+Anderson Kaleth Camacho Cabezas
+David Felipe Perdomo Castillo
+Elkin Stiven Contreras Rojas
