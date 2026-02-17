@@ -1,6 +1,6 @@
 # 📘 Calidad de Software
 
-## **Grupo 2**
+## *Grupo 2*
 
 ### Integrantes
 - 👨‍💻 Jose Miguel Vera Garzon  
