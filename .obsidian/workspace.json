@@ -1,0 +1,223 @@
+{
+  "main": {
+    "id": "3279bad10ce5c32b",
+    "type": "split",
+    "children": [
+      {
+        "id": "373d8523b88f731a",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b25a6d320fbf13a5",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "2026A/calidad-software/talleres/primer-corte/README.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "README"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "9212a9beff0afa44",
+    "type": "split",
+    "children": [
+      {
+        "id": "0ff53120d8362e43",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ea9cf50950bb1bae",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Explorador de archivos"
+            }
+          },
+          {
+            "id": "8941ea5321b080cd",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Buscar"
+            }
+          },
+          {
+            "id": "16c38bbbc442734c",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Marcadores"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 224.5
+  },
+  "right": {
+    "id": "fabeb3a315e2a995",
+    "type": "split",
+    "children": [
+      {
+        "id": "babe4cb249e36057",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "eba75690e4cbb9d1",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Análisis financiero/Semana 02/Análisis financiero.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Enlaces entrantes de Análisis financiero"
+            }
+          },
+          {
+            "id": "297ce335781e0329",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Análisis financiero/Semana 02/Análisis financiero.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Enlaces salientes de Análisis financiero"
+            }
+          },
+          {
+            "id": "a93cb9170861b191",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Etiquetas"
+            }
+          },
+          {
+            "id": "b1a5f0ba554d7e19",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Telematica I/Semana 14/Distribución.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Esquema de Distribución"
+            }
+          }
+        ],
+        "currentTab": 3
+      }
+    ],
+    "direction": "horizontal",
+    "width": 284.5,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Abrir selector rápido": false,
+      "graph:Abrir vista gráfica": true,
+      "canvas:Crear nuevo lienzo": false,
+      "daily-notes:Abrir la nota de hoy": true,
+      "command-palette:Abrir paleta de comandos": false,
+      "bases:Crear nueva base": true
+    }
+  },
+  "active": "b25a6d320fbf13a5",
+  "lastOpenFiles": [
+    "README.md",
+    "2026A/calidad-software/talleres/primer-corte/README.md",
+    "Calidad de Software/Semana 03/Grupo 1 - Talleres Primer Corte",
+    "Calidad de Software/Semana 03/Nueva carpeta",
+    "Calidad de Software/Semana 03/estandares-normas (1)/images/madurez-CMMI.png",
+    "Calidad de Software/Semana 03/estandares-normas (1)/images/ciclo-PHVA.png",
+    "Calidad de Software/Semana 03/estandares-normas (1)/images/arquitectura-ISO-29119.png",
+    "Calidad de Software/Semana 03/estandares-normas (1)/images",
+    "Calidad de Software/Semana 03/estandares-normas (1)/index.html",
+    "Calidad de Software/Semana 03/estandares-normas (1)",
+    "Calidad de Software/Semana 03",
+    "Ingeniería Económica/Semana 02/~$Concepto de Ingeniería Económica y su relevancia en proyectos de inversión..pptx",
+    "Ingeniería Económica/Semana 03/~$Papel de la Ingeniería Económica desde una perspectiva financiera y administrativa.pptx",
+    "Ingeniería Económica/Semana 03/~$Principios básicos del análisis costo-beneficio.pptx",
+    "Ingeniería Económica/Semana 03/~$El triangulo de la inversion.pptx",
+    "Calidad de Software/Semana 02/estandares-normas/images/madurez-CMMI.png",
+    "Calidad de Software/Semana 02/estandares-normas/images/ciclo-PHVA.png",
+    "Calidad de Software/Semana 02/estandares-normas/images/arquitectura-ISO-29119.png",
+    "Trade Marketing/Semana 02/Grupos.md",
+    "Telemática II/Curso de Cisco II/Módulo 01/Modulo 1 - Configuración básica de dispositivos.md",
+    "Telemática II/Curso de Cisco II/Módulo 01/ANEXOS/Pasted image 20260214133828.png",
+    "Telemática II/Curso de Cisco II/Módulo 01/ANEXOS/Pasted image 20260214133337.png",
+    "Telemática II/Curso de Cisco II/Módulo 01/ANEXOS/Pasted image 20260214133247.png",
+    "Telemática II/Curso de Cisco II/Módulo 01/ANEXOS/Pasted image 20260214133219.png",
+    "Minería de datos/Semana 02/Introducción a tecnologías.md",
+    "Telemática II/Semana 02/Sin título.md",
+    "Ingeniería Económica/Semana 02/Concepto de Ingeniería económica.md",
+    "Investigación de Operaciones I/Semana 02/Sin título.md",
+    "CSV/Sin título.md",
+    "Telemática II/Semana 01/Sin título.md",
+    "Trade Marketing/Semana 01/Temática de todo el semestre.md",
+    "Minería de datos/Semana 01/Introducción a Minería de Datos.md",
+    "Minería de datos/Semana 01/Socialización de la asignatura.md",
+    "Telematica I/Curso de Cisco/Módulo 12/Módulo 12 - Asignación de direcciones IPv6.md",
+    "Telematica I/Curso de Cisco/Módulo 11/Módulo 11 - Asignación de direcciones IPv4.md",
+    "Telematica I/Curso de Cisco/Módulo 10/Módulo 10 - Configuración básica de un router.md",
+    "Telematica I/Curso de Cisco/Módulo 09/Módulo 9 - Resolución de dirección.md",
+    "Telematica I/Curso de Cisco/Módulo 08/Módulo 8 - Capa de red.md",
+    "Telematica I/Curso de Cisco/Módulo 07/Módulo 7 - Switching Ethernet.md",
+    "Telematica I/Curso de Cisco/Módulo 06/Módulo 6 - Capa de enlace de datos.md",
+    "Telematica I/Curso de Cisco/Módulo 05/Módulo 5 - Sistemas numéricos.md",
+    "Telematica I/Curso de Cisco/Módulo 04/Módulo 4  - Capa física.md",
+    "Telematica I/Curso de Cisco/Módulo 03/Módulo 3 - Protocolos y modelos.md",
+    "Telematica I/Curso de Cisco/Módulo 02/Modulo 2 - Configuración básica de switches y terminales.md",
+    "Telematica I/Curso de Cisco/Módulo 01/Módulo 1 - Las redes en la actualidad.md",
+    "Metodología de investigación/Semana 16/Realización de Parcial.md",
+    "Sin título.canvas",
+    "Sin título 1.canvas"
+  ]
+}

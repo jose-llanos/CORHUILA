@@ -1,0 +1,26 @@
+{
+  "latex-math:eval-latex-expression": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "\\"
+    }
+  ],
+  "global-search-and-replace:search-and-replace": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "`"
+    }
+  ],
+  "csv-allinone:open-CSV-explorer": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "'"
+    }
+  ]
+}
