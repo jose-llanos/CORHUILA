@@ -1,6 +1,8 @@
 # 📘 Calidad de Software
 
-## 👩‍💻👨‍💻 Integrantes
+## **Grupo 2**
+
+### Integrantes
 - 👨‍💻 Jose Miguel Vera Garzon  
 - 👩‍💻 Maria Sofia Aljure Herrera  
 - 👩‍💻 Maria Juliana Ferro Bonilla  
