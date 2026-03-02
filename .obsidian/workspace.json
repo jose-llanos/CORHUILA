@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "373d8523b88f731a",
+        "id": "5e03e08290e62ccb",
         "type": "tabs",
         "children": [
           {
-            "id": "b25a6d320fbf13a5",
+            "id": "43f22d108e52631c",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "2026A/calidad-software/talleres/primer-corte/README.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "README"
+              "title": "Nueva pestaña"
             }
           }
         ]
@@ -169,23 +165,24 @@
       "bases:Crear nueva base": true
     }
   },
-  "active": "b25a6d320fbf13a5",
+  "active": "ea9cf50950bb1bae",
   "lastOpenFiles": [
+    "2026A/calidad-software/talleres/primer-corte/~$imer Taller.docx",
+    "2026A/calidad-software/talleres/primer-corte/Primer Taller.docx",
+    "Taller 1/out/production/Taller 1/Main.class",
+    "Taller 1/out/production/Taller 1/Main$NotificationService.class",
+    "Taller 1/out/production/Taller 1/Main$InventoryService.class",
+    "Taller 1/out/production/Taller 1/Main$OrderProcessor.class",
+    "Taller 1/out/production/Taller 1/Main$OutOfStockException.class",
+    "Taller 1/out/production/Taller 1/Main$OrderException.class",
+    "Taller 1/out/production/Taller 1/Main$Order.class",
+    "Taller 1/out/production/Taller 1/Main$Book.class",
+    "Taller 1/out/production/Taller 1/Main$Customer.class",
     "README.md",
     "2026A/calidad-software/talleres/primer-corte/README.md",
-    "Calidad de Software/Semana 03/Grupo 1 - Talleres Primer Corte",
-    "Calidad de Software/Semana 03/Nueva carpeta",
     "Calidad de Software/Semana 03/estandares-normas (1)/images/madurez-CMMI.png",
     "Calidad de Software/Semana 03/estandares-normas (1)/images/ciclo-PHVA.png",
     "Calidad de Software/Semana 03/estandares-normas (1)/images/arquitectura-ISO-29119.png",
-    "Calidad de Software/Semana 03/estandares-normas (1)/images",
-    "Calidad de Software/Semana 03/estandares-normas (1)/index.html",
-    "Calidad de Software/Semana 03/estandares-normas (1)",
-    "Calidad de Software/Semana 03",
-    "Ingeniería Económica/Semana 02/~$Concepto de Ingeniería Económica y su relevancia en proyectos de inversión..pptx",
-    "Ingeniería Económica/Semana 03/~$Papel de la Ingeniería Económica desde una perspectiva financiera y administrativa.pptx",
-    "Ingeniería Económica/Semana 03/~$Principios básicos del análisis costo-beneficio.pptx",
-    "Ingeniería Económica/Semana 03/~$El triangulo de la inversion.pptx",
     "Calidad de Software/Semana 02/estandares-normas/images/madurez-CMMI.png",
     "Calidad de Software/Semana 02/estandares-normas/images/ciclo-PHVA.png",
     "Calidad de Software/Semana 02/estandares-normas/images/arquitectura-ISO-29119.png",
@@ -216,7 +213,6 @@
     "Telematica I/Curso de Cisco/Módulo 03/Módulo 3 - Protocolos y modelos.md",
     "Telematica I/Curso de Cisco/Módulo 02/Modulo 2 - Configuración básica de switches y terminales.md",
     "Telematica I/Curso de Cisco/Módulo 01/Módulo 1 - Las redes en la actualidad.md",
-    "Metodología de investigación/Semana 16/Realización de Parcial.md",
     "Sin título.canvas",
     "Sin título 1.canvas"
   ]
