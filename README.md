@@ -1,2 +1,6 @@
 # CORHUILA
-Repositorio para los cursos de Corhuila
+#Calidad de Software
+#Integrantes
+Anderson Kaleth Camacho Cabezas
+David Felipe Perdomo Castillo
+Elkin Stiven Contreras Rojas
