@@ -1,3 +1,5 @@
-# Calidad de Software
+# INTEGRANTES DEL GRUPO
 
-Repositorio para los Talleres de Primer Corte
+- Seam Yong Agudelo
+- Alex Salgado
+- Henderson David Rodriguez Pacheco
