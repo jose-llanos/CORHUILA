@@ -1,17 +1,5 @@
 # Taller Defect Density
 
-## Integrantes
-
-* Anderson Kaleth Camacho Cabezas
-* David Felipe Perdomo Castillo
-* Elkin Stiven Contreras Rojas
-* Edwar Alexis Serrudo Ariza
-* David Santiago Gomez Gutierrez
-
-## Profesor
-
-José Miguel Llanos M.
-
 ## Curso
 
 Calidad de Software – Ingeniería de Sistemas – Semestre VII
