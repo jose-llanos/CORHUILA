@@ -1,0 +1,2 @@
+squ_75d72315d7d0632827909a2ee7f28a45cf955e52
+mvn sonar:sonar -Dsonar.projectKey=com.corhuila.calidad:defect-density-demo -Dsonar.projectName="defect-density-demo" -Dsonar.host.url=http://localhost:9000 -Dsonar.token=squ_75d72315d7d0632827909a2ee7f28a45cf955e52 -Dsonar.sourceEncoding=UTF-8

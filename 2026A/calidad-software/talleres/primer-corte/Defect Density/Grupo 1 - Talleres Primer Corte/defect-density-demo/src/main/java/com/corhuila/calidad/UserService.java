@@ -1,61 +1,60 @@
 package com.corhuila.calidad;
 
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 public class UserService {
+
+    private static final Logger logger =
+            Logger.getLogger(UserService.class.getName());
+
     private List<String> users = new ArrayList<>();
-    private Random random = new Random();
 
-    // DEFECTO 1: Variable nunca usada
-    private int unused_variable = 0;
-
-    // DEFECTO 2: SQL Injection (vulnerabilidad)
     public boolean validateUser(String username) {
-        String query = "SELECT * FROM users WHERE name = '" + username + "'";
-// Query construida inseguramente
-        return true;
+        return username != null && !username.isEmpty();
     }
 
-    // DEFECTO 3: Complejidad cognitiva muy alta
     public String processUser(String user) {
-        if (user != null) {
-            if (user.length() > 0) {
-                if (user.contains("admin")) {
-                    if (user.contains("test")) {
-                        if (user.contains("prod")) {
-                            return "ADMIN_TEST_PROD";
-                        } else {
-                            return "ADMIN_TEST";
-                        }
-                    } else {
-                        return "ADMIN";
-                    }
-                } else {
-                    return "USER";
-                }
-            }
+        if (user == null || user.isEmpty()) {
+            return "UNKNOWN";
         }
-        return "UNKNOWN";
+        return classifyUser(user);
     }
 
-    // DEFECTO 4: Excepción no capturada
+    private String classifyUser(String user) {
+        if (!user.contains("admin")) {
+            return "USER";
+        }
+        if (user.contains("test") && user.contains("prod")) {
+            return "ADMIN_TEST_PROD";
+        }
+        if (user.contains("test")) {
+            return "ADMIN_TEST";
+        }
+        return "ADMIN";
+    }
+
     public void addUser(String username) {
-        int id = Integer.parseInt(username); // ¿Y si username no es un número?
+        if (username == null || username.isEmpty()) {
+            return;
+        }
         users.add(username);
     }
 
-    // DEFECTO 5: Método nunca usado
     public int calculateUnusedMetric(int a, int b) {
         return a + b;
     }
 
-    // DEFECTO 6: Resource leak (recurso no cerrado)
-    public String readUserFile(String path) throws Exception {
-        java.nio.file.Files.lines(java.nio.file.Paths.get(path))
-                .forEach(System.out::println);
-        return "File read"; // Stream no se cierra explícitamente
+    public String readUserFile(String path) throws IOException {
+        try (Stream<String> lines =
+                     java.nio.file.Files.lines(Paths.get(path))) {
+            lines.forEach(logger::info);
+        }
+        return "File read";
     }
 
     public List<String> getUsers() {

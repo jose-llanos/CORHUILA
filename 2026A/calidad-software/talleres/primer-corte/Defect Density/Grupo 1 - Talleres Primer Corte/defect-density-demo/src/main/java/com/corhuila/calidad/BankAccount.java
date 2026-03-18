@@ -1,33 +1,49 @@
 package com.corhuila.calidad;
 
+import java.util.Objects;
+import java.util.logging.Logger;
+
 public class BankAccount {
+
+    private static final Logger logger =
+            Logger.getLogger(BankAccount.class.getName());
+
     private double balance;
     private String accountNumber;
 
-    // DEFECTO 7: Campo mutable sin sincronización
-    public double balance_public = 0.0;
+    private double balancePublic = 0.0;
 
     public BankAccount(String accountNumber, double initialBalance) {
         this.accountNumber = accountNumber;
         this.balance = initialBalance;
     }
 
-    // DEFECTO 8: Lógica ilógica
-    public void deposit(double amount) {
-        if (amount < 0) {
-            System.out.println("Error: cantidad negativa");
-            balance = balance + amount; // ¡Sigue depositando cantidad negativa!
+    public double getBalancePublic() {
+        return balancePublic;
+    }
+
+    public void setBalancePublic(double balancePublic) {
+        if (balancePublic >= 0) {
+            this.balancePublic = balancePublic;
         }
     }
 
-    // DEFECTO 9: Comparación con == en lugar de equals()
-    public boolean isSameAccount(BankAccount other) {
-        return this.accountNumber == other.accountNumber; // Incorrecto
+    public void deposit(double amount) {
+        if (amount < 0) {
+            logger.warning("Error: cantidad negativa");
+            return;
+        }
+        balance = balance + amount;
     }
 
-    // DEFECTO 10: Código muerto
+    public boolean isSameAccount(BankAccount other) {
+        if (other == null) {
+            return false;
+        }
+        return Objects.equals(this.accountNumber, other.accountNumber);
+    }
+
     public double getBalance() {
-        double temp = balance * 2;
-        return balance; // temp nunca se usa
+        return balance;
     }
 }
