@@ -58,12 +58,14 @@ Puedes acceder al documento completo aquí:
 
 ---
 
-## 💻 Códigos del Taller
+## 💻 Implementación Práctica
 
-A continuación puedes acceder a los códigos desarrollados en este taller:
+En esta sección se encuentran los códigos desarrollados como apoyo al taller:
 
-- 🧪 [Código 1](./punto_4_Taller1 (1).py)  
-- 🧪 [Código 2](./punto_5_Taller1 (1).py.py)  
+- 🚀 [Ver Punto 4](./punto_4_Taller1%20(1).py)  
+- 🚀 [Ver Punto 5](./punto_5_Taller1%20(1).py)  
+
+> 💡 Estos códigos representan la aplicación práctica de los conceptos de Inteligencia Artificial y Redes Neuronales.
 
 ---
 
