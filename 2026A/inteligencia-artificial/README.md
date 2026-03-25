@@ -11,9 +11,9 @@ Bienvenidos al repositorio del **Grupo 4**, donde podrás encontrar todos los **
 
 Haz clic en cada sección para acceder directamente:
 
-- 📌 [Corte 1](#)  
-- 📌 [Corte 2](#)  
-- 📌 [Corte 3](#)  
+- 📌 [📁 Primer Corte](./talleres/primer-corte)  
+- 📌 [📁 Segundo Corte](./talleres/segundo-corte)  
+- 📌 [📁 Tercer Corte](./talleres/tercer-corte)   
 
 > 🔗 *Los enlaces serán actualizados a medida que se suban los trabajos.*
 
