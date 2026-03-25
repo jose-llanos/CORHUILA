@@ -58,6 +58,15 @@ Puedes acceder al documento completo aquí:
 
 ---
 
+## 💻 Códigos del Taller
+
+A continuación puedes acceder a los códigos desarrollados en este taller:
+
+- 🧪 [Código 1](./codigo1.py)  
+- 🧪 [Código 2](./codigo2.py)  
+
+---
+
 ## 👨‍💻 Autores
 
 Trabajo realizado por los integrantes del **Grupo 4**:
