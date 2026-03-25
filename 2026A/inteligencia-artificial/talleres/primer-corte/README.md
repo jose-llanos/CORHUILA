@@ -62,8 +62,11 @@ Puedes acceder al documento completo aquí:
 
 En esta sección se encuentran los códigos desarrollados como apoyo al taller:
 
-- 🚀 [Ver Punto 4](./punto_4_Taller1%20(1).py)  
-- 🚀 [Ver Punto 5](./punto_5_Taller1%20(1).py)  
+- 📓 [Punto 4 (Notebook)](./punto_4_Taller1.ipynb)  
+- 🐍 [Punto 4 (Script)](./punto_4_Taller1.py)  
+
+- 📓 [Punto 5 (Notebook)](./punto_5_Taller1.ipynb)  
+- 🐍 [Punto 5 (Script)](./punto_5_Taller1.py)  
 
 > 💡 Estos códigos representan la aplicación práctica de los conceptos de Inteligencia Artificial y Redes Neuronales.
 
