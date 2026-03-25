@@ -19,7 +19,7 @@ Haz clic en cada sección para acceder directamente:
 
 ---
 
-## 👨‍💻 Integrantes del Grupo 4 (Orden Alfabético)
+## 👨‍💻 Integrantes del Grupo 4
 
 - 👤 **JUAN FERNANDO PEREZ OLAYA**  
 - 👤 **NELSON DAVID GUTIERREZ MEDINA**  
