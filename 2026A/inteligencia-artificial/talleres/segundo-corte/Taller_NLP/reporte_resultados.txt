@@ -1,0 +1,452 @@
+================================================================================
+REPORTE DE ANÁLISIS DE RESEÑAS
+================================================================================
+
+1. Sentimiento promedio:
+   0.31
+
+2. Palabras clave por sentimiento:
+
+   POSITIVO:
+   - excelente: 8
+   - atención: 6
+   - rápido: 5
+   - amable: 5
+   - perfecto: 4
+   - compra: 4
+   - compré: 3
+   - producto: 3
+   - proceso: 3
+   - eficiente: 3
+
+   NEGATIVO:
+   - producto: 5
+   - llegó: 4
+   - además: 4
+   - soporte: 3
+   - horrible: 3
+   - terrible: 2
+   - experiencia: 2
+   - dañado: 2
+   - calidad: 2
+   - falló: 2
+
+   NEUTRAL:
+   - llegó: 6
+   - bastante: 6
+   - experiencia: 4
+   - artículo: 4
+   - servicio: 3
+   - tiempo: 3
+   - tampoco: 3
+   - producto: 3
+   - útil: 3
+   - buena: 3
+
+3. Entidades más mencionadas:
+   - llegó: 6
+   - Bogotá: 2
+   - Medellín: 2
+   - Microsoft: 2
+   - Google: 2
+   - tenía: 2
+   - llegó rápido: 1
+   - TechNova: 1
+   - superó mis expectativas: 1
+   - httpswww.tienda-falsa.comsoporte: 1
+
+4. Reseñas similares agrupadas:
+
+   Grupo 1:
+   - Reseña 1: Compré este producto en Bogotá y la verdad fue excelente, llegó rápido, en perfecto estado y el vendedor fue muy amable durante todo el proceso.
+
+   Grupo 2:
+   - Reseña 2: El servicio al cliente de TechNova fue bueno, respondieron mis dudas por correo en soporte@technova.com y solucionaron el problema en poco tiempo.
+
+   Grupo 3:
+   - Reseña 3: La compra fue normal, el paquete llegó a tiempo y no hubo ningún inconveniente, aunque tampoco me sorprendió demasiado.
+
+   Grupo 4:
+   - Reseña 4: Terrible experiencia con este producto, llegó dañado, muy caro para la calidad que ofrece y además el envío fue demorado.
+
+   Grupo 5:
+   - Reseña 5: Me encantó la atención en Medellín, el personal fue eficiente, amable y el resultado final superó mis expectativas.
+
+   Grupo 6:
+   - Reseña 6: No recomiendo esta tienda, el pedido falló dos veces, el soporte fue deficiente y nadie contestó en httpswww.tienda-falsa.comsoporte.
+
+   Grupo 7:
+   - Reseña 7: El producto funciona bien, pero me pareció un poco costoso para lo que ofrece, así que mi experiencia fue neutral.
+
+   Grupo 8:
+   - Reseña 8: Compré un computador de Microsoft y la experiencia fue increíble, el rendimiento es excelente y estoy muy satisfecho con la compra.
+
+   Grupo 9:
+   - Reseña 9: Horrible servicio, me prometieron entrega en dos días y tardaron más de una semana, además el producto venía defectuoso.
+
+   Grupo 10:
+   - Reseña 10: La aplicación desarrollada por Google en Colombia tiene una interfaz sencilla, útil y bastante rápida para mis necesidades diarias.
+
+   Grupo 11:
+   - Reseña 11: Todo estuvo bien, el artículo llegó completo, el empaque fue aceptable y el funcionamiento general fue normal.
+
+   Grupo 12:
+   - Reseña 12: Muy mala calidad, el material se siente barato, presentó un error desde el primer uso y terminé completamente insatisfecho.
+
+   Grupo 13:
+   - Reseña 13: La experiencia en Amazon fue maravillosa, el envío fue rápido, el producto cumplió con lo prometido y volvería a comprar sin pensarlo.
+
+   Grupo 14:
+   - Reseña 14: No fue una experiencia tan mala, pero tampoco fue buena; simplemente cumplió y ya, sin nada realmente destacable.
+
+   Grupo 15:
+   - Reseña 15: El restaurante en Neiva tuvo una atención excelente, la comida fue deliciosa y el ambiente me dejó muy feliz con la visita.
+
+   Grupo 16:
+   - Reseña 16: Pésimo resultado, el equipo falló varias veces, tuve problemas con la batería y nadie respondió mis mensajes.
+
+   Grupo 17:
+   - Reseña 17: El curso virtual de programación fue bueno, el contenido era claro, el profesor explicaba bien y aprendí bastante en pocas semanas.
+
+   Grupo 18:
+   - Reseña 18: El celular llegó a Cali en buen estado, pero el cargador parecía de baja calidad y eso me dejó algo desconfiado.
+
+   Grupo 19:
+   - Reseña 19: Me recomendaron este servicio y la verdad sí fue genial, el proceso fue rápido y el soporte técnico muy eficiente.
+
+   Grupo 20:
+   - Reseña 20: La plataforma web fue horrible, lenta, confusa y llena de errores; sinceramente esperaba mucho más por ese precio.
+
+   Grupo 21:
+   - Reseña 21: La atención en la oficina de Microsoft en Seattle fue profesional, organizada y muy amable con todos los asistentes.
+
+   Grupo 22:
+   - Reseña 22: El producto no está mal, funciona, pero se siente bastante promedio y no creo que destaque frente a otras opciones del mercado.
+
+   Grupo 23:
+   - Reseña 23: Excelente compra, el diseño es hermoso, el rendimiento es perfecto y estoy encantado con el resultado final.
+
+   Grupo 24:
+   - Reseña 24: Definitivamente no lo volvería a comprar, fue una decepción total, llegó dañado y además se veía usado.
+
+   Grupo 25:
+   - Reseña 25: El servicio fue aceptable, el envío llegó cuando debía y el artículo coincide con la descripción publicada en www.ejemplo.com.
+
+   Grupo 26:
+   - Reseña 26: La asesoría recibida por Juan Pérez en Bogotá fue muy buena, me explicó todo con paciencia y resolvió cada duda que tenía.
+
+   Grupo 27:
+   - Reseña 27: La experiencia general fue negativa, hubo demora, poca comunicación, un problema con la factura y cero solución por parte de la empresa.
+
+   Grupo 28:
+   - Reseña 28: Estoy satisfecho con la compra porque el producto es bueno, resistente y además el precio fue razonable.
+
+   Grupo 29:
+   - Reseña 29: El hotel en Cartagena tenía una ubicación excelente, el personal fue amable y la habitación estaba en perfecto estado.
+
+   Grupo 30:
+   - Reseña 30: No me gustó para nada, el producto es malo, se siente frágil y el servicio postventa fue terrible.
+
+   Grupo 31:
+   - Reseña 31: La plataforma educativa de OpenAI me pareció interesante, útil y bastante clara para comenzar a entender inteligencia artificial.
+
+   Grupo 32:
+   - Reseña 32: Fue una compra regular, nada espectacular, pero al menos llegó a tiempo y el artículo funcionó sin problemas mayores.
+
+   Grupo 33:
+   - Reseña 33: Muy recomendado, el envío fue rápido, el empaque impecable y la atención del vendedor fue excelente de principio a fin.
+
+   Grupo 34:
+   - Reseña 34: El paquete llegó incompleto y cuando escribí a ayuda@empresa.com nadie respondió, por eso mi experiencia fue muy mala.
+
+   Grupo 35:
+   - Reseña 35: La conferencia realizada en Medellín por Google fue increíble, aprendí bastante y la organización fue muy buena.
+
+   Grupo 36:
+   - Reseña 36: Producto defectuoso, soporte lento, atención deficiente y una sensación general de haber perdido mi dinero.
+
+   Grupo 37:
+   - Reseña 37: La experiencia fue neutral, el servicio no fue malo, pero tampoco especialmente bueno, solo cumplió con lo básico.
+
+   Grupo 38:
+   - Reseña 38: Encantado con la calidad, el diseño y el rendimiento; sinceramente ha sido una de las mejores compras que he hecho.
+
+   Grupo 39:
+   - Reseña 39: Peor imposible, el artículo llegó roto, el vendedor nunca contestó y el proceso de devolución fue un desastre.
+
+   Grupo 40:
+   - Reseña 40: La suscripción al software fue útil, rápida de activar y bastante estable durante el primer mes de uso.
+
+   Grupo 41:
+   - Reseña 41: Compré unos audífonos en Barranquilla y el sonido fue excelente, aunque el precio me pareció un poco alto.
+
+   Grupo 42:
+   - Reseña 42: No fue lo que esperaba, el producto se veía mejor en fotos y la calidad real terminó siendo bastante decepcionante.
+
+   Grupo 43:
+   - Reseña 43: El servicio técnico de Samsung fue eficiente, resolvió mi inconveniente en un solo día y me dejó muy satisfecho.
+
+   Grupo 44:
+   - Reseña 44: La entrega fue demorada, el artículo llegó sucio y además tenía un problema en una de sus piezas principales.
+
+   Grupo 45:
+   - Reseña 45: La experiencia con el banco fue normal, la fila avanzó rápido y la atención fue correcta, sin nada extraordinario.
+
+   Grupo 46:
+   - Reseña 46: Excelente atención en la tienda de Apple, el asesor fue amable, el proceso de compra fue claro y todo salió perfecto.
+
+   Grupo 47:
+   - Reseña 47: La aplicación es buena, aunque a veces presenta errores menores y eso hace que no sea tan cómoda de usar.
+
+   Grupo 48:
+   - Reseña 48: Horrible compra, el producto dejó de funcionar a las pocas horas y el soporte fue totalmente inútil.
+
+   Grupo 49:
+   - Reseña 49: Me gustó bastante, el artículo cumplió con su objetivo, se siente resistente y volvería a comprarlo más adelante.
+
+5. Detalle por reseña:
+
+   Reseña 1:
+   Texto: Compré este producto en Bogotá y la verdad fue excelente, llegó rápido, en perfecto estado y el vendedor fue muy amable durante todo el proceso.
+   Sentimiento: positivo (puntaje: 4)
+   Entidades: [('Bogotá', 'LOC'), ('llegó rápido', 'PER')]
+
+   Reseña 2:
+   Texto: El servicio al cliente de TechNova fue bueno, respondieron mis dudas por correo en soporte@technova.com y solucionaron el problema en poco tiempo.
+   Sentimiento: neutral (puntaje: 0)
+   Entidades: [('TechNova', 'MISC')]
+
+   Reseña 3:
+   Texto: La compra fue normal, el paquete llegó a tiempo y no hubo ningún inconveniente, aunque tampoco me sorprendió demasiado.
+   Sentimiento: neutral (puntaje: 0)
+   Entidades: [('llegó', 'PER')]
+
+   Reseña 4:
+   Texto: Terrible experiencia con este producto, llegó dañado, muy caro para la calidad que ofrece y además el envío fue demorado.
+   Sentimiento: negativo (puntaje: -4)
+   Entidades: [('llegó', 'PER')]
+
+   Reseña 5:
+   Texto: Me encantó la atención en Medellín, el personal fue eficiente, amable y el resultado final superó mis expectativas.
+   Sentimiento: positivo (puntaje: 3)
+   Entidades: [('Medellín', 'LOC'), ('superó mis expectativas', 'PER')]
+
+   Reseña 6:
+   Texto: No recomiendo esta tienda, el pedido falló dos veces, el soporte fue deficiente y nadie contestó en httpswww.tienda-falsa.comsoporte.
+   Sentimiento: negativo (puntaje: -2)
+   Entidades: [('httpswww.tienda-falsa.comsoporte', 'MISC')]
+
+   Reseña 7:
+   Texto: El producto funciona bien, pero me pareció un poco costoso para lo que ofrece, así que mi experiencia fue neutral.
+   Sentimiento: neutral (puntaje: 0)
+   Entidades: []
+
+   Reseña 8:
+   Texto: Compré un computador de Microsoft y la experiencia fue increíble, el rendimiento es excelente y estoy muy satisfecho con la compra.
+   Sentimiento: positivo (puntaje: 3)
+   Entidades: [('Microsoft', 'ORG')]
+
+   Reseña 9:
+   Texto: Horrible servicio, me prometieron entrega en dos días y tardaron más de una semana, además el producto venía defectuoso.
+   Sentimiento: negativo (puntaje: -1)
+   Entidades: []
+
+   Reseña 10:
+   Texto: La aplicación desarrollada por Google en Colombia tiene una interfaz sencilla, útil y bastante rápida para mis necesidades diarias.
+   Sentimiento: neutral (puntaje: 0)
+   Entidades: [('Google', 'ORG'), ('Colombia', 'LOC')]
+
+   Reseña 11:
+   Texto: Todo estuvo bien, el artículo llegó completo, el empaque fue aceptable y el funcionamiento general fue normal.
+   Sentimiento: neutral (puntaje: 0)
+   Entidades: [('llegó', 'PER')]
+
+   Reseña 12:
+   Texto: Muy mala calidad, el material se siente barato, presentó un error desde el primer uso y terminé completamente insatisfecho.
+   Sentimiento: negativo (puntaje: -2)
+   Entidades: []
+
+   Reseña 13:
+   Texto: La experiencia en Amazon fue maravillosa, el envío fue rápido, el producto cumplió con lo prometido y volvería a comprar sin pensarlo.
+   Sentimiento: positivo (puntaje: 1)
+   Entidades: [('Amazon', 'PER')]
+
+   Reseña 14:
+   Texto: No fue una experiencia tan mala, pero tampoco fue buena; simplemente cumplió y ya, sin nada realmente destacable.
+   Sentimiento: neutral (puntaje: 0)
+   Entidades: []
+
+   Reseña 15:
+   Texto: El restaurante en Neiva tuvo una atención excelente, la comida fue deliciosa y el ambiente me dejó muy feliz con la visita.
+   Sentimiento: positivo (puntaje: 2)
+   Entidades: [('Neiva', 'LOC')]
+
+   Reseña 16:
+   Texto: Pésimo resultado, el equipo falló varias veces, tuve problemas con la batería y nadie respondió mis mensajes.
+   Sentimiento: negativo (puntaje: -2)
+   Entidades: []
+
+   Reseña 17:
+   Texto: El curso virtual de programación fue bueno, el contenido era claro, el profesor explicaba bien y aprendí bastante en pocas semanas.
+   Sentimiento: positivo (puntaje: 1)
+   Entidades: []
+
+   Reseña 18:
+   Texto: El celular llegó a Cali en buen estado, pero el cargador parecía de baja calidad y eso me dejó algo desconfiado.
+   Sentimiento: neutral (puntaje: 0)
+   Entidades: [('Cali', 'LOC')]
+
+   Reseña 19:
+   Texto: Me recomendaron este servicio y la verdad sí fue genial, el proceso fue rápido y el soporte técnico muy eficiente.
+   Sentimiento: positivo (puntaje: 3)
+   Entidades: []
+
+   Reseña 20:
+   Texto: La plataforma web fue horrible, lenta, confusa y llena de errores; sinceramente esperaba mucho más por ese precio.
+   Sentimiento: negativo (puntaje: -1)
+   Entidades: []
+
+   Reseña 21:
+   Texto: La atención en la oficina de Microsoft en Seattle fue profesional, organizada y muy amable con todos los asistentes.
+   Sentimiento: positivo (puntaje: 1)
+   Entidades: [('Microsoft', 'ORG'), ('Seattle', 'LOC')]
+
+   Reseña 22:
+   Texto: El producto no está mal, funciona, pero se siente bastante promedio y no creo que destaque frente a otras opciones del mercado.
+   Sentimiento: neutral (puntaje: 0)
+   Entidades: []
+
+   Reseña 23:
+   Texto: Excelente compra, el diseño es hermoso, el rendimiento es perfecto y estoy encantado con el resultado final.
+   Sentimiento: positivo (puntaje: 2)
+   Entidades: []
+
+   Reseña 24:
+   Texto: Definitivamente no lo volvería a comprar, fue una decepción total, llegó dañado y además se veía usado.
+   Sentimiento: negativo (puntaje: -1)
+   Entidades: [('llegó', 'PER')]
+
+   Reseña 25:
+   Texto: El servicio fue aceptable, el envío llegó cuando debía y el artículo coincide con la descripción publicada en www.ejemplo.com.
+   Sentimiento: neutral (puntaje: 0)
+   Entidades: [('llegó', 'PER')]
+
+   Reseña 26:
+   Texto: La asesoría recibida por Juan Pérez en Bogotá fue muy buena, me explicó todo con paciencia y resolvió cada duda que tenía.
+   Sentimiento: neutral (puntaje: 0)
+   Entidades: [('Juan Pérez', 'PER'), ('Bogotá', 'LOC'), ('tenía', 'LOC')]
+
+   Reseña 27:
+   Texto: La experiencia general fue negativa, hubo demora, poca comunicación, un problema con la factura y cero solución por parte de la empresa.
+   Sentimiento: negativo (puntaje: -1)
+   Entidades: []
+
+   Reseña 28:
+   Texto: Estoy satisfecho con la compra porque el producto es bueno, resistente y además el precio fue razonable.
+   Sentimiento: positivo (puntaje: 2)
+   Entidades: []
+
+   Reseña 29:
+   Texto: El hotel en Cartagena tenía una ubicación excelente, el personal fue amable y la habitación estaba en perfecto estado.
+   Sentimiento: positivo (puntaje: 3)
+   Entidades: [('Cartagena', 'LOC')]
+
+   Reseña 30:
+   Texto: No me gustó para nada, el producto es malo, se siente frágil y el servicio postventa fue terrible.
+   Sentimiento: negativo (puntaje: -2)
+   Entidades: []
+
+   Reseña 31:
+   Texto: La plataforma educativa de OpenAI me pareció interesante, útil y bastante clara para comenzar a entender inteligencia artificial.
+   Sentimiento: neutral (puntaje: 0)
+   Entidades: [('OpenAI', 'MISC')]
+
+   Reseña 32:
+   Texto: Fue una compra regular, nada espectacular, pero al menos llegó a tiempo y el artículo funcionó sin problemas mayores.
+   Sentimiento: neutral (puntaje: 0)
+   Entidades: [('llegó', 'PER')]
+
+   Reseña 33:
+   Texto: Muy recomendado, el envío fue rápido, el empaque impecable y la atención del vendedor fue excelente de principio a fin.
+   Sentimiento: positivo (puntaje: 3)
+   Entidades: []
+
+   Reseña 34:
+   Texto: El paquete llegó incompleto y cuando escribí a ayuda@empresa.com nadie respondió, por eso mi experiencia fue muy mala.
+   Sentimiento: neutral (puntaje: 0)
+   Entidades: [('escribí', 'LOC')]
+
+   Reseña 35:
+   Texto: La conferencia realizada en Medellín por Google fue increíble, aprendí bastante y la organización fue muy buena.
+   Sentimiento: positivo (puntaje: 1)
+   Entidades: [('Medellín', 'ORG'), ('Google', 'ORG')]
+
+   Reseña 36:
+   Texto: Producto defectuoso, soporte lento, atención deficiente y una sensación general de haber perdido mi dinero.
+   Sentimiento: negativo (puntaje: -2)
+   Entidades: []
+
+   Reseña 37:
+   Texto: La experiencia fue neutral, el servicio no fue malo, pero tampoco especialmente bueno, solo cumplió con lo básico.
+   Sentimiento: neutral (puntaje: 0)
+   Entidades: []
+
+   Reseña 38:
+   Texto: Encantado con la calidad, el diseño y el rendimiento; sinceramente ha sido una de las mejores compras que he hecho.
+   Sentimiento: neutral (puntaje: 0)
+   Entidades: []
+
+   Reseña 39:
+   Texto: Peor imposible, el artículo llegó roto, el vendedor nunca contestó y el proceso de devolución fue un desastre.
+   Sentimiento: negativo (puntaje: -1)
+   Entidades: [('llegó roto', 'PER')]
+
+   Reseña 40:
+   Texto: La suscripción al software fue útil, rápida de activar y bastante estable durante el primer mes de uso.
+   Sentimiento: neutral (puntaje: 0)
+   Entidades: []
+
+   Reseña 41:
+   Texto: Compré unos audífonos en Barranquilla y el sonido fue excelente, aunque el precio me pareció un poco alto.
+   Sentimiento: positivo (puntaje: 1)
+   Entidades: [('Barranquilla', 'LOC')]
+
+   Reseña 42:
+   Texto: No fue lo que esperaba, el producto se veía mejor en fotos y la calidad real terminó siendo bastante decepcionante.
+   Sentimiento: neutral (puntaje: 0)
+   Entidades: []
+
+   Reseña 43:
+   Texto: El servicio técnico de Samsung fue eficiente, resolvió mi inconveniente en un solo día y me dejó muy satisfecho.
+   Sentimiento: positivo (puntaje: 2)
+   Entidades: [('Samsung', 'ORG')]
+
+   Reseña 44:
+   Texto: La entrega fue demorada, el artículo llegó sucio y además tenía un problema en una de sus piezas principales.
+   Sentimiento: negativo (puntaje: -1)
+   Entidades: [('llegó sucio', 'PER'), ('tenía', 'LOC')]
+
+   Reseña 45:
+   Texto: La experiencia con el banco fue normal, la fila avanzó rápido y la atención fue correcta, sin nada extraordinario.
+   Sentimiento: positivo (puntaje: 1)
+   Entidades: []
+
+   Reseña 46:
+   Texto: Excelente atención en la tienda de Apple, el asesor fue amable, el proceso de compra fue claro y todo salió perfecto.
+   Sentimiento: positivo (puntaje: 3)
+   Entidades: [('Apple', 'ORG')]
+
+   Reseña 47:
+   Texto: La aplicación es buena, aunque a veces presenta errores menores y eso hace que no sea tan cómoda de usar.
+   Sentimiento: neutral (puntaje: 0)
+   Entidades: []
+
+   Reseña 48:
+   Texto: Horrible compra, el producto dejó de funcionar a las pocas horas y el soporte fue totalmente inútil.
+   Sentimiento: negativo (puntaje: -1)
+   Entidades: []
+
+   Reseña 49:
+   Texto: Me gustó bastante, el artículo cumplió con su objetivo, se siente resistente y volvería a comprarlo más adelante.
+   Sentimiento: neutral (puntaje: 0)
+   Entidades: []
