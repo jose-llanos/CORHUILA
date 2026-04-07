@@ -18,19 +18,19 @@ Repositorio del **Grupo 9** para el desarrollo de los talleres y actividades de 
 
 Puedes acceder al documento del taller en el siguiente enlace:
 
-📄 [Ver Taller 1 - MLP](https://github.com/pilo77/grupo-9/blob/main/Talle%201%20MLP.pdf)
+📄 [Ver Taller 1 - MLP](./2026A/inteligencia-artificial/primer-corte/Talle%201%20MLP.pdf)
 
 ---
 
 ### 🤖 Segundo corte
 
 #### Taller: Procesamiento del Lenguaje Natural (NLP)
-📘 [Ver Taller NLP Resuelto](./Taller_NLP_Resuelto.ipynb)
+📘 [Ver Taller NLP Resuelto](./2026A/inteligencia-artificial/segundo-corte/Taller_NLP_Resuelto.ipynb)
 
-## 📂 Estructura del repositorio
+## 📁 Estructura del repositorio
 
-- `Talle 1 MLP.pdf` → Documento correspondiente al taller del primer corte.
-- `Taller_NLP_Resuelto.ipynb` → Notebook con el desarrollo del taller de NLP del segundo corte.
+- `2026A/inteligencia-artificial/primer-corte/Talle 1 MLP.pdf` → Documento correspondiente al taller del primer corte.
+- `2026A/inteligencia-artificial/segundo-corte/Taller_NLP_Resuelto.ipynb` → Notebook con el desarrollo del taller de NLP del segundo corte.
 
 ## ✅ Observaciones
 
