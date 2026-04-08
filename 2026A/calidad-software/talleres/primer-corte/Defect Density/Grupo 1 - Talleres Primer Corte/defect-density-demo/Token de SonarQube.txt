@@ -1,2 +1,9 @@
-squ_75d72315d7d0632827909a2ee7f28a45cf955e52
+Defect Density: squ_75d72315d7d0632827909a2ee7f28a45cf955e52
+
 mvn sonar:sonar -Dsonar.projectKey=com.corhuila.calidad:defect-density-demo -Dsonar.projectName="defect-density-demo" -Dsonar.host.url=http://localhost:9000 -Dsonar.token=squ_75d72315d7d0632827909a2ee7f28a45cf955e52 -Dsonar.sourceEncoding=UTF-8
+
+-------------------------------------------------------------------------
+
+Code Coverage: squ_248551f9f2acd836cdc094bafc9c6760e2e45bdd
+
+mvn clean verify sonar:sonar -Dsonar.projectKey=com.corhuila.coverage:code-coverage-demo -Dsonar.projectName="code-coverage-demo" -Dsonar.sources=src/main -Dsonar.tests=src/test -Dsonar.host.url=http://localhost:9000 -Dsonar.token=squ_248551f9f2acd836cdc094bafc9c6760e2e45bdd -Dsonar.sourceEncoding=UTF-8
