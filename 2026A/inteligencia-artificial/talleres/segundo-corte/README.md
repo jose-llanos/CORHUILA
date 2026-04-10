@@ -7,11 +7,11 @@
 Puedes acceder al documento completo aquí:  
 
 ## Taller 1 Procesamiento de Lenguaje Natural (NLP)
-📄 [Ver Taller 1](./segundo-corte/Taller%201)  
+📄 [Ver Taller 1](./segundo-corte/Taller_1) 
 
 ## Taller 2
 
-📄 [Ver Taller 2](./segundo-corte/Taller%202) 
+📄 [Ver Taller 2](./segundo-corte/Taller_2) 
 
 ---
 
