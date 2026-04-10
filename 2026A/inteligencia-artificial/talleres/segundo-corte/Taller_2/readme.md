@@ -2,11 +2,11 @@
 
 ---
 
-## 📂 Archivo del Taller  
+## 📂 Archivo del Taller
 
-Puedes acceder al documento completo aquí:  
+Puedes acceder al documento completo aquí:
 
-📄 [Ver Taller 2 - (./Taller.pdf)  
+📄 [Ver Taller ](./Taller.pdf)
 
 ---
 
