@@ -6,7 +6,7 @@
 
 Puedes acceder al documento completo aquí:
 
-📄 [Ver Taller 1](./Taller%201.pdf)
+📄 [Ver Taller 1](./Taller%201%20NLP.pdf)
 
 ---
 
