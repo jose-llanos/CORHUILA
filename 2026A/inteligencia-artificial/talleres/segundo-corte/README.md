@@ -107,7 +107,7 @@ Integración de todas las técnicas en una sola clase de procesamiento.
 
 ---
 
-### 🔵 5.10 Proyecto Final  
+### 🔵 5.10 Proyecto Integrador
 Aplicación en análisis de sentimientos (positivo, negativo, neutral).  
 
 ---
