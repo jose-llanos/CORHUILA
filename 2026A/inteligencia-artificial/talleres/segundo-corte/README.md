@@ -1,5 +1,5 @@
 # 🤖 Segundo Corte  
-## Taller 2 - Procesamiento de Lenguaje Natural (NLP)  
+## Taller 1 - Procesamiento de Lenguaje Natural (NLP)  
 
 ---
 
@@ -132,6 +132,22 @@ La construcción de un pipeline permitió integrar todos los procesos de manera 
 
 ---
 
+## Taller 2 -  
+
+---
+
+## 📂 Archivo del Taller  
+
+Puedes acceder al documento completo aquí:  
+
+📄 [Ver Taller 3](./Taller.pdf)  
+
+---
+
+## 📌 Introducción 
+
+---
+
 ## 📚 Bibliografía  
 
 - Russell, S. & Norvig, P. *Artificial Intelligence: A Modern Approach*  
@@ -156,10 +172,10 @@ Grupo 4:
 
 ## 🚀 Nota  
 
-Este trabajo corresponde al **Segundo Corte** de la asignatura y hace parte del proceso de formación en Inteligencia Artificial.  
+Estos trabajos corresponden al **Segundo Corte** de la asignatura y hace parte del proceso de formación en Inteligencia Artificial.  
 
 ---
 
 ## ⭐ Recomendación  
 
-Se recomienda revisar el documento completo para comprender cada técnica aplicada y su integración en el pipeline de procesamiento de lenguaje natural.  
+Se recomienda revisar el documento completo para comprender cada técnica aplicada y su integración en el procesamiento de lenguaje natural.  
