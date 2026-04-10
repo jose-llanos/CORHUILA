@@ -7,7 +7,7 @@
 
 Puedes acceder al documento completo aquí:  
 
-📄 [Ver Taller 2](./Taller%202%20NLP.pdf)  
+📄 [Ver Taller 1](./Taller%202%20NLP.pdf)  
 
 ---
 
@@ -140,7 +140,7 @@ La construcción de un pipeline permitió integrar todos los procesos de manera 
 
 Puedes acceder al documento completo aquí:  
 
-📄 [Ver Taller 3](./Taller.pdf)  
+📄 [Ver Taller 2](./Taller.pdf)  
 
 ---
 
