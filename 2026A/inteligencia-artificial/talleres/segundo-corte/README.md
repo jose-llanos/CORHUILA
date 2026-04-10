@@ -2,7 +2,7 @@
 
 ---
 
-## 📂 Archivo del Taller  
+## 📂 Talleres Presentados
 
 Puedes acceder al documento completo aquí:  
 
