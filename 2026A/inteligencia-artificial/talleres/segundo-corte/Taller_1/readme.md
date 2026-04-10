@@ -2,6 +2,14 @@
 
 ---
 
+## 📂 Archivo del Taller
+
+Puedes acceder al documento completo aquí:
+
+📄 [Ver Taller 1](./Taller%201.pdf)
+
+---
+
 ## 📌 Introducción  
 
 En el presente taller se aborda el estudio del **Procesamiento del Lenguaje Natural (NLP)**, enfocándose en la aplicación de técnicas fundamentales para el análisis y manipulación de textos. A través de diferentes ejercicios prácticos, se busca comprender cómo las máquinas pueden procesar, interpretar y extraer información del lenguaje humano.  
