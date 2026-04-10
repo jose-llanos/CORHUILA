@@ -6,9 +6,12 @@
 
 Puedes acceder al documento completo aquí:  
 
-📄 [Ver Taller 1 - Procesamiento de Lenguaje Natural (NLP)](./Taller%202%20)  
+## Taller 1 Procesamiento de Lenguaje Natural (NLP)
+📄 [Ver Taller 1 - ](./Taller-2)  
 
-📄 [Ver Taller 2 - ](./Taller%202%20NLP.pdf) 
+## Taller 2
+
+📄 [Ver Taller 2 - ](./Taller-2) 
 
 ---
 
