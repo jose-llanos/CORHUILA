@@ -6,7 +6,7 @@
 
 Puedes acceder al documento completo aquí:
 
-📄 [Ver Taller ](./Taller.pdf)
+📄 [Ver Taller ](./Taller%203%20IA%20Embeddings.pdf)
 
 ---
 
