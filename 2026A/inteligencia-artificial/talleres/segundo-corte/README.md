@@ -9,7 +9,7 @@ Puedes acceder al documento completo aquí:
 ## Taller 1 Procesamiento de Lenguaje Natural (NLP)
 📄 [Ver Taller 1](./Taller_1) 
 
-## Taller 2
+## Taller 2 Representaciones de Texto - Word Embeddings y Embedding Contextual
 
 📄 [Ver Taller 2](./Taller_2) 
 
