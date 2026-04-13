@@ -28,11 +28,11 @@ Comprender el uso de representaciones vectoriales de palabras (word embeddings) 
 
 ## 🎯 Objetivos Específicos  
 
--. Implementar representaciones de palabras mediante modelos de embeddings como Word2Vec para transformar texto en vectores numéricos.
--. Seleccionar palabras representativas del modelo entrenado y extraer sus vectores para su análisis.
--. Aplicar la técnica de reducción de dimensionalidad t-SNE para visualizar los embeddings en un espacio bidimensional.
--. Interpretar gráficamente las relaciones semánticas entre palabras según su cercanía en el espacio vectorial.
--. Analizar la utilidad de los embeddings en tareas de procesamiento de lenguaje natural y clasificación de texto.
+- Implementar representaciones de palabras mediante modelos de embeddings como Word2Vec para transformar texto en vectores numéricos.
+- Seleccionar palabras representativas del modelo entrenado y extraer sus vectores para su análisis.
+- Aplicar la técnica de reducción de dimensionalidad t-SNE para visualizar los embeddings en un espacio bidimensional.
+- Interpretar gráficamente las relaciones semánticas entre palabras según su cercanía en el espacio vectorial.
+- Analizar la utilidad de los embeddings en tareas de procesamiento de lenguaje natural y clasificación de texto.
 
 ---
 
@@ -54,11 +54,11 @@ Finalmente, los avances recientes han dado lugar a los embeddings contextuales, 
 
 ## ⚙️ Desarrollo del Taller  
 
-5.1 Instalación de Dependencias
-5.2 Conceptos Fundamentales
-5.3 Word2Vec - Entrenamiento Práctico
-5.4 Visualización con t-SNE
-5.5 Clasificación de Textos con Embeddings
+-5.1 Instalación de Dependencias
+-5.2 Conceptos Fundamentales
+-5.3 Word2Vec - Entrenamiento Práctico
+-5.4 Visualización con t-SNE
+-5.5 Clasificación de Textos con Embeddings
 
 ---
 
