@@ -54,11 +54,11 @@ Finalmente, los avances recientes han dado lugar a los embeddings contextuales, 
 
 ## ⚙️ Desarrollo del Taller  
 
--5.1 Instalación de Dependencias
--5.2 Conceptos Fundamentales
--5.3 Word2Vec - Entrenamiento Práctico
--5.4 Visualización con t-SNE
--5.5 Clasificación de Textos con Embeddings
+### 5.1 Instalación de Dependencias
+### 5.2 Conceptos Fundamentales
+### 5.3 Word2Vec - Entrenamiento Práctico
+### 5.4 Visualización con t-SNE
+### 5.5 Clasificación de Textos con Embeddings
 
 ---
 
