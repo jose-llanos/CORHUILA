@@ -1,4 +1,4 @@
-# 🤖 Taller 2
+# 🤖 Taller 2 Representaciones de Texto - Word Embeddings y Embedding Contextual
 
 ---
 
