@@ -27,6 +27,8 @@ Puedes acceder al documento del taller en el siguiente enlace:
 #### Taller: Procesamiento del Lenguaje Natural (NLP)
 📘 [Ver Taller NLP Resuelto](./2026A/inteligencia-artificial/talleres/segundo-corte/Taller_NLP_Resuelto.ipynb)
 
+📘 [Ver Taller Embeddings Resuelto](./2026A/inteligencia-artificial/talleres/segundo-corte/Taller_Embeddings_resuelto.ipynb)
+
 ## 📁 Estructura del repositorio
 
 - `2026A/inteligencia-artificial/primer-corte/Talle 1 MLP.pdf` → Documento correspondiente al taller del primer corte.
