@@ -1,0 +1,63 @@
+services:
+  db:
+    image: postgres:15
+    container_name: veterinaria_db
+    environment:
+      POSTGRES_DB: gestion_pruebas
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: veterinaria_app
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/gestion_pruebas
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password123
+      SERVER_PORT: 8081
+    ports:
+      - "8081:8081"
+
+  sonar_db:
+    image: postgres:15
+    container_name: sonar_db
+    environment:
+      POSTGRES_DB: sonarqube
+      POSTGRES_USER: sonar
+      POSTGRES_PASSWORD: sonar123
+    volumes:
+      - sonar_db_data:/var/lib/postgresql/data
+
+  sonarqube:
+    image: sonarqube:9.9-community
+    container_name: sonarqube
+    depends_on:
+      - sonar_db
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://sonar_db:5432/sonarqube
+      SONAR_JDBC_USERNAME: sonar
+      SONAR_JDBC_PASSWORD: sonar123
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
+    ports:
+      - "9000:9000"
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_logs:/opt/sonarqube/logs
+      - sonarqube_extensions:/opt/sonarqube/extensions
+
+volumes:
+  postgres_data:
+  sonar_db_data:
+  sonarqube_data:
+  sonarqube_logs:
+  sonarqube_extensions:
