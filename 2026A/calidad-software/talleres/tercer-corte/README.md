@@ -1,4 +1,4 @@
-# 📁 Segundo Corte – Talleres
+# 📁 Tercer Corte – Talleres
 
 Esta carpeta contiene los talleres desarrollados durante el primer corte de la asignatura **Calidad de Software**, correspondientes a las actividades académicas asignadas en este periodo.
 
