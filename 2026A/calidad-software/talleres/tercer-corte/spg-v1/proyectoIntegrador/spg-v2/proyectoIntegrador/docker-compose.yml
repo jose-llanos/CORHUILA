@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  # --- 1. BASE DE DATOS ---
+  db:
+    image: postgres:15-alpine
+    container_name: sgp_db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: sgplab_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - sgp_network
+
+  # --- 2. SONARQUBE: Calidad de Código ---
+  sonarqube:
+    image: sonarqube:lts-community
+    container_name: sgp_sonarqube
+    ports:
+      - "9000:9000"
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+    networks:
+      - sgp_network
+
+  # --- 3. JENKINS: Automatización (Builds con Maven) ---
+  jenkins:
+    image: jenkins/jenkins:lts-jdk17
+    container_name: sgp_jenkins
+    privileged: true
+    user: root
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - sgp_network
+
+# --- 4. JMETER: Pruebas de Rendimiento ---
+  jmeter:
+    image: justb4/jmeter:latest
+    container_name: sgp_jmeter
+    entrypoint: tail -f /dev/null
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./sgp-backend/src/test/java/com/sgplab/backend/jmeter:/tests  
+    networks:
+      - sgp_network
+
+networks:
+  sgp_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  sonarqube_data:
+  sonarqube_extensions:
+  jenkins_home:

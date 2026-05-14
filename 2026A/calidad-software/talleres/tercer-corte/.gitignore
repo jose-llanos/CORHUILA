@@ -1,0 +1,23 @@
+ # Dependencias
+node_modules/
+
+# Angular
+dist/
+.angular/
+coverage/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Variables de entorno
+.env
+
+# IDEs
+.vscode/
+.idea/
+
+# Sistema
+.DS_Store
+Thumbs.db

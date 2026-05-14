@@ -1,0 +1,21 @@
+{
+  "name": "sgp-frontend",
+  "version": "1.0.0",
+  "description": "Frontend Vue 3 + Vuetify para SGP Lab",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@mdi/font": "^7.4.47",
+    "axios": "^1.15.2",
+    "vue": "^3.5.33",
+    "vue-router": "^4.6.4",
+    "vuetify": "^3.12.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.6",
+    "vite": "^8.0.10"
+  }
+}
