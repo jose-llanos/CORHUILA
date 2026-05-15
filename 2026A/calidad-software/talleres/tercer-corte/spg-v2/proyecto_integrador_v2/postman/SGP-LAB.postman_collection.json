@@ -1,0 +1,220 @@
+{
+  "info": {
+    "name": "SGP LAB API",
+    "description": "Coleccion de endpoints del backend SGP LAB. Antes de usar, ejecuta el request 'Auth > Login (admin)' que setea automaticamente la variable {{token}}.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080/api", "type": "string" },
+    { "key": "token",   "value": "",                          "type": "string" },
+    { "key": "userId",  "value": "",                          "type": "string" }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ]
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login (admin)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@sgplab.edu.co\",\n  \"password\": \"password\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth","login"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const json = pm.response.json();",
+                  "pm.test('Tiene token', () => pm.expect(json.token).to.be.a('string').and.not.empty);",
+                  "pm.collectionVariables.set('token', json.token);",
+                  "pm.collectionVariables.set('userId', String(json.userId));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login (cliente)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"cliente@sgplab.edu.co\",\n  \"password\": \"cliente123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth","login"] }
+          }
+        },
+        {
+          "name": "Login con password incorrecta (debe dar 401)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"admin@sgplab.edu.co\",\n  \"password\": \"WRONG\"\n}" },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth","login"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Usuarios",
+      "item": [
+        {
+          "name": "Listar (admin)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/usuarios", "host": ["{{baseUrl}}"], "path": ["usuarios"] }
+          }
+        },
+        {
+          "name": "Crear usuario",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Juan Tester\",\n  \"email\": \"juan@x.com\",\n  \"password\": \"password123\",\n  \"rol\": \"CLIENTE\"\n}" },
+            "url": { "raw": "{{baseUrl}}/usuarios", "host": ["{{baseUrl}}"], "path": ["usuarios"] }
+          }
+        },
+        {
+          "name": "Obtener por id",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/usuarios/1", "host": ["{{baseUrl}}"], "path": ["usuarios","1"] }
+          }
+        },
+        {
+          "name": "Actualizar (sin cambiar password)",
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Nombre Actualizado\",\n  \"email\": \"juan@x.com\",\n  \"rol\": \"CLIENTE\"\n}" },
+            "url": { "raw": "{{baseUrl}}/usuarios/2", "host": ["{{baseUrl}}"], "path": ["usuarios","2"] }
+          }
+        },
+        {
+          "name": "Eliminar",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/usuarios/2", "host": ["{{baseUrl}}"], "path": ["usuarios","2"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Equipos",
+      "item": [
+        {
+          "name": "Listar",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/equipos", "host": ["{{baseUrl}}"], "path": ["equipos"] }
+          }
+        },
+        {
+          "name": "Crear",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"codigoInventario\": \"NEW-001\",\n  \"nombre\": \"Equipo Demo\",\n  \"cantidad\": 3\n}" },
+            "url": { "raw": "{{baseUrl}}/equipos", "host": ["{{baseUrl}}"], "path": ["equipos"] }
+          }
+        },
+        {
+          "name": "Obtener por id",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/equipos/1", "host": ["{{baseUrl}}"], "path": ["equipos","1"] }
+          }
+        },
+        {
+          "name": "Actualizar",
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"codigoInventario\": \"MIC-001\",\n  \"nombre\": \"Microscopio Optico v2\",\n  \"cantidad\": 6\n}" },
+            "url": { "raw": "{{baseUrl}}/equipos/1", "host": ["{{baseUrl}}"], "path": ["equipos","1"] }
+          }
+        },
+        {
+          "name": "Eliminar",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/equipos/1", "host": ["{{baseUrl}}"], "path": ["equipos","1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Prestamos",
+      "item": [
+        {
+          "name": "Listar",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/prestamos", "host": ["{{baseUrl}}"], "path": ["prestamos"] }
+          }
+        },
+        {
+          "name": "Crear prestamo",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"fechaInicio\": \"2026-05-15\",\n  \"fechaFin\": \"2026-05-20\",\n  \"equipoId\": 1,\n  \"usuarioId\": 2\n}" },
+            "url": { "raw": "{{baseUrl}}/prestamos", "host": ["{{baseUrl}}"], "path": ["prestamos"] }
+          }
+        },
+        {
+          "name": "Marcar como DEVUELTO",
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"fechaInicio\": \"2026-05-15\",\n  \"fechaFin\": \"2026-05-20\",\n  \"equipoId\": 1,\n  \"usuarioId\": 2,\n  \"estado\": \"DEVUELTO\"\n}" },
+            "url": { "raw": "{{baseUrl}}/prestamos/1", "host": ["{{baseUrl}}"], "path": ["prestamos","1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Penalizaciones",
+      "item": [
+        {
+          "name": "Listar (admin)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/penalizaciones", "host": ["{{baseUrl}}"], "path": ["penalizaciones"] }
+          }
+        },
+        {
+          "name": "Verificar penalizacion activa de un usuario",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/penalizaciones/usuario/{{userId}}/activa", "host": ["{{baseUrl}}"], "path": ["penalizaciones","usuario","{{userId}}","activa"] }
+          }
+        },
+        {
+          "name": "Crear penalizacion",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"motivo\": \"Devolucion tardia\",\n  \"fechaInicio\": \"2026-05-15\",\n  \"fechaFin\": \"2026-05-25\",\n  \"usuarioId\": 2\n}" },
+            "url": { "raw": "{{baseUrl}}/penalizaciones", "host": ["{{baseUrl}}"], "path": ["penalizaciones"] }
+          }
+        }
+      ]
+    }
+  ]
+}

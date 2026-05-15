@@ -1,0 +1,38 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: sgp-backend
+  jpa:
+    open-in-view: false
+
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+
+# Configuracion de JWT (clave por defecto solo para desarrollo,
+# en produccion debe sobreescribirse mediante variable de entorno SGP_JWT_SECRET)
+sgp:
+  security:
+    jwt:
+      secret: ${SGP_JWT_SECRET:JtT8w9bN6dZc4Pq2KrL7xVfYhE5sUm3GnW1aBoCjDiHvXyRgFs0qZkMpOuIeAlTb}
+      expiration-ms: 3600000   # 1 hora
+      issuer: sgp-lab
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+logging:
+  level:
+    root: INFO
+    com.sgplab.backend: DEBUG
+    org.springframework.security: INFO
+    org.hibernate.SQL: INFO

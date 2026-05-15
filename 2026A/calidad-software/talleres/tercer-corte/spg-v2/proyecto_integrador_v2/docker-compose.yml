@@ -1,0 +1,153 @@
+# =====================================================================
+# SGP LAB - Orquestacion completa
+#
+# Servicios:
+#   - postgres    : Base de datos PostgreSQL 15 (puerto 5433 en el host)
+#   - backend     : Spring Boot (puerto 8080)
+#   - frontend    : Vue + Nginx (puerto 5173 en el host -> 80 en el contenedor)
+#   - sonarqube   : Analisis de calidad de codigo (puerto 9000)  [perfil quality]
+#   - jenkins     : CI/CD (puerto 8090)                            [perfil ci]
+#   - jmeter      : Para correr pruebas de carga manualmente       [perfil performance]
+#
+# Comandos:
+#   # Levantar SOLO la app (db + backend + frontend)
+#   docker compose up -d
+#
+#   # Incluir SonarQube
+#   docker compose --profile quality up -d
+#
+#   # Incluir Jenkins
+#   docker compose --profile ci up -d
+#
+#   # Todo (app + sonar + jenkins + jmeter)
+#   docker compose --profile quality --profile ci --profile performance up -d
+#
+#   # Bajar todo y borrar volumenes (CUIDADO: borra datos)
+#   docker compose down -v
+# =====================================================================
+
+services:
+
+  # ------------------------------ BASE DE DATOS ------------------------------
+  postgres:
+    image: postgres:15-alpine
+    container_name: sgp_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password123}
+      POSTGRES_DB: ${POSTGRES_DB:-sgplab_db}
+    ports:
+      - "${POSTGRES_PORT:-5433}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-admin} -d ${POSTGRES_DB:-sgplab_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - sgp_network
+
+  # ------------------------------ BACKEND ------------------------------------
+  backend:
+    build:
+      context: ./sgp-backend
+      dockerfile: Dockerfile
+    image: sgp-lab/backend:1.0.0
+    container_name: sgp_backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILE:-dev}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-sgplab_db}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-admin}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-password123}
+      SGP_JWT_SECRET: ${SGP_JWT_SECRET:-JtT8w9bN6dZc4Pq2KrL7xVfYhE5sUm3GnW1aBoCjDiHvXyRgFs0qZkMpOuIeAlTb}
+      JAVA_OPTS: ${JAVA_OPTS:--Xms256m -Xmx768m}
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    networks:
+      - sgp_network
+
+  # ------------------------------ FRONTEND -----------------------------------
+  frontend:
+    build:
+      context: ./sgp-frontend
+      dockerfile: Dockerfile
+      args:
+        # Apunta a /api: Nginx hace proxy a backend:8080 internamente.
+        VITE_API_BASE_URL: /api
+    image: sgp-lab/frontend:1.0.0
+    container_name: sgp_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "${FRONTEND_PORT:-5173}:80"
+    networks:
+      - sgp_network
+
+  # ------------------------------ SONARQUBE ----------------------------------
+  sonarqube:
+    image: sonarqube:lts-community
+    container_name: sgp_sonarqube
+    restart: unless-stopped
+    profiles: ["quality"]
+    environment:
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
+    ports:
+      - "${SONAR_PORT:-9000}:9000"
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+    networks:
+      - sgp_network
+
+  # ------------------------------ JENKINS ------------------------------------
+  jenkins:
+    image: jenkins/jenkins:lts-jdk17
+    container_name: sgp_jenkins
+    restart: unless-stopped
+    profiles: ["ci"]
+    privileged: true
+    user: root
+    ports:
+      - "${JENKINS_PORT:-8090}:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - sgp_network
+
+  # ------------------------------ JMETER -------------------------------------
+  jmeter:
+    image: justb4/jmeter:5.6
+    container_name: sgp_jmeter
+    profiles: ["performance"]
+    entrypoint: ["tail", "-f", "/dev/null"]
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./sgp-backend/src/test/jmeter:/tests
+    working_dir: /tests
+    networks:
+      - sgp_network
+
+# ---------------------------------------------------------------------------
+
+networks:
+  sgp_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
+  jenkins_home:

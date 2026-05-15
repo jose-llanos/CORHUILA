@@ -1,0 +1,119 @@
+# ================================================================
+# SGP LAB - .gitignore raiz
+# Stack: Java/Spring Boot + Maven + Vue 3 + Vite + Docker
+# ================================================================
+
+# ---------- Backend Java / Maven ----------
+**/target/
+**/*.class
+**/*.jar
+**/*.war
+**/*.ear
+**/*.iml
+
+# Maven Wrapper - los binarios SI deben ir al repo (mvnw, mvnw.cmd, .mvn/wrapper/maven-wrapper.properties)
+# pero el JAR descargado por el wrapper no:
+.mvn/wrapper/maven-wrapper.jar
+
+# Reportes y artefactos generados
+**/site/
+**/jacoco.exec
+**/surefire-reports/
+**/failsafe-reports/
+**/javadoc-idea/
+
+# ---------- Frontend Node / Vue / Vite ----------
+**/node_modules/
+**/dist/
+**/dist-ssr/
+**/.vite/
+**/.cache/
+**/.parcel-cache/
+**/.eslintcache
+**/.stylelintcache
+**/coverage/
+**/.nyc_output/
+*.local
+
+# Logs Node
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ---------- Variables de entorno (secretos) ----------
+.env
+.env.local
+.env.*.local
+**/application-prod.yml
+**/application-prod.properties
+**/application-secrets.yml
+
+# Solo los .env.example deberian quedar en el repo
+!.env.example
+!**/.env.example
+
+# ---------- JMeter (resultados, no los planes) ----------
+**/jmeter/results/
+**/jmeter/reports/
+**/jmeter.log
+*.jtl
+
+# ---------- IDEs ----------
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+.project
+.classpath
+.settings/
+.factorypath
+nbproject/
+nbbuild/
+nbdist/
+.nb-gradle/
+
+# ---------- Sistema operativo ----------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ---------- Docker (artefactos locales) ----------
+**/*.pid
+docker-data/
+postgres_data/
+sonarqube_data/
+jenkins_home/
+
+# ---------- Spring Boot DevTools / temporales ----------
+**/*.log
+**/HELP.md
+spring-shell.log
+**/h2/
+
+# ---------- Cobertura y analisis ----------
+.sonarqube/
+.scannerwork/
+**/coverage-summary.json
+
+# ---------- Tests Selenium / drivers ----------
+**/chromedriver*
+**/geckodriver*
+**/iedriver*
+
+# ---------- Postman (mantener coleccion, ignorar env locales) ----------
+**/postman/*.environment.json
+**/postman/runs/
+
+# ---------- Backups y temporales ----------
+*.bak
+*.tmp
+*.orig
+*~

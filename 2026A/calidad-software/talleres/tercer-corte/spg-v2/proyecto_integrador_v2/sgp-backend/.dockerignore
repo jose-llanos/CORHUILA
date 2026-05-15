@@ -1,0 +1,53 @@
+# Archivos y carpetas que NO se copian al contexto de Docker.
+# Esto acelera dramaticamente el build (cargar 200MB de target/ tarda).
+
+# Build outputs
+target/
+*.class
+*.jar
+*.war
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+.project
+.classpath
+.settings/
+
+# Tests resources que no se necesitan en la imagen
+src/test/jmeter/results/
+src/test/jmeter/reports/
+src/test/jmeter/jmeter.log
+*.jtl
+
+# Maven wrapper jar (el Dockerfile usa la imagen Maven oficial)
+.mvn/wrapper/maven-wrapper.jar
+
+# Logs y temporales
+*.log
+spring-shell.log
+*.bak
+*.tmp
+
+# H2 local
+*.h2.db
+*.mv.db
+*.trace.db
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Docker artefacts
+Dockerfile
+.dockerignore
+
+# Docs no necesarios en la imagen
+HELP.md
+README.md

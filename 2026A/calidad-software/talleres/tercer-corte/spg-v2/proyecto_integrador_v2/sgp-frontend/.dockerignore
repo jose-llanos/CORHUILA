@@ -1,0 +1,39 @@
+# Carpetas pesadas que NO van al contexto Docker
+node_modules/
+dist/
+dist-ssr/
+.vite/
+.cache/
+coverage/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Variables de entorno (los configura el contenedor, no la imagen)
+.env
+.env.local
+.env.*.local
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+*.swp
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Docker (no se incluye a si mismo)
+Dockerfile
+.dockerignore
+
+# Docs
+README.md

@@ -1,0 +1,217 @@
+// =====================================================================
+// Pipeline Jenkins declarativo para SGP LAB
+//
+// Stages:
+//   1. Checkout
+//   2. Build (compilar)
+//   3. Tests unitarios (Surefire + JaCoCo agent)
+//   4. Tests de integracion (Failsafe + H2)
+//   5. JaCoCo Report + verificacion de umbrales (80% lineas / 70% branches)
+//   6. Javadoc
+//   7. SonarQube (opcional, segun variable de entorno SONAR_HOST_URL)
+//   8. JMeter Performance (opcional, requiere agente con jmeter instalado)
+//   9. Empaquetado y archivado de artefactos
+//
+// Variables que puede sobreescribir el job:
+//   - SONAR_HOST_URL : URL del servidor SonarQube
+//   - SONAR_AUTH_TOKEN : token con permiso analyze
+//   - RUN_PERFORMANCE : "true" para correr JMeter
+//   - REMOTE_TEST_HOST : host donde corre el backend para JMeter remoto
+// =====================================================================
+
+pipeline {
+    agent any
+
+    tools {
+        jdk 'jdk17'
+        maven 'maven-3.9'
+    }
+
+    options {
+        timestamps()
+        timeout(time: 30, unit: 'MINUTES')
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        ansiColor('xterm')
+    }
+
+    environment {
+        MAVEN_OPTS         = '-Xmx1024m -XX:+UseG1GC'
+        BACKEND_DIR        = 'sgp-backend'
+        RUN_PERFORMANCE    = "${env.RUN_PERFORMANCE ?: 'false'}"
+        REMOTE_TEST_HOST   = "${env.REMOTE_TEST_HOST ?: 'localhost'}"
+        REMOTE_TEST_PORT   = "${env.REMOTE_TEST_PORT ?: '8080'}"
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+                echo "Branch: ${env.BRANCH_NAME ?: 'unknown'}  -  Build: ${env.BUILD_NUMBER}"
+            }
+        }
+
+        stage('Build') {
+            steps {
+                dir("${env.BACKEND_DIR}") {
+                    sh 'mvn -B -V -DskipTests clean compile'
+                }
+            }
+        }
+
+        stage('Tests unitarios') {
+            steps {
+                dir("${env.BACKEND_DIR}") {
+                    sh 'mvn -B test'
+                }
+            }
+            post {
+                always {
+                    junit allowEmptyResults: true,
+                          testResults: "${env.BACKEND_DIR}/target/surefire-reports/*.xml"
+                }
+            }
+        }
+
+        stage('Tests de integracion') {
+            steps {
+                dir("${env.BACKEND_DIR}") {
+                    sh 'mvn -B verify -DskipUnitTests=false'
+                }
+            }
+            post {
+                always {
+                    junit allowEmptyResults: true,
+                          testResults: "${env.BACKEND_DIR}/target/failsafe-reports/*.xml"
+                }
+            }
+        }
+
+        stage('Cobertura JaCoCo') {
+            steps {
+                dir("${env.BACKEND_DIR}") {
+                    // El check de umbrales corre en la fase verify (jacoco:check)
+                    // Si la cobertura no cumple, el build falla aqui.
+                    echo 'Cobertura validada en stage anterior (verify ejecuta jacoco:check).'
+                }
+            }
+            post {
+                always {
+                    publishHTML(target: [
+                        reportDir: "${env.BACKEND_DIR}/target/site/jacoco",
+                        reportFiles: 'index.html',
+                        reportName: 'JaCoCo Coverage Report',
+                        keepAll: true,
+                        alwaysLinkToLastBuild: true,
+                        allowMissing: true
+                    ])
+                    // Si tienes el plugin "JaCoCo Plugin" instalado, descomenta:
+                    // jacoco(execPattern: "${env.BACKEND_DIR}/target/jacoco.exec")
+                }
+            }
+        }
+
+        stage('Javadoc') {
+            steps {
+                dir("${env.BACKEND_DIR}") {
+                    sh 'mvn -B -DskipTests javadoc:javadoc'
+                }
+            }
+            post {
+                success {
+                    publishHTML(target: [
+                        reportDir: "${env.BACKEND_DIR}/target/reports/apidocs",
+                        reportFiles: 'index.html',
+                        reportName: 'Javadoc',
+                        keepAll: true,
+                        alwaysLinkToLastBuild: true,
+                        allowMissing: true
+                    ])
+                }
+            }
+        }
+
+        stage('SonarQube') {
+            when {
+                expression { return env.SONAR_HOST_URL?.trim() }
+            }
+            steps {
+                dir("${env.BACKEND_DIR}") {
+                    withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_AUTH_TOKEN')]) {
+                        sh """
+                            mvn -B sonar:sonar \
+                              -Dsonar.host.url=${env.SONAR_HOST_URL} \
+                              -Dsonar.login=\${SONAR_AUTH_TOKEN} \
+                              -Dsonar.projectKey=sgp-lab-backend \
+                              -Dsonar.projectName='SGP LAB Backend'
+                        """
+                    }
+                }
+            }
+        }
+
+        stage('JMeter (remoto)') {
+            when {
+                expression { return env.RUN_PERFORMANCE == 'true' }
+            }
+            steps {
+                dir("${env.BACKEND_DIR}/src/test/jmeter") {
+                    sh """
+                        chmod +x run-jmeter.sh
+                        SGP_HOST=${env.REMOTE_TEST_HOST} SGP_PORT=${env.REMOTE_TEST_PORT} ./run-jmeter.sh todo
+                    """
+                }
+            }
+            post {
+                always {
+                    publishHTML(target: [
+                        reportDir: "${env.BACKEND_DIR}/src/test/jmeter/reports/carga-normal",
+                        reportFiles: 'index.html',
+                        reportName: 'JMeter Carga Normal',
+                        keepAll: true,
+                        allowMissing: true
+                    ])
+                    publishHTML(target: [
+                        reportDir: "${env.BACKEND_DIR}/src/test/jmeter/reports/estres",
+                        reportFiles: 'index.html',
+                        reportName: 'JMeter Estres',
+                        keepAll: true,
+                        allowMissing: true
+                    ])
+                    archiveArtifacts artifacts: "${env.BACKEND_DIR}/src/test/jmeter/results/*.csv",
+                                     allowEmptyArchive: true
+                }
+            }
+        }
+
+        stage('Empaquetar') {
+            steps {
+                dir("${env.BACKEND_DIR}") {
+                    sh 'mvn -B -DskipTests package'
+                }
+            }
+            post {
+                success {
+                    archiveArtifacts artifacts: "${env.BACKEND_DIR}/target/*.jar",
+                                     fingerprint: true,
+                                     allowEmptyArchive: true
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Build #${env.BUILD_NUMBER} OK"
+        }
+        failure {
+            echo "Build #${env.BUILD_NUMBER} FAIL - revisa los logs del stage que rompio."
+        }
+        always {
+            cleanWs(deleteDirs: true, notFailBuild: true,
+                    patterns: [
+                        [pattern: '**/target/**', type: 'INCLUDE']
+                    ])
+        }
+    }
+}
