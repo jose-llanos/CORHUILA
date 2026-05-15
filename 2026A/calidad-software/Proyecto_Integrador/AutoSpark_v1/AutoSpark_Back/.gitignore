@@ -1,0 +1,65 @@
+# === COMPILACIÓN ===
+target/
+*.class
+
+# === CREDENCIALES Y CONFIGURACIÓN SENSIBLE (MUY IMPORTANTE) ===
+**/application-prod.properties
+**/application-dev.properties
+**/application-secret.properties
+**/application-local.properties
+**/application-*.secret.properties
+*.secret.properties
+
+# === IDE (IntelliJ IDEA, VS Code, Eclipse) ===
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+*.swp
+*.swo
+*~
+
+# === LOGS Y REPORTES ===
+*.log
+logs/
+surefire-reports/
+test-output/
+*.jmx
+jacoco.exec
+
+# === ARCHIVOS DE PRUEBAS ===
+pruebas-rendimiento/
+*.jmx
+test-output/
+
+# === BASE DE DATOS LOCAL ===
+*.sql
+*.db
+*.sqlite
+*.sqlite3
+
+# === ARCHIVOS TEMPORALES ===
+*.tmp
+*.temp
+*.bak
+*.orig
+*~
+
+# === SISTEMA OPERATIVO ===
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+*.ds_store
+
+# === MAVEN (opcional - algunos lo suben, otros no) ===
+.mvn/wrapper/maven-wrapper.jar
+
+# === ARCHIVOS DE SPRING BOOT DEVTOOLS ===
+spring-boot-devtools.properties
+
+# === ARCHIVOS DE COBERTURA DE CÓDIGO ===
+coverage/
+.nyc_output/
