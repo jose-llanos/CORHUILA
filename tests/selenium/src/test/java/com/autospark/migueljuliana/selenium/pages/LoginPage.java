@@ -34,7 +34,7 @@ public class LoginPage extends BasePage {
     }
 
     public void navigateTo() {
-        driver.get("http://localhost:4200/login");
+        driver.get("http://autospark_frontend:4200/login");
     }
 
     /**

@@ -28,7 +28,7 @@ public class HomePage extends BasePage {
      * Navega a la página principal
      */
     public void navigateTo() {
-        driver.get("http://localhost:4200");
+        driver.get("http://autospark_frontend:4200");
     }
 
     /**

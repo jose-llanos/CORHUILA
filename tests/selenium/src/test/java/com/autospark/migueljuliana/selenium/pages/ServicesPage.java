@@ -21,7 +21,7 @@ public class ServicesPage extends BasePage {
 
     public void navigateTo() {
 
-        driver.get("http://localhost:4200/services");
+        driver.get("http://autospark_frontend:4200/services");
 
         WebDriverWait wait =
                 new WebDriverWait(driver, Duration.ofSeconds(15));
