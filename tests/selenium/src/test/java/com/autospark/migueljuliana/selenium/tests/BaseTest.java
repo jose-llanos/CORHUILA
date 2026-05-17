@@ -22,7 +22,6 @@ public abstract class BaseTest {
 
     @BeforeSuite
     public void setupExtent() {
-
         ExtentSparkReporter sparkReporter =
                 new ExtentSparkReporter("test-output/ExtentReport.html");
 
@@ -40,7 +39,6 @@ public abstract class BaseTest {
     @BeforeMethod
     @Parameters("browser")
     public void setUp(@Optional("chrome") String browser) {
-
         WebDriverManager.chromedriver().setup();
 
         ChromeOptions options = new ChromeOptions();
@@ -62,15 +60,10 @@ public abstract class BaseTest {
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
-
-        driver.get(BASE_URL);
-
-        System.out.println("Página inicial abierta: " + driver.getCurrentUrl());
     }
 
     @AfterMethod
     public void tearDown() {
-
         if (driver != null) {
             driver.quit();
             driver = null;
@@ -79,7 +72,6 @@ public abstract class BaseTest {
 
     @AfterSuite
     public void tearDownExtent() {
-
         if (extent != null) {
             extent.flush();
         }
