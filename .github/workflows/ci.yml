@@ -1,0 +1,27 @@
+name: CI Autospark
+
+on:
+  push:
+    branches:
+      - grupo2
+  pull_request:
+    branches:
+      - grupo2
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Ejecutar pruebas backend
+        working-directory: app
+        run: mvn clean test
