@@ -17,10 +17,12 @@ public abstract class BaseTest {
     protected static ExtentReports extent;
     protected ExtentTest test;
 
-    protected static final String BASE_URL = "http://localhost:4200";
+    // URL del frontend dentro de Docker
+    protected static final String BASE_URL = "http://autospark_frontend:4200";
 
     @BeforeSuite
     public void setupExtent() {
+
         ExtentSparkReporter sparkReporter =
                 new ExtentSparkReporter("test-output/ExtentReport.html");
 
@@ -29,20 +31,24 @@ public abstract class BaseTest {
 
         extent = new ExtentReports();
         extent.attachReporter(sparkReporter);
+
         extent.setSystemInfo("OS", System.getProperty("os.name"));
         extent.setSystemInfo("Java Version", System.getProperty("java.version"));
-        extent.setSystemInfo("Browser", "Google Chrome Headless");
+        extent.setSystemInfo("Browser", "Chromium Headless");
     }
 
     @BeforeMethod
     @Parameters("browser")
     public void setUp(@Optional("chrome") String browser) {
+
         WebDriverManager.chromedriver().setup();
 
         ChromeOptions options = new ChromeOptions();
 
-        options.setBinary("/usr/bin/google-chrome");
+        // Chromium instalado en Jenkins
+        options.setBinary("/usr/bin/chromium");
 
+        // Configuración headless para Docker/Jenkins
         options.addArguments("--headless=new");
         options.addArguments("--remote-allow-origins=*");
         options.addArguments("--disable-dev-shm-usage");
@@ -64,6 +70,7 @@ public abstract class BaseTest {
 
     @AfterMethod
     public void tearDown() {
+
         if (driver != null) {
             driver.quit();
             driver = null;
@@ -72,6 +79,7 @@ public abstract class BaseTest {
 
     @AfterSuite
     public void tearDownExtent() {
+
         if (extent != null) {
             extent.flush();
         }
