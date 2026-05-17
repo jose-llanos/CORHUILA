@@ -92,26 +92,16 @@ public class HomePage extends BasePage {
      */
     public ReservationPage goToReservations() {
 
+        driver.get("http://autospark_frontend:4200/reserves");
+
         WebDriverWait wait =
-                new WebDriverWait(driver, Duration.ofSeconds(10));
+                new WebDriverWait(driver, Duration.ofSeconds(20));
 
-        WebElement navigationMenuButton = wait.until(
-                ExpectedConditions.elementToBeClickable(
-                        By.cssSelector(
-                                ".dropdown-toggle, .menu-btn, .profile-btn"
-                        )
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        By.name("vehicleType")
                 )
         );
-
-        navigationMenuButton.click();
-
-        WebElement reservarLink = wait.until(
-                ExpectedConditions.elementToBeClickable(
-                        By.xpath("//a[contains(text(), 'Reservar')]")
-                )
-        );
-
-        reservarLink.click();
 
         return new ReservationPage(driver);
     }
@@ -149,6 +139,4 @@ public class HomePage extends BasePage {
             System.out.println("No había modal visible");
         }
     }
-
-    
 }
