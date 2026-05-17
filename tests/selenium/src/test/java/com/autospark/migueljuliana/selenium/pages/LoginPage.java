@@ -11,7 +11,7 @@ import java.time.Duration;
 
 public class LoginPage extends BasePage {
 
-    private static final String LOGIN_URL = "http://autospark_frontend:4200/login";
+    private static final String LOGIN_URL = "http://host.docker.internal:4200/login";
 
     @FindBy(name = "email")
     private WebElement emailInput;

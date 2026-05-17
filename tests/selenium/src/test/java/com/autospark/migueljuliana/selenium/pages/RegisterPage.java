@@ -43,7 +43,7 @@ public class RegisterPage extends BasePage {
     }
 
     public void navigateTo() {
-        driver.get("http://autospark_frontend:4200/register");
+        driver.get("http://host.docker.internal:4200/register");
     }
 
     public void register(String fullName, String email, String password,

@@ -28,7 +28,7 @@ public class HomePage extends BasePage {
      * Navega a la página principal
      */
     public void navigateTo() {
-        driver.get("http://autospark_frontend:4200");
+        driver.get("http://host.docker.internal:4200");
     }
 
     /**
@@ -82,7 +82,7 @@ public class HomePage extends BasePage {
      */
     public RegisterPage goToRegister() {
 
-        driver.get("http://autospark_frontend:4200/register");
+        driver.get("http://host.docker.internal:4200/register");
 
         return new RegisterPage(driver);
     }
@@ -92,7 +92,7 @@ public class HomePage extends BasePage {
      */
     public ReservationPage goToReservations() {
 
-        driver.get("http://autospark_frontend:4200/reserves");
+        driver.get("http://host.docker.internal:4200/reserves");
 
         WebDriverWait wait =
                 new WebDriverWait(driver, Duration.ofSeconds(20));

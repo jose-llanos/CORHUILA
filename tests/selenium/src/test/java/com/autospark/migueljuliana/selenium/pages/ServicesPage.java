@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ServicesPage extends BasePage {
 
-    private static final String SERVICES_URL = "http://autospark_frontend:4200/services";
+    private static final String SERVICES_URL = "http://host.docker.internal:4200/services";
 
     private final By servicesGrid = By.cssSelector(".servicios-grid");
     private final By serviceCards = By.cssSelector(".servicios-grid .servicio");
