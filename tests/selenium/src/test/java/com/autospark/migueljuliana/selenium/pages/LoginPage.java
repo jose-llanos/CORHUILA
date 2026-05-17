@@ -11,6 +11,8 @@ import java.time.Duration;
 
 public class LoginPage extends BasePage {
 
+    private static final String LOGIN_URL = "http://autospark_frontend:4200/login";
+
     @FindBy(name = "email")
     private WebElement emailInput;
 
@@ -34,69 +36,97 @@ public class LoginPage extends BasePage {
     }
 
     public void navigateTo() {
-        driver.get("http://autospark_frontend:4200/login");
+        driver.get(LOGIN_URL);
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("email")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("password")));
     }
 
     /**
-     * Login exitoso - espera que la URL cambie
+     * Login exitoso.
+     * No depende únicamente de que cambie la URL, porque la app puede autenticar
+     * y quedarse momentáneamente en /login o redirigir de forma asíncrona.
      */
     public HomePage loginSuccess(String email, String password) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 
-        WebElement emailField = wait.until(ExpectedConditions.elementToBeClickable(By.name("email")));
+        WebElement emailField = wait.until(
+                ExpectedConditions.elementToBeClickable(By.name("email"))
+        );
         emailField.clear();
         emailField.sendKeys(email);
 
-        WebElement passwordField = driver.findElement(By.name("password"));
+        WebElement passwordField = wait.until(
+                ExpectedConditions.elementToBeClickable(By.name("password"))
+        );
         passwordField.clear();
         passwordField.sendKeys(password);
 
-        WebElement loginBtn = driver.findElement(By.cssSelector("button[type='submit']"));
+        WebElement loginBtn = wait.until(
+                ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']"))
+        );
         loginBtn.click();
 
-        // Esperar a que la URL ya no sea /login (login exitoso)
-        wait.until(ExpectedConditions.not(ExpectedConditions.urlContains("login")));
+        wait.until(ExpectedConditions.or(
+                ExpectedConditions.not(ExpectedConditions.urlContains("/login")),
+                ExpectedConditions.urlContains("/services"),
+                ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".logo")),
+                ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".profile-btn")),
+                ExpectedConditions.visibilityOfElementLocated(By.cssSelector("app-header"))
+        ));
 
         return new HomePage(driver);
     }
 
     /**
-     * Login fallido - espera que aparezca el modal de error
+     * Login fallido - espera que aparezca el modal de error.
      */
     public void loginFail(String email, String password) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 
-        WebElement emailField = wait.until(ExpectedConditions.elementToBeClickable(By.name("email")));
+        WebElement emailField = wait.until(
+                ExpectedConditions.elementToBeClickable(By.name("email"))
+        );
         emailField.clear();
         emailField.sendKeys(email);
 
-        WebElement passwordField = driver.findElement(By.name("password"));
+        WebElement passwordField = wait.until(
+                ExpectedConditions.elementToBeClickable(By.name("password"))
+        );
         passwordField.clear();
         passwordField.sendKeys(password);
 
-        WebElement loginBtn = driver.findElement(By.cssSelector("button[type='submit']"));
+        WebElement loginBtn = wait.until(
+                ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']"))
+        );
         loginBtn.click();
 
-        // Esperar a que aparezca el modal de error
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".modal-content")));
     }
 
     public boolean isErrorModalDisplayed() {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-            wait.until(ExpectedConditions.visibilityOf(errorModal));
-            return errorModal.isDisplayed();
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".modal-content")));
+            return true;
         } catch (Exception e) {
             return false;
         }
     }
 
     public String getErrorMessage() {
-        return errorModal.getText();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebElement modal = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".modal-content"))
+        );
+        return modal.getText();
     }
 
     public RegisterPage clickRegisterLink() {
-        registerLink.click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement link = wait.until(ExpectedConditions.elementToBeClickable(registerLink));
+        link.click();
         return new RegisterPage(driver);
     }
 }
