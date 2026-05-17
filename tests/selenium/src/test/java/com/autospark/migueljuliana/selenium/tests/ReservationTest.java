@@ -56,6 +56,8 @@ public class ReservationTest extends BaseTest {
                 )
         );
 
+        homePage.closeModalIfPresent();
+
         ReservationPage reservationPage =
                 homePage.goToReservations();
 
@@ -161,6 +163,8 @@ public class ReservationTest extends BaseTest {
                 )
         );
 
+        homePage.closeModalIfPresent();
+        
         ReservationPage reservationPage =
                 homePage.goToReservations();
 

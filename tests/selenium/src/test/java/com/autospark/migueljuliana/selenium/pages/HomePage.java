@@ -115,4 +115,40 @@ public class HomePage extends BasePage {
 
         return new ReservationPage(driver);
     }
+
+    /**
+     * Cierra modal si está visible
+     */
+    public void closeModalIfPresent() {
+
+        try {
+
+            WebDriverWait wait =
+                    new WebDriverWait(driver, Duration.ofSeconds(5));
+
+            WebElement closeButton = wait.until(
+                    ExpectedConditions.elementToBeClickable(
+                            By.cssSelector(
+                                    ".modal .btn-close, .modal button"
+                            )
+                    )
+            );
+
+            closeButton.click();
+
+            wait.until(
+                    ExpectedConditions.invisibilityOfElementLocated(
+                            By.cssSelector(".modal")
+                    )
+            );
+
+            System.out.println("Modal cerrado correctamente");
+
+        } catch (Exception e) {
+
+            System.out.println("No había modal visible");
+        }
+    }
+
+    
 }

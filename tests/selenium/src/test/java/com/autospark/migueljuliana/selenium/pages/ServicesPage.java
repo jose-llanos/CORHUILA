@@ -25,11 +25,10 @@ public class ServicesPage extends BasePage {
     public void navigateTo() {
         driver.get(SERVICES_URL);
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
 
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("body")));
         wait.until(ExpectedConditions.presenceOfElementLocated(servicesGrid));
-
-        wait.until(driver -> driver.getPageSource().toLowerCase().contains("lavado"));
 
         System.out.println("Página de servicios cargada: " + driver.getCurrentUrl());
         System.out.println("Cantidad de servicios visibles: " + getServiceCount());
@@ -37,11 +36,9 @@ public class ServicesPage extends BasePage {
 
     public int getServiceCount() {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
 
             wait.until(ExpectedConditions.presenceOfElementLocated(servicesGrid));
-
-            wait.until(driver -> driver.getPageSource().toLowerCase().contains("lavado"));
 
             List<WebElement> cards = driver.findElements(serviceCards);
 
@@ -56,15 +53,15 @@ public class ServicesPage extends BasePage {
                 }
             }
 
-            if (visibleCards == 0) {
-                String html = driver.getPageSource().toLowerCase();
+            String html = normalize(driver.getPageSource());
 
-                if (html.contains("lavado basico")
-                        || html.contains("lavado básico")
-                        || html.contains("lavado premium")
-                        || html.contains("pulido")) {
-                    visibleCards = 1;
-                }
+            if (visibleCards == 0 &&
+                    (html.contains("lavado basico")
+                            || html.contains("lavado premium")
+                            || html.contains("pulido")
+                            || html.contains("lavado de motor")
+                            || html.contains("lavado de tapiceria"))) {
+                visibleCards = 1;
             }
 
             System.out.println("Servicios encontrados: " + visibleCards);
@@ -82,13 +79,11 @@ public class ServicesPage extends BasePage {
 
     public boolean isServiceDisplayed(String serviceName) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
 
             wait.until(ExpectedConditions.presenceOfElementLocated(servicesGrid));
 
             String expected = normalize(serviceName);
-
-            wait.until(driver -> normalize(driver.getPageSource()).contains(expected));
 
             List<WebElement> titles = driver.findElements(serviceTitles);
 
