@@ -57,7 +57,9 @@ services:
       - autospark_sonarqube_logs:/opt/sonarqube/logs
 
   jenkins:
-    image: jenkins/jenkins:lts
+    build:
+      context: .
+      dockerfile: Dockerfile.jenkins
     container_name: autospark_jenkins
     restart: unless-stopped
     user: root
