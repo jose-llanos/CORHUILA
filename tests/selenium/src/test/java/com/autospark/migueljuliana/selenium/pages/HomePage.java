@@ -82,7 +82,7 @@ public class HomePage extends BasePage {
      */
     public RegisterPage goToRegister() {
 
-        driver.get("http://localhost:4200/register");
+        driver.get("http://autospark_frontend:4200/register");
 
         return new RegisterPage(driver);
     }
