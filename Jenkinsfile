@@ -84,6 +84,26 @@ pipeline {
             }
         }
 
+
+        stage('Levantar aplicacion') {
+            steps {
+                dir("${PROJECT_DIR}/docker") {
+                    sh '''
+                        docker compose up -d --build mysql backend frontend sonarqube
+
+                        echo "Esperando frontend..."
+                        sleep 20
+
+                        docker ps
+
+                        curl -I http://autospark_frontend:4200 || true
+                    '''
+                }
+            }
+        }
+
+
+
         stage('Pruebas funcionales Selenium') {
             steps {
                 dir("${PROJECT_DIR}/tests/selenium") {
