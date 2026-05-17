@@ -52,10 +52,6 @@ public class ReservationPage extends BasePage {
         );
     }
 
-    /**
-     * Crear reserva con fecha y hora personalizadas
-     * Ahora maneja fecha y hora por separado como en el frontend
-     */
     public void createReservationWithDateAndTime(String vehicleType,
                                                  String licensePlate,
                                                  String serviceType,
@@ -63,7 +59,7 @@ public class ReservationPage extends BasePage {
                                                  String date,
                                                  String hour) {
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 
         wait.until(
                 ExpectedConditions.presenceOfElementLocated(
@@ -71,7 +67,6 @@ public class ReservationPage extends BasePage {
                 )
         );
 
-        // Seleccionar tipo de vehículo
         Select vehicleSelect =
                 new Select(driver.findElement(By.name("vehicleType")));
 
@@ -82,16 +77,14 @@ public class ReservationPage extends BasePage {
                         + vehicleSelect.getFirstSelectedOption().getText()
         );
 
-        // Ingresar placa
         WebElement licensePlateElement =
                 driver.findElement(By.name("licensePlate"));
 
         licensePlateElement.clear();
         licensePlateElement.sendKeys(licensePlate);
 
-        // Seleccionar tipo de servicio
         WebDriverWait longWait =
-                new WebDriverWait(driver, Duration.ofSeconds(15));
+                new WebDriverWait(driver, Duration.ofSeconds(30));
 
         longWait.until(
                 ExpectedConditions.presenceOfElementLocated(
@@ -99,21 +92,29 @@ public class ReservationPage extends BasePage {
                 )
         );
 
+        longWait.until(driver -> {
+            Select select = new Select(driver.findElement(By.name("serviceType")));
+            return select.getOptions().size() > 1;
+        });
+
         Select serviceSelect =
                 new Select(driver.findElement(By.name("serviceType")));
+
+        System.out.println("Opciones de servicio disponibles:");
+        for (WebElement option : serviceSelect.getOptions()) {
+            System.out.println(option.getText());
+        }
 
         serviceSelect.selectByVisibleText(serviceType);
 
         System.out.println("Servicio seleccionado: " + serviceType);
 
-        // Ingresar valor
         WebElement saleValueInput =
                 driver.findElement(By.name("value"));
 
         saleValueInput.clear();
         saleValueInput.sendKeys(value);
 
-        // Ingresar fecha (formato YYYY-MM-DD)
         WebElement reservationDateInput =
                 driver.findElement(By.name("reservationDate"));
 
@@ -122,17 +123,14 @@ public class ReservationPage extends BasePage {
 
         System.out.println("Fecha seleccionada: " + date);
 
-        // 👇 CORREGIDO: Usar un nombre diferente para la variable local
-        // Seleccionar hora (del dropdown)
         WebElement reservationTimeElement =
                 driver.findElement(By.name("reservationTime"));
 
-        Select horaSelect = new Select(reservationTimeElement);  // Renombrado a 'horaSelect'
+        Select horaSelect = new Select(reservationTimeElement);
         horaSelect.selectByValue(hour);
 
         System.out.println("Hora seleccionada: " + hour);
 
-        // Hacer clic en el botón de submit
         WebElement reservationSubmitButton =
                 driver.findElement(By.cssSelector("button[type='submit']"));
 
@@ -190,26 +188,26 @@ public class ReservationPage extends BasePage {
         }
     }
 
-        public void closeModal() {
+    public void closeModal() {
 
-                try {
+        try {
 
-                        WebDriverWait wait =
-                                new WebDriverWait(driver, Duration.ofSeconds(10));
+            WebDriverWait wait =
+                    new WebDriverWait(driver, Duration.ofSeconds(10));
 
-                if (!driver.findElements(By.cssSelector(".modal")).isEmpty()) {
+            if (!driver.findElements(By.cssSelector(".modal")).isEmpty()) {
 
-                        WebElement closeButton =
-                                wait.until(
-                                        ExpectedConditions.elementToBeClickable(
-                                                By.cssSelector(".modal .btn-close, .modal button")
-                                        )
-                                );
-
-                        ((JavascriptExecutor) driver).executeScript(
-                                "arguments[0].click();",
-                                closeButton
+                WebElement closeButton =
+                        wait.until(
+                                ExpectedConditions.elementToBeClickable(
+                                        By.cssSelector(".modal .btn-close, .modal button")
+                                )
                         );
+
+                ((JavascriptExecutor) driver).executeScript(
+                        "arguments[0].click();",
+                        closeButton
+                );
 
                 wait.until(
                         ExpectedConditions.invisibilityOfElementLocated(
@@ -218,17 +216,14 @@ public class ReservationPage extends BasePage {
                 );
 
                 System.out.println("Modal cerrado correctamente");
-        }
+            }
 
         } catch (Exception e) {
 
-                System.out.println(
-                        "Modal ya estaba cerrado o no se pudo cerrar: "
-                                + e.getMessage()
-                );
-                }
+            System.out.println(
+                    "Modal ya estaba cerrado o no se pudo cerrar: "
+                            + e.getMessage()
+            );
         }
+    }
 }
-
-
-

@@ -15,8 +15,8 @@ public class ServicesPage extends BasePage {
     private static final String SERVICES_URL = "http://autospark_frontend:4200/services";
 
     private final By servicesGrid = By.cssSelector(".servicios-grid");
-    private final By serviceCards = By.cssSelector("[class*='servicio']");
-    private final By serviceTitles = By.cssSelector("[class*='servicio'] h3");
+    private final By serviceCards = By.cssSelector(".servicios-grid .servicio");
+    private final By serviceTitles = By.cssSelector(".servicios-grid .servicio h3");
 
     public ServicesPage(WebDriver driver) {
         super(driver);
@@ -30,6 +30,11 @@ public class ServicesPage extends BasePage {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("body")));
         wait.until(ExpectedConditions.presenceOfElementLocated(servicesGrid));
 
+        wait.until(driver -> driver.findElements(serviceCards).size() > 0
+                || normalize(driver.getPageSource()).contains("lavado basico")
+                || normalize(driver.getPageSource()).contains("lavado premium")
+                || normalize(driver.getPageSource()).contains("pulido"));
+
         System.out.println("Página de servicios cargada: " + driver.getCurrentUrl());
         System.out.println("Cantidad de servicios visibles: " + getServiceCount());
     }
@@ -39,6 +44,11 @@ public class ServicesPage extends BasePage {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
 
             wait.until(ExpectedConditions.presenceOfElementLocated(servicesGrid));
+
+            wait.until(driver -> driver.findElements(serviceCards).size() > 0
+                    || normalize(driver.getPageSource()).contains("lavado basico")
+                    || normalize(driver.getPageSource()).contains("lavado premium")
+                    || normalize(driver.getPageSource()).contains("pulido"));
 
             List<WebElement> cards = driver.findElements(serviceCards);
 
@@ -84,6 +94,9 @@ public class ServicesPage extends BasePage {
             wait.until(ExpectedConditions.presenceOfElementLocated(servicesGrid));
 
             String expected = normalize(serviceName);
+
+            wait.until(driver -> driver.findElements(serviceTitles).size() > 0
+                    || normalize(driver.getPageSource()).contains(expected));
 
             List<WebElement> titles = driver.findElements(serviceTitles);
 
