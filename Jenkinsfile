@@ -6,7 +6,7 @@ pipeline {
         HOST_PROJECT_DIR = '/home/juliana/automatizacion-pruebas'
         BACKEND_DIR = '/workspace/app'
         FRONTEND_DIR = '/workspace/frontend'
-        JMETER_TEST = '/tests/test-plan.jmx'
+        JMETER_TEST = '/tests/AutoSpark_LoadTest.jmx'
         SONAR_HOST_URL = 'http://autospark_sonarqube:9000'
     }
 
@@ -109,7 +109,7 @@ pipeline {
                       -v $HOST_PROJECT_DIR/reports/jmeter:/reports \
                       justb4/jmeter \
                       -n \
-                      -t /tests/test-plan.jmx \
+                      -t $JMETER_TEST \
                       -l /reports/resultados.jtl \
                       -e \
                       -o /reports/html
