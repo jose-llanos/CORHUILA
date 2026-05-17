@@ -1,0 +1,149 @@
+# =========================
+# JAVA / MAVEN
+# =========================
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+.mvn/
+.mvn/wrapper/maven-wrapper.jar
+
+# =========================
+# SPRING BOOT
+# =========================
+application-secret.properties
+application-local.properties
+application-dev.properties
+bootstrap.properties
+
+# =========================
+# ENV / CREDENTIALS
+# =========================
+.env
+.env.*
+*.env
+
+secrets/
+secret/
+credentials/
+private/
+
+*.pem
+*.key
+*.p12
+*.jks
+*.keystore
+*.crt
+*.csr
+
+id_rsa
+id_rsa.pub
+
+# Tokens / configs
+token.txt
+tokens.txt
+apikeys.txt
+config-secret.yml
+config-secret.yaml
+
+# =========================
+# IDEs
+# =========================
+.idea/
+.vscode/
+*.iml
+.project
+.classpath
+.settings/
+
+# =========================
+# LOGS
+# =========================
+logs/
+*.log
+nohup.out
+
+# =========================
+# DOCKER
+# =========================
+docker-data/
+postgres-data/
+mysql-data/
+mongo-data/
+
+volumes/
+data/
+
+docker-compose.override.yml
+
+# Jenkins
+jenkins_home/
+.jenkins/
+
+# SonarQube cache local
+.sonar/
+
+# =========================
+# TESTING
+# =========================
+
+# Selenium
+webdriver/
+drivers/
+
+# JMeter temporales
+*.jmx.log
+
+# JaCoCo temporales
+jacoco.exec
+
+# Maven test reports temporales
+surefire-reports/
+failsafe-reports/
+
+# =========================
+# REPORTS
+# =========================
+
+# SOLO temporales/cache
+reports/tmp/
+reports/cache/
+
+# Mantener evidencia del proyecto
+!reports/
+
+# =========================
+# NODE / ANGULAR
+# =========================
+node_modules/
+dist/
+build/
+.angular/
+.cache/
+coverage/
+
+# =========================
+# FRONTEND ENV
+# =========================
+src/environments/environment.local.ts
+
+# =========================
+# CI/CD
+# =========================
+.github/*.secret
+.github/*.env
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# TEMP
+# =========================
+tmp/
+temp/
+*.tmp

@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.autospark.migueljuliana.unitarias.services.SaleServiceImplTest
+-------------------------------------------------------------------------------
+Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.296 s -- in com.autospark.migueljuliana.unitarias.services.SaleServiceImplTest

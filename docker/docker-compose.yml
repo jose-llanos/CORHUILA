@@ -1,0 +1,80 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: autospark_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: autospark
+    ports:
+      - "3307:3306"
+    volumes:
+      - autospark_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ../app
+    container_name: autospark_backend
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/autospark?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Bogota
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: ../frontend
+    container_name: autospark_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "4200:4200"
+
+  sonarqube:
+    image: sonarqube:community
+    container_name: autospark_sonarqube
+    restart: unless-stopped
+    environment:
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
+    ports:
+      - "9000:9000"
+    volumes:
+      - autospark_sonarqube_data:/opt/sonarqube/data
+      - autospark_sonarqube_extensions:/opt/sonarqube/extensions
+      - autospark_sonarqube_logs:/opt/sonarqube/logs
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: autospark_jenkins
+    restart: unless-stopped
+    user: root
+    ports:
+      - "8081:8080"
+      - "50000:50000"
+    volumes:
+      - autospark_jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ..:/workspace
+    depends_on:
+      - backend
+      - frontend
+      - sonarqube
+
+volumes:
+  autospark_mysql_data:
+  autospark_sonarqube_data:
+  autospark_sonarqube_extensions:
+  autospark_sonarqube_logs:
+  autospark_jenkins_home:
