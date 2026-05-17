@@ -84,12 +84,11 @@ pipeline {
             }
         }
 
-
         stage('Levantar aplicacion') {
             steps {
                 dir("${PROJECT_DIR}/docker") {
                     sh '''
-                        docker compose up -d --build mysql backend frontend sonarqube
+                        docker-compose up -d --build mysql backend frontend sonarqube
 
                         echo "Esperando frontend..."
                         sleep 20
@@ -101,8 +100,6 @@ pipeline {
                 }
             }
         }
-
-
 
         stage('Pruebas funcionales Selenium') {
             steps {
