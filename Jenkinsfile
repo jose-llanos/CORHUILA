@@ -47,6 +47,26 @@ pipeline {
                     WHERE NOT EXISTS (
                         SELECT 1 FROM usuarios WHERE email = 'juan@test.com'
                     );
+
+                    INSERT INTO services (name_service, descripcion, precio_service, estado_service, url_img)
+                    SELECT 'Lavado Basico', 'Lavado exterior e interior basico', 25000.00, true, 'https://media.istockphoto.com/id/451803261/es/foto/el-lavado-de.jpg?s=612x612&w=0&k=20&c=eZG1tYFx-xrYi81oAq7mVSps6aKE--A6qWI7f9XMNtU='
+                    WHERE NOT EXISTS (SELECT 1 FROM services WHERE name_service = 'Lavado Basico');
+
+                    INSERT INTO services (name_service, descripcion, precio_service, estado_service, url_img)
+                    SELECT 'Lavado Premium', 'Lavado completo con cera y aspirado', 45000.00, true, 'https://static.retail.autofact.cl/blog/c_img_740x370.pu9xe7m8lkiqrxxr.jpg'
+                    WHERE NOT EXISTS (SELECT 1 FROM services WHERE name_service = 'Lavado Premium');
+
+                    INSERT INTO services (name_service, descripcion, precio_service, estado_service, url_img)
+                    SELECT 'Pulido', 'Pulido de carrocería profesional', 80000.00, true, 'https://img.freepik.com/foto-gratis/estacion-lavado-autos_1303-22307.jpg?semt=ais_hybrid&w=740'
+                    WHERE NOT EXISTS (SELECT 1 FROM services WHERE name_service = 'Pulido');
+
+                    INSERT INTO services (name_service, descripcion, precio_service, estado_service, url_img)
+                    SELECT 'Lavado de Motor', 'Limpieza profunda del motor', 35000.00, true, 'https://media.istockphoto.com/id/1135252747/es/foto/detalles-del-coche-motor-de-limpieza-de-lavado-de-coches-limpieza-del-coche-con-vapor-caliente.jpg?s=612x612&w=0&k=20&c=t4--WADIUPFV6pX9b0KnP7CF3CzlZ_AlNQg28ahMOP0='
+                    WHERE NOT EXISTS (SELECT 1 FROM services WHERE name_service = 'Lavado de Motor');
+
+                    INSERT INTO services (name_service, descripcion, precio_service, estado_service, url_img)
+                    SELECT 'Lavado de Tapiceria', 'Limpieza profunda de asientos y alfombras', 60000.00, true, 'https://media.istockphoto.com/id/481395168/es/foto/hombre-hoovering-asiento-de-coche-del-autom%C3%B3vil-de-limpieza.jpg?s=612x612&w=0&k=20&c=CtITYKyO4rNvbwPbS1NLIJwLVsCe7ZVjPSmYxUlk8Cs='
+                    WHERE NOT EXISTS (SELECT 1 FROM services WHERE name_service = 'Lavado de Tapiceria');
                     "
                 '''
             }
@@ -155,7 +175,7 @@ pipeline {
         }
 
         failure {
-            echo 'El pipeline fallo. Revisar la etapa marcada en rojo.'
+            echo 'El pipeline fallo.'
         }
     }
 }
