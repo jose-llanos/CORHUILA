@@ -190,18 +190,45 @@ public class ReservationPage extends BasePage {
         }
     }
 
-    public void closeModal() {
+        public void closeModal() {
 
-        try {
+                try {
 
-            WebElement closeButton =
-                    driver.findElement(By.cssSelector(".modal button"));
+                        WebDriverWait wait =
+                                new WebDriverWait(driver, Duration.ofSeconds(10));
 
-            closeButton.click();
+                if (!driver.findElements(By.cssSelector(".modal")).isEmpty()) {
+
+                        WebElement closeButton =
+                                wait.until(
+                                        ExpectedConditions.elementToBeClickable(
+                                                By.cssSelector(".modal .btn-close, .modal button")
+                                        )
+                                );
+
+                        ((JavascriptExecutor) driver).executeScript(
+                                "arguments[0].click();",
+                                closeButton
+                        );
+
+                wait.until(
+                        ExpectedConditions.invisibilityOfElementLocated(
+                                By.cssSelector(".modal")
+                        )
+                );
+
+                System.out.println("Modal cerrado correctamente");
+        }
 
         } catch (Exception e) {
 
-            System.out.println("Modal ya estaba cerrado");
+                System.out.println(
+                        "Modal ya estaba cerrado o no se pudo cerrar: "
+                                + e.getMessage()
+                );
+                }
         }
-    }
 }
+
+
+

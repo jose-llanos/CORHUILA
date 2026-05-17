@@ -19,37 +19,70 @@ import java.time.format.DateTimeFormatter;
 public class ReservationTest extends BaseTest {
 
     /**
-     * TC-FUNC-005: Crear reserva exitosamente (requiere login)
+     * TC-FUNC-005: Crear reserva exitosamente
      */
     @Test(description = "TC-FUNC-005: Crear reserva exitosamente")
     public void testCreateReservation() {
+
         test = extent.createTest("Crear reserva exitosamente");
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.navigateTo();
+
         test.log(Status.INFO, "Página de login cargada");
 
-        HomePage homePage = loginPage.loginSuccess("juan@test.com", "Password123");
+        HomePage homePage =
+                loginPage.loginSuccess(
+                        "juan@test.com",
+                        "Password123"
+                );
+
         test.log(Status.INFO, "Login completado");
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+        WebDriverWait wait =
+                new WebDriverWait(driver, Duration.ofSeconds(30));
 
-        wait.until(ExpectedConditions.or(
-                ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".logo")),
-                ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".profile-btn")),
-                ExpectedConditions.visibilityOfElementLocated(By.cssSelector("app-header"))
-        ));
+        wait.until(
+                ExpectedConditions.or(
+                        ExpectedConditions.visibilityOfElementLocated(
+                                By.cssSelector(".logo")
+                        ),
+                        ExpectedConditions.visibilityOfElementLocated(
+                                By.cssSelector(".profile-btn")
+                        ),
+                        ExpectedConditions.visibilityOfElementLocated(
+                                By.cssSelector("app-header")
+                        )
+                )
+        );
 
-        ReservationPage reservationPage = homePage.goToReservations();
+        ReservationPage reservationPage =
+                homePage.goToReservations();
+
         test.log(Status.INFO, "Página de reservas cargada");
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("vehicleType")));
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        By.name("vehicleType")
+                )
+        );
 
-        LocalDate futureDate = LocalDate.now().plusDays(3);
-        String fecha = futureDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+        LocalDate futureDate =
+                LocalDate.now().plusDays(3);
+
+        String fecha =
+                futureDate.format(
+                        DateTimeFormatter.ISO_LOCAL_DATE
+                );
+
         String hora = "15:00:00";
 
-        System.out.println("Usando fecha: " + fecha + " y hora: " + hora);
+        System.out.println(
+                "Usando fecha: "
+                        + fecha
+                        + " y hora: "
+                        + hora
+        );
 
         reservationPage.createReservationWithDateAndTime(
                 "CARRO",
@@ -60,16 +93,30 @@ public class ReservationTest extends BaseTest {
                 hora
         );
 
-        test.log(Status.INFO, "Formulario de reserva completado con fecha: " + fecha + " y hora: " + hora);
+        test.log(
+                Status.INFO,
+                "Formulario de reserva completado con fecha: "
+                        + fecha
+                        + " y hora: "
+                        + hora
+        );
 
-        wait.until(driver -> reservationPage.isSuccessModalDisplayed());
+        wait.until(
+                driver ->
+                        reservationPage.isSuccessModalDisplayed()
+        );
 
         Assert.assertTrue(
                 reservationPage.isSuccessModalDisplayed(),
                 "El modal de éxito debería mostrarse"
         );
 
-        test.log(Status.PASS, "Reserva creada exitosamente");
+        reservationPage.closeModal();
+
+        test.log(
+                Status.PASS,
+                "Reserva creada exitosamente"
+        );
     }
 
     /**
@@ -77,33 +124,70 @@ public class ReservationTest extends BaseTest {
      */
     @Test(description = "TC-FUNC-006: Crear reserva con fecha específica")
     public void testCreateReservationWithSpecificDate() {
-        test = extent.createTest("Crear reserva con fecha específica");
 
-        LoginPage loginPage = new LoginPage(driver);
+        test = extent.createTest(
+                "Crear reserva con fecha específica"
+        );
+
+        LoginPage loginPage =
+                new LoginPage(driver);
+
         loginPage.navigateTo();
+
         test.log(Status.INFO, "Página de login cargada");
 
-        HomePage homePage = loginPage.loginSuccess("juan@test.com", "Password123");
+        HomePage homePage =
+                loginPage.loginSuccess(
+                        "juan@test.com",
+                        "Password123"
+                );
+
         test.log(Status.INFO, "Login completado");
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+        WebDriverWait wait =
+                new WebDriverWait(driver, Duration.ofSeconds(30));
 
-        wait.until(ExpectedConditions.or(
-                ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".logo")),
-                ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".profile-btn")),
-                ExpectedConditions.visibilityOfElementLocated(By.cssSelector("app-header"))
-        ));
+        wait.until(
+                ExpectedConditions.or(
+                        ExpectedConditions.visibilityOfElementLocated(
+                                By.cssSelector(".logo")
+                        ),
+                        ExpectedConditions.visibilityOfElementLocated(
+                                By.cssSelector(".profile-btn")
+                        ),
+                        ExpectedConditions.visibilityOfElementLocated(
+                                By.cssSelector("app-header")
+                        )
+                )
+        );
 
-        ReservationPage reservationPage = homePage.goToReservations();
+        ReservationPage reservationPage =
+                homePage.goToReservations();
+
         test.log(Status.INFO, "Página de reservas cargada");
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("vehicleType")));
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        By.name("vehicleType")
+                )
+        );
 
-        LocalDate specificFutureDate = LocalDate.now().plusDays(3);
-        String fecha = specificFutureDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+        LocalDate specificFutureDate =
+                LocalDate.now().plusDays(3);
+
+        String fecha =
+                specificFutureDate.format(
+                        DateTimeFormatter.ISO_LOCAL_DATE
+                );
+
         String hora = "14:00:00";
 
-        System.out.println("Usando fecha específica: " + fecha + " y hora: " + hora);
+        System.out.println(
+                "Usando fecha específica: "
+                        + fecha
+                        + " y hora: "
+                        + hora
+        );
 
         reservationPage.createReservationWithDateAndTime(
                 "CAMIONETA",
@@ -114,15 +198,29 @@ public class ReservationTest extends BaseTest {
                 hora
         );
 
-        test.log(Status.INFO, "Reserva creada para fecha: " + fecha + " - Hora: " + hora);
+        test.log(
+                Status.INFO,
+                "Reserva creada para fecha: "
+                        + fecha
+                        + " - Hora: "
+                        + hora
+        );
 
-        wait.until(driver -> reservationPage.isSuccessModalDisplayed());
+        wait.until(
+                driver ->
+                        reservationPage.isSuccessModalDisplayed()
+        );
 
         Assert.assertTrue(
                 reservationPage.isSuccessModalDisplayed(),
                 "El modal de éxito debería mostrarse"
         );
 
-        test.log(Status.PASS, "Reserva con fecha específica creada exitosamente");
+        reservationPage.closeModal();
+
+        test.log(
+                Status.PASS,
+                "Reserva con fecha específica creada exitosamente"
+        );
     }
 }
