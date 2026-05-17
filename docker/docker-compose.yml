@@ -41,7 +41,9 @@ services:
       - backend
     ports:
       - "4200:4200"
-    command: npm start -- --host 0.0.0.0 --port 4200 --disable-host-check
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    
 
   sonarqube:
     image: sonarqube:community
@@ -67,7 +69,7 @@ services:
       - "8081:8080"
       - "50000:50000"
     extra_hosts:
-       - "host.docker.internal:host-gateway"
+      - "host.docker.internal:host-gateway"
     volumes:
       - autospark_jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock

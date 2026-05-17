@@ -18,7 +18,7 @@ public abstract class BaseTest {
     protected ExtentTest test;
 
     // URL del frontend dentro de Docker
-    protected static final String BASE_URL = "http://autospark_frontend:4200";
+    protected static final String BASE_URL = "http://host.docker.internal:4200";
 
     @BeforeSuite
     public void setupExtent() {

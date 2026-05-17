@@ -70,6 +70,7 @@
             "port": 4200,
             "allowedHosts": [
               "autospark_frontend",
+              "host.docker.internal",
               "localhost",
               "127.0.0.1",
               "0.0.0.0"
