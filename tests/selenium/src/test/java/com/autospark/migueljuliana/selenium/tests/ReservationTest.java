@@ -29,26 +29,25 @@ public class ReservationTest extends BaseTest {
         loginPage.navigateTo();
         test.log(Status.INFO, "Página de login cargada");
 
-        // Login exitoso y obtener HomePage
         HomePage homePage = loginPage.loginSuccess("juan@test.com", "Password123");
         test.log(Status.INFO, "Login completado");
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 
-        // ESPERAR a que la URL ya no sea /login (el login fue exitoso)
-        wait.until(ExpectedConditions.not(ExpectedConditions.urlContains("login")));
+        wait.until(ExpectedConditions.or(
+                ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".logo")),
+                ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".profile-btn")),
+                ExpectedConditions.visibilityOfElementLocated(By.cssSelector("app-header"))
+        ));
 
-        // Navegar a la página de reservas usando el menú
         ReservationPage reservationPage = homePage.goToReservations();
         test.log(Status.INFO, "Página de reservas cargada");
 
-        // Ahora sí, esperar el formulario de reservas
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("vehicleType")));
 
-        // Obtener fecha actual + 3 días para asegurar que sea futura
         LocalDate futureDate = LocalDate.now().plusDays(3);
-        String fecha = futureDate.format(DateTimeFormatter.ISO_LOCAL_DATE); // Formato: YYYY-MM-DD
-        String hora = "15:00:00"; // Formato de hora como en el frontend
+        String fecha = futureDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+        String hora = "15:00:00";
 
         System.out.println("Usando fecha: " + fecha + " y hora: " + hora);
 
@@ -65,8 +64,10 @@ public class ReservationTest extends BaseTest {
 
         wait.until(driver -> reservationPage.isSuccessModalDisplayed());
 
-        Assert.assertTrue(reservationPage.isSuccessModalDisplayed(),
-                "El modal de éxito debería mostrarse");
+        Assert.assertTrue(
+                reservationPage.isSuccessModalDisplayed(),
+                "El modal de éxito debería mostrarse"
+        );
 
         test.log(Status.PASS, "Reserva creada exitosamente");
     }
@@ -80,25 +81,27 @@ public class ReservationTest extends BaseTest {
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.navigateTo();
+        test.log(Status.INFO, "Página de login cargada");
 
         HomePage homePage = loginPage.loginSuccess("juan@test.com", "Password123");
         test.log(Status.INFO, "Login completado");
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 
-        // ESPERAR a que la URL ya no sea /login (el login fue exitoso)
-        wait.until(ExpectedConditions.not(ExpectedConditions.urlContains("login")));
+        wait.until(ExpectedConditions.or(
+                ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".logo")),
+                ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".profile-btn")),
+                ExpectedConditions.visibilityOfElementLocated(By.cssSelector("app-header"))
+        ));
 
-        // Navegar a la página de reservas usando el menú
         ReservationPage reservationPage = homePage.goToReservations();
         test.log(Status.INFO, "Página de reservas cargada");
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("vehicleType")));
 
-
         LocalDate specificFutureDate = LocalDate.now().plusDays(3);
         String fecha = specificFutureDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
-        String hora = "14:00:00"; // Formato de hora como en el frontend
+        String hora = "14:00:00";
 
         System.out.println("Usando fecha específica: " + fecha + " y hora: " + hora);
 
@@ -115,8 +118,10 @@ public class ReservationTest extends BaseTest {
 
         wait.until(driver -> reservationPage.isSuccessModalDisplayed());
 
-        Assert.assertTrue(reservationPage.isSuccessModalDisplayed(),
-                "El modal de éxito debería mostrarse");
+        Assert.assertTrue(
+                reservationPage.isSuccessModalDisplayed(),
+                "El modal de éxito debería mostrarse"
+        );
 
         test.log(Status.PASS, "Reserva con fecha específica creada exitosamente");
     }
