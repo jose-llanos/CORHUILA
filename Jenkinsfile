@@ -7,7 +7,7 @@ pipeline {
         BACKEND_DIR = '/workspace/app'
         FRONTEND_DIR = '/workspace/frontend'
         JMETER_TEST = '/tests/AutoSpark_LoadTest.jmx'
-        SONAR_HOST_URL = 'http://autospark_sonarqube:9000'
+        SONAR_HOST_URL = 'http://172.18.0.1:9000'
     }
 
     stages {
@@ -23,6 +23,9 @@ pipeline {
 
                     echo "Maven:"
                     mvn -version
+
+                    echo "SonarQube:"
+                    curl -I $SONAR_HOST_URL || true
                 '''
             }
         }
@@ -65,7 +68,7 @@ pipeline {
             }
         }
 
-        stage('Análisis SonarQube') {
+        stage('Analisis SonarQube') {
             steps {
                 dir("${BACKEND_DIR}") {
                     withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
@@ -88,7 +91,7 @@ pipeline {
                         if [ -f pom.xml ]; then
                             mvn test
                         else
-                            echo "No se encontró pom.xml en tests/selenium"
+                            echo "No se encontro pom.xml en tests/selenium"
                             ls -la
                         fi
                     '''
@@ -135,7 +138,7 @@ pipeline {
         }
 
         failure {
-            echo 'El pipeline falló. Revisar la etapa marcada en rojo.'
+            echo 'El pipeline fallo. Revisar la etapa marcada en rojo.'
         }
     }
 }
