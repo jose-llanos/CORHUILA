@@ -134,26 +134,28 @@ stage('Preparar datos de prueba') {
 
 
 
-        stage('Pruebas de rendimiento JMeter') {
-            steps {
-                sh '''
-                    mkdir -p $HOST_PROJECT_DIR/reports/jmeter
+stage('Pruebas de rendimiento JMeter') {
+    steps {
+        sh '''
+            rm -rf $HOST_PROJECT_DIR/reports/jmeter/html
+            rm -f $HOST_PROJECT_DIR/reports/jmeter/resultados.jtl
+            mkdir -p $HOST_PROJECT_DIR/reports/jmeter
 
-                    NETWORK=$(docker inspect autospark_backend --format '{{range $k,$v := .NetworkSettings.Networks}}{{$k}}{{end}}')
+            NETWORK=$(docker inspect autospark_backend --format '{{range $k,$v := .NetworkSettings.Networks}}{{$k}}{{end}}')
 
-                    docker run --rm \
-                      --network "$NETWORK" \
-                      -v $HOST_PROJECT_DIR/tests/jmeter:/tests \
-                      -v $HOST_PROJECT_DIR/reports/jmeter:/reports \
-                      justb4/jmeter \
-                      -n \
-                      -t $JMETER_TEST \
-                      -l /reports/resultados.jtl \
-                      -e \
-                      -o /reports/html
-                '''
-            }
-        }
+            docker run --rm \
+              --network "$NETWORK" \
+              -v $HOST_PROJECT_DIR/tests/jmeter:/tests \
+              -v $HOST_PROJECT_DIR/reports/jmeter:/reports \
+              justb4/jmeter \
+              -n \
+              -t $JMETER_TEST \
+              -l /reports/resultados.jtl \
+              -e \
+              -o /reports/html
+        '''
+    }
+}
 
         stage('Verificar reportes') {
             steps {

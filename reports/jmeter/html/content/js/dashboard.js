@@ -133,7 +133,7 @@ $(document).ready(function() {
         widgets: ['zebra']
     });
 
-    var data = {"OkPercent": 100.0, "KoPercent": 0.0};
+    var data = {"OkPercent": 0.0, "KoPercent": 100.0};
     var dataset = [
         {
             "label" : "FAIL",
@@ -173,7 +173,7 @@ $(document).ready(function() {
     });
 
     // Creates APDEX table
-    createTable($("#apdexTable"), {"supportsControllersDiscrimination": true, "overall": {"data": [1.0, 500, 1500, "Total"], "isController": false}, "titles": ["Apdex", "T (Toleration threshold)", "F (Frustration threshold)", "Label"], "items": [{"data": [1.0, 500, 1500, "POST - Login"], "isController": false}, {"data": [1.0, 500, 1500, "GET - Servicios"], "isController": false}, {"data": [1.0, 500, 1500, "POST - Crear Reserva"], "isController": false}, {"data": [1.0, 500, 1500, "GET - Usuarios"], "isController": false}]}, function(index, item){
+    createTable($("#apdexTable"), {"supportsControllersDiscrimination": true, "overall": {"data": [0.0, 500, 1500, "Total"], "isController": false}, "titles": ["Apdex", "T (Toleration threshold)", "F (Frustration threshold)", "Label"], "items": [{"data": [0.0, 500, 1500, "POST - Login"], "isController": false}, {"data": [0.0, 500, 1500, "GET - Servicios"], "isController": false}, {"data": [0.0, 500, 1500, "POST - Crear Reserva"], "isController": false}, {"data": [0.0, 500, 1500, "GET - Usuarios"], "isController": false}]}, function(index, item){
         switch(index){
             case 0:
                 item = item.toFixed(3);
@@ -187,7 +187,7 @@ $(document).ready(function() {
     }, [[0, 0]], 3);
 
     // Create statistics table
-    createTable($("#statisticsTable"), {"supportsControllersDiscrimination": true, "overall": {"data": ["Total", 6200, 0, 0.0, 12.834516129032295, 2, 282, 7.0, 29.0, 38.0, 62.0, 78.09547801990176, 61.21365352216904, 18.194679253526893], "isController": false}, "titles": ["Label", "#Samples", "FAIL", "Error %", "Average", "Min", "Max", "Median", "90th pct", "95th pct", "99th pct", "Transactions/s", "Received", "Sent"], "items": [{"data": ["POST - Login", 1550, 0, 0.0, 6.943870967741932, 2, 72, 5.0, 13.0, 18.0, 37.0, 19.91340879016406, 9.431643811747627, 4.803332003096214], "isController": false}, {"data": ["GET - Servicios", 1550, 0, 0.0, 7.8948387096773995, 2, 68, 6.0, 14.0, 20.0, 32.0, 19.929539434772547, 31.159367807686372, 3.2307651818088305], "isController": false}, {"data": ["POST - Crear Reserva", 1550, 0, 0.0, 28.555483870967727, 10, 282, 25.0, 47.0, 57.0, 90.98000000000002, 20.186760090124114, 8.369848916752407, 7.437673886960655], "isController": false}, {"data": ["GET - Usuarios", 1550, 0, 0.0, 7.943870967741944, 2, 51, 6.0, 16.0, 21.0, 36.0, 19.93133334190595, 13.624934901693521, 3.192127605539625], "isController": false}]}, function(index, item){
+    createTable($("#statisticsTable"), {"supportsControllersDiscrimination": true, "overall": {"data": ["Total", 6200, 6200, 100.0, 0.9470967741935488, 0, 40, 1.0, 2.0, 2.0, 2.0, 78.58247357347462, 205.12788267763443, 0.0], "isController": false}, "titles": ["Label", "#Samples", "FAIL", "Error %", "Average", "Min", "Max", "Median", "90th pct", "95th pct", "99th pct", "Transactions/s", "Received", "Sent"], "items": [{"data": ["POST - Login", 1550, 1550, 100.0, 1.0109677419354846, 0, 40, 1.0, 2.0, 2.0, 2.490000000000009, 20.027651079555, 52.2792102887212, 0.0], "isController": false}, {"data": ["GET - Servicios", 1550, 1550, 100.0, 0.8941935483870973, 0, 5, 1.0, 1.0, 2.0, 2.0, 20.0387847446671, 52.30827306884292, 0.0], "isController": false}, {"data": ["POST - Crear Reserva", 1550, 1550, 100.0, 0.9780645161290312, 0, 6, 1.0, 2.0, 2.0, 3.0, 20.310022668605946, 53.01629940740596, 0.0], "isController": false}, {"data": ["GET - Usuarios", 1550, 1550, 100.0, 0.9051612903225812, 0, 11, 1.0, 1.0, 2.0, 2.490000000000009, 20.03904381439967, 52.30894933192413, 0.0], "isController": false}]}, function(index, item){
         switch(index){
             // Errors pct
             case 3:
@@ -217,7 +217,7 @@ $(document).ready(function() {
     }, [[0, 0]], 0, summaryTableHeader);
 
     // Create error table
-    createTable($("#errorsTable"), {"supportsControllersDiscrimination": false, "titles": ["Type of error", "Number of errors", "% in errors", "% in all samples"], "items": []}, function(index, item){
+    createTable($("#errorsTable"), {"supportsControllersDiscrimination": false, "titles": ["Type of error", "Number of errors", "% in errors", "% in all samples"], "items": [{"data": ["Non HTTP response code: org.apache.http.conn.HttpHostConnectException/Non HTTP response message: Connect to localhost:8080 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused (Connection refused)", 6200, 100.0, 100.0], "isController": false}]}, function(index, item){
         switch(index){
             case 2:
             case 3:
@@ -228,7 +228,7 @@ $(document).ready(function() {
     }, [[1, 1]]);
 
         // Create top5 errors by sampler
-    createTable($("#top5ErrorsBySamplerTable"), {"supportsControllersDiscrimination": false, "overall": {"data": ["Total", 6200, 0, "", "", "", "", "", "", "", "", "", ""], "isController": false}, "titles": ["Sample", "#Samples", "#Errors", "Error", "#Errors", "Error", "#Errors", "Error", "#Errors", "Error", "#Errors", "Error", "#Errors"], "items": [{"data": [], "isController": false}, {"data": [], "isController": false}, {"data": [], "isController": false}, {"data": [], "isController": false}]}, function(index, item){
+    createTable($("#top5ErrorsBySamplerTable"), {"supportsControllersDiscrimination": false, "overall": {"data": ["Total", 6200, 6200, "Non HTTP response code: org.apache.http.conn.HttpHostConnectException/Non HTTP response message: Connect to localhost:8080 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused (Connection refused)", 6200, "", "", "", "", "", "", "", ""], "isController": false}, "titles": ["Sample", "#Samples", "#Errors", "Error", "#Errors", "Error", "#Errors", "Error", "#Errors", "Error", "#Errors", "Error", "#Errors"], "items": [{"data": ["POST - Login", 1550, 1550, "Non HTTP response code: org.apache.http.conn.HttpHostConnectException/Non HTTP response message: Connect to localhost:8080 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused (Connection refused)", 1550, "", "", "", "", "", "", "", ""], "isController": false}, {"data": ["GET - Servicios", 1550, 1550, "Non HTTP response code: org.apache.http.conn.HttpHostConnectException/Non HTTP response message: Connect to localhost:8080 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused (Connection refused)", 1550, "", "", "", "", "", "", "", ""], "isController": false}, {"data": ["POST - Crear Reserva", 1550, 1550, "Non HTTP response code: org.apache.http.conn.HttpHostConnectException/Non HTTP response message: Connect to localhost:8080 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused (Connection refused)", 1550, "", "", "", "", "", "", "", ""], "isController": false}, {"data": ["GET - Usuarios", 1550, 1550, "Non HTTP response code: org.apache.http.conn.HttpHostConnectException/Non HTTP response message: Connect to localhost:8080 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused (Connection refused)", 1550, "", "", "", "", "", "", "", ""], "isController": false}]}, function(index, item){
         return item;
     }, [[0, 0]], 0);
 
