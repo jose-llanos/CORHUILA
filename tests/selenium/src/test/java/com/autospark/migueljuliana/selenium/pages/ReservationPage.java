@@ -41,7 +41,7 @@ public class ReservationPage extends BasePage {
     }
 
     public void navigateTo() {
-        driver.get("http://host.docker.internal:4200/reserves");
+        driver.get("http://autospark_frontend/reserves");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 

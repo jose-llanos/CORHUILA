@@ -18,7 +18,8 @@ public class CorsConfig {
                         .allowedOrigins(
                                 "http://localhost:4200",
                                 "http://host.docker.internal:4200",
-                                "http://autospark_frontend:4200"
+                                "http://autospark_frontend:4200",
+                                "http://autospark_frontend"
                         )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*");

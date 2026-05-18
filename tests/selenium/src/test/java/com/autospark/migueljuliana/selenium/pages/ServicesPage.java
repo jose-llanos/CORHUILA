@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ServicesPage extends BasePage {
 
-    private static final String SERVICES_URL = "http://host.docker.internal:4200/services";
+    private static final String SERVICES_URL = "http://autospark_frontend/services";
 
     private final By servicesGrid = By.cssSelector(".servicios-grid");
     private final By serviceCards = By.cssSelector(".servicios-grid .servicio");
@@ -25,15 +25,23 @@ public class ServicesPage extends BasePage {
     public void navigateTo() {
         driver.get(SERVICES_URL);
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(90));
 
         wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("body")));
         wait.until(ExpectedConditions.presenceOfElementLocated(servicesGrid));
 
-        wait.until(driver -> driver.findElements(serviceCards).size() > 0
-                || normalize(driver.getPageSource()).contains("lavado basico")
-                || normalize(driver.getPageSource()).contains("lavado premium")
-                || normalize(driver.getPageSource()).contains("pulido"));
+        sleep();
+
+        wait.until(driver -> {
+            String html = normalize(driver.getPageSource());
+
+            return driver.findElements(serviceCards).size() > 0
+                    || html.contains("lavado basico")
+                    || html.contains("lavado premium")
+                    || html.contains("pulido")
+                    || html.contains("lavado de motor")
+                    || html.contains("lavado de tapiceria");
+        });
 
         System.out.println("Página de servicios cargada: " + driver.getCurrentUrl());
         System.out.println("Cantidad de servicios visibles: " + getServiceCount());
@@ -41,14 +49,22 @@ public class ServicesPage extends BasePage {
 
     public int getServiceCount() {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(90));
 
             wait.until(ExpectedConditions.presenceOfElementLocated(servicesGrid));
 
-            wait.until(driver -> driver.findElements(serviceCards).size() > 0
-                    || normalize(driver.getPageSource()).contains("lavado basico")
-                    || normalize(driver.getPageSource()).contains("lavado premium")
-                    || normalize(driver.getPageSource()).contains("pulido"));
+            sleep();
+
+            wait.until(driver -> {
+                String html = normalize(driver.getPageSource());
+
+                return driver.findElements(serviceCards).size() > 0
+                        || html.contains("lavado basico")
+                        || html.contains("lavado premium")
+                        || html.contains("pulido")
+                        || html.contains("lavado de motor")
+                        || html.contains("lavado de tapiceria");
+            });
 
             List<WebElement> cards = driver.findElements(serviceCards);
 
@@ -89,14 +105,20 @@ public class ServicesPage extends BasePage {
 
     public boolean isServiceDisplayed(String serviceName) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(90));
 
             wait.until(ExpectedConditions.presenceOfElementLocated(servicesGrid));
 
+            sleep();
+
             String expected = normalize(serviceName);
 
-            wait.until(driver -> driver.findElements(serviceTitles).size() > 0
-                    || normalize(driver.getPageSource()).contains(expected));
+            wait.until(driver -> {
+                String html = normalize(driver.getPageSource());
+
+                return driver.findElements(serviceTitles).size() > 0
+                        || html.contains(expected);
+            });
 
             List<WebElement> titles = driver.findElements(serviceTitles);
 
@@ -119,6 +141,14 @@ public class ServicesPage extends BasePage {
             System.out.println("HTML actual:");
             System.out.println(driver.getPageSource());
             return false;
+        }
+    }
+
+    private void sleep() {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
     }
 

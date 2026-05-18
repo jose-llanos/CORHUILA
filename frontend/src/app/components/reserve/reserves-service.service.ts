@@ -9,8 +9,8 @@ import { Services } from '../services/Service';
   providedIn: 'root'
 })
 export class ReservesServiceService {
-  private urlEndpoint: string = 'http://host.docker.internal:8080/autospark/reserva';
-  private tiposServicioEndpoint: string = 'http://host.docker.internal:8080/autospark/service';
+  private urlEndpoint: string = 'http://localhost:8080/autospark/reserva';
+  private tiposServicioEndpoint: string = 'http://localhost:8080/autospark/service';
   private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(private http: HttpClient) {}

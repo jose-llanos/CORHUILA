@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class LoginService {
-  private urlEndpoint: string = "http://host.docker.internal:8080/autospark/login";
+  private urlEndpoint: string = "http://localhost:8080/autospark/login";
   private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(private http: HttpClient) {}
