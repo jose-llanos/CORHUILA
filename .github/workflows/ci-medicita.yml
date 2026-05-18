@@ -13,10 +13,10 @@ env:
 
 jobs:
 
-  # ══════════════════════════════════════════════════════════════
+  
   # JOB 1 — Pruebas unitarias + cobertura JaCoCo
   # Sin dependencias externas; corre en todo push/PR
-  # ══════════════════════════════════════════════════════════════
+
   unit-tests:
     name: "Unit Tests & JaCoCo"
     runs-on: ubuntu-latest
@@ -44,10 +44,10 @@ jobs:
           path: ${{ env.PROJECT }}/backend/target/site/jacoco/
           retention-days: 7
 
-  # ══════════════════════════════════════════════════════════════
+  
   # JOB 2 — Pruebas funcionales Selenium WebDriver (TC01–TC07)
   # Requiere stack completo en Docker; solo corre si Job 1 pasa
-  # ══════════════════════════════════════════════════════════════
+  
   selenium-tests:
     name: "Selenium Functional Tests"
     runs-on: ubuntu-latest
@@ -95,10 +95,83 @@ jobs:
         working-directory: ${{ env.PROJECT }}
         run: docker compose -f docker/docker-compose.yml down -v
 
-  # ══════════════════════════════════════════════════════════════
+  
+  # JOB 4 — Análisis de calidad con SonarQube
+  # Requiere reporte JaCoCo de Job 1; corre en paralelo con Jobs 2 y 3
+  
+  sonarqube-analysis:
+    name: "SonarQube Code Analysis"
+    runs-on: ubuntu-latest
+    needs: unit-tests
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Java 21 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Levantar SonarQube en Docker
+        run: |
+          docker run -d --name sonarqube \
+            -p 9000:9000 \
+            -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true \
+            sonarqube:10-community
+
+      - name: Esperar SonarQube (hasta 3 min)
+        run: |
+          echo "Esperando SonarQube..."
+          timeout 180 bash -c \
+            'until curl -sf http://localhost:9000/api/system/status | grep -q "\"status\":\"UP\""; do
+               sleep 5
+               echo "  no listo aún..."
+             done'
+          echo "SonarQube listo."
+
+      - name: Generar token de análisis
+        id: sonar-token
+        run: |
+          TOKEN=$(curl -sf -u admin:admin -X POST \
+            "http://localhost:9000/api/user_tokens/generate" \
+            -d "name=ci-token-$(date +%s)" \
+            | python3 -c "import sys,json; print(json.load(sys.stdin)['token'])")
+          echo "value=$TOKEN" >> $GITHUB_OUTPUT
+
+      - name: Ejecutar tests y análisis SonarQube
+        working-directory: ${{ env.PROJECT }}/backend
+        run: |
+          chmod +x mvnw
+          ./mvnw verify sonar:sonar \
+            -Dsonar.host.url=http://localhost:9000 \
+            -Dsonar.token=${{ steps.sonar-token.outputs.value }}
+
+      - name: Verificar Quality Gate
+        run: |
+          echo "Esperando que SonarQube procese el análisis..."
+          sleep 20
+          RESULT=$(curl -sf -u admin:admin \
+            "http://localhost:9000/api/qualitygates/project_status?projectKey=medicita" \
+            | python3 -c "import sys,json; d=json.load(sys.stdin)['projectStatus']; print(d['status'])")
+          echo "Quality Gate: $RESULT"
+          echo "### SonarQube Quality Gate: $RESULT" >> $GITHUB_STEP_SUMMARY
+
+      - name: Publicar reporte SonarQube como artefacto
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sonarqube-report
+          path: ${{ env.PROJECT }}/backend/target/sonar/
+          retention-days: 7
+
+  
   # JOB 3 — Pruebas de rendimiento con JMeter (3 escenarios)
   # Requiere backend en Docker; corre en paralelo con Job 2
-  # ══════════════════════════════════════════════════════════════
+  
   performance-tests:
     name: "JMeter Performance Tests"
     runs-on: ubuntu-latest
