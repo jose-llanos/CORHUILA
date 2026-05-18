@@ -126,8 +126,8 @@ mkdir -p /mnt/c/Users/veraj/Desktop/autospark-reports 2>/dev/null
 cp -r $PROJECT_DIR/reports/* /mnt/c/Users/veraj/Desktop/autospark-reports/ 2>/dev/null
 echo -e "${GREEN}✅ Reportes copiados a C:\\Users\\veraj\\Desktop\\autospark-reports${NC}"
 
-# 9. SUBIR AL REPOSITORIO DEL PROFESOR
-print_section "SUBIR PROYECTO AL REPOSITORIO DEL PROFESOR"
+# 9. SUBIR AL REPOSITORIO DEL PROFESOR - CON REPORTES COMPLETOS
+print_section "SUBIR PROYECTO AL REPOSITORIO DEL PROFESOR (INCLUYENDO REPORTES)"
 
 GITHUB_TOKEN="${GITHUB_TOKEN}"
 
@@ -142,8 +142,8 @@ else
     FOLDER_NAME="Jose_Miguel"
     TEMP_REPO="/tmp/repo_profesor"
 
-    git config --global user.name "Jose Miguel" 2>/dev/null
-    git config --global user.email "jose.miguel@universidad.edu.co" 2>/dev/null
+    git config --global user.name "BondrewdXD" 2>/dev/null
+    git config --global user.email "veraj0801@gmail.com" 2>/dev/null
 
     if [ -d "$TEMP_REPO/.git" ]; then
         cd $TEMP_REPO
@@ -156,52 +156,74 @@ else
         cd $TEMP_REPO
     fi
 
+    # Limpiar carpeta anterior
     rm -rf $FOLDER_NAME
     mkdir -p $FOLDER_NAME
     
-    echo "📋 Copiando proyecto desde $PROJECT_DIR..."
+    echo "📋 Copiando proyecto COMPLETO (incluyendo reportes) desde $PROJECT_DIR..."
     cp -r $PROJECT_DIR/* $FOLDER_NAME/ 2>/dev/null
     
-    echo "🧹 Limpiando archivos temporales..."
-    rm -rf $FOLDER_NAME/app/target $FOLDER_NAME/app@tmp 2>/dev/null
-    rm -rf $FOLDER_NAME/tests/jmeter/*/ 2>/dev/null
+    # Limpiar SOLO archivos compilados (target, node_modules, etc.) pero NO los reportes
+    echo "🧹 Limpiando solo archivos compilados (los reportes se mantienen)..."
+    rm -rf $FOLDER_NAME/app/target 2>/dev/null
+    rm -rf $FOLDER_NAME/app@tmp 2>/dev/null
     rm -rf $FOLDER_NAME/tests/jmeter/results/ 2>/dev/null
-    rm -f $FOLDER_NAME/tests/jmeter/*.jtl 2>/dev/null
+    rm -rf $FOLDER_NAME/tests/jmeter/body-logs/ 2>/dev/null
+    rm -rf $FOLDER_NAME/tests/jmeter/debug-logs/ 2>/dev/null
+    rm -rf $FOLDER_NAME/tests/jmeter/post-test/ 2>/dev/null
     
-    echo "📁 Preservando estructura de reportes..."
-    if [ -d "$FOLDER_NAME/reports" ]; then
-        find $FOLDER_NAME/reports -type f -delete 2>/dev/null
-    else
-        mkdir -p $FOLDER_NAME/reports/{junit,jacoco,selenium,performance,sonarqube}
-    fi
+    # NOTA: Los reportes en $FOLDER_NAME/reports/ se mantienen COMPLETOS
+    
+    echo "📊 Los reportes se incluirán en el push:"
+    echo "   - junit/: $(ls $FOLDER_NAME/reports/junit/ 2>/dev/null | wc -l) archivos"
+    echo "   - jacoco/: $(ls $FOLDER_NAME/reports/jacoco/ 2>/dev/null | wc -l) archivos"
+    echo "   - selenium/: $(ls $FOLDER_NAME/reports/selenium/ 2>/dev/null | wc -l) archivos"
+    echo "   - performance/: $(ls $FOLDER_NAME/reports/performance/ 2>/dev/null | wc -l) archivos"
+    echo "   - sonarqube/: $(ls $FOLDER_NAME/reports/sonarqube/ 2>/dev/null | wc -l) archivos"
 
-    cat > $FOLDER_NAME/reports/README.md << 'EOF'
-# Reportes de Pruebas - AutoSpark
+    # Agregar README de entrega
+    cat > $FOLDER_NAME/README-ENTREGA.md << EOF
+# Entrega de Jose Miguel - AutoSpark
 
-## Estructura de reportes:
-- **junit/** - Pruebas unitarias (JUnit)
-- **jacoco/** - Cobertura de código (JaCoCo)
-- **selenium/** - Pruebas funcionales (Selenium)
-- **performance/** - Pruebas de rendimiento
-- **sonarqube/** - Análisis estático (SonarQube)
+## Información
+- **Estudiante:** Jose Miguel
+- **Fecha:** $(date '+%Y-%m-%d %H:%M:%S')
+- **Build:** ${BUILD_NUMBER:-"Local"}
 
-⚠️ Los archivos no se suben al repositorio por su tamaño.
-Reportes completos en: C:\Users\veraj\Desktop\autospark-reports
+## Contenido de la entrega
+- ✅ Código fuente completo
+- ✅ Pruebas unitarias (JUnit) - 102 pruebas
+- ✅ Pruebas funcionales (Selenium)
+- ✅ Pruebas de rendimiento (JMeter/Curl) - 155 usuarios
+- ✅ Reportes de cobertura (JaCoCo)
+- ✅ Reportes de pruebas (JUnit, Selenium, Rendimiento)
+- ✅ Análisis SonarQube
+- ✅ Configuración Docker
+
+## 📊 Reportes incluidos
+Los reportes generados durante la ejecución están en la carpeta \`reports/\`:
+- \`reports/junit/\` - Resultados de pruebas unitarias
+- \`reports/jacoco/\` - Reportes de cobertura de código
+- \`reports/selenium/\` - Reportes de pruebas funcionales
+- \`reports/performance/\` - Reportes de rendimiento
+- \`reports/sonarqube/\` - Enlace a SonarQube
+
+## 📁 Ubicación local de reportes (respaldo)
+- Windows: \`C:\\Users\\veraj\\Desktop\\autospark-reports\`
+- WSL: \`/workspace/reports/\`
 EOF
 
-    cat > $FOLDER_NAME/reports/.gitignore << 'EOF'
-*
-!*/
-!.gitignore
-!README.md
-EOF
-
+    # Commit y push (incluyendo todos los reportes)
+    echo "💾 Haciendo commit de los cambios (incluyendo reportes)..."
     git add $FOLDER_NAME/
-    git commit -m "Entrega Jose_Miguel - $(date '+%Y-%m-%d %H:%M:%S') [skip ci]" 2>/dev/null || echo "⚠️ No hay cambios"
+    git commit -m "Entrega Jose_Miguel con reportes - $(date '+%Y-%m-%d %H:%M:%S') [skip ci]" 2>/dev/null || echo "⚠️ No hay cambios nuevos para commit"
+
+    echo "🚀 Subiendo a la rama $BRANCH (incluyendo reportes)..."
     git push origin $BRANCH
 
     if [ $? -eq 0 ]; then
-        echo -e "${GREEN}✅ Proyecto subido exitosamente${NC}"
+        echo -e "${GREEN}✅ Proyecto y reportes subidos exitosamente${NC}"
+        echo "   https://github.com/jose-llanos/CORHUILA/tree/$BRANCH/$FOLDER_NAME"
     else
         echo -e "${RED}❌ Error al hacer push${NC}"
         ERRORS=$((ERRORS + 1))
@@ -216,18 +238,18 @@ echo "╔═══════════════════════�
 echo "║                              PIPELINE COMPLETADO                               ║"
 echo "╚═══════════════════════════════════════════════════════════════════════════════╝"
 echo ""
-echo "📊 REPORTES GENERADOS:"
-echo "   📁 JUnit:       $PROJECT_DIR/reports/junit/"
-echo "   📁 JaCoCo:      $PROJECT_DIR/reports/jacoco/"
-echo "   📁 Selenium:    $PROJECT_DIR/reports/selenium/"
-echo "   📁 Rendimiento: $PROJECT_DIR/reports/performance/"
-echo "   📁 SonarQube:   $PROJECT_DIR/reports/sonarqube/"
+echo "📊 REPORTES GENERADOS Y SUBIDOS A GITHUB:"
+echo "   📁 JUnit:       $PROJECT_DIR/reports/junit/ (subido)"
+echo "   📁 JaCoCo:      $PROJECT_DIR/reports/jacoco/ (subido)"
+echo "   📁 Selenium:    $PROJECT_DIR/reports/selenium/ (subido)"
+echo "   📁 Rendimiento: $PROJECT_DIR/reports/performance/ (subido)"
+echo "   📁 SonarQube:   $PROJECT_DIR/reports/sonarqube/ (subido)"
 echo ""
-echo "📁 Reportes en Windows: C:\\Users\\veraj\\Desktop\\autospark-reports"
+echo "📁 Respaldo en Windows: C:\\Users\\veraj\\Desktop\\autospark-reports"
 echo ""
 
 if [ $ERRORS -eq 0 ]; then
-    echo -e "${GREEN}🎉 TODAS LAS PRUEBAS COMPLETADAS EXITOSAMENTE 🎉${NC}"
+    echo -e "${GREEN}🎉 TODAS LAS PRUEBAS COMPLETADAS - REPORTES SUBIDOS 🎉${NC}"
 else
     echo -e "${YELLOW}⚠️ $ERRORS sección(es) tuvieron errores${NC}"
 fi
