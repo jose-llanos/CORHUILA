@@ -82,11 +82,12 @@ pipeline {
                     withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                         sh '''
                             mvn sonar:sonar \
-                              -Dsonar.projectKey=autospark \
-                              -Dsonar.projectName=autospark \
-                              -Dsonar.host.url=$SONAR_HOST_URL \
-                              -Dsonar.token=$SONAR_TOKEN \
-                              $MAVEN_OPTS_RETRY
+                                -Dsonar.projectKey=autospark \
+                                -Dsonar.projectName=autospark \
+                                -Dsonar.host.url=$SONAR_HOST_URL \
+                                -Dsonar.token=$SONAR_TOKEN \
+                                -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml \
+                                $MAVEN_OPTS_RETRY
                         '''
                     }
                 }

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SaleServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">migueljuliana</a> &gt; <a href="index.source.html" class="el_package">com.autospark.migueljuliana.services</a> &gt; <span class="el_source">SaleServiceImpl.java</span></div><h1>SaleServiceImpl.java</h1><pre class="source lang-java linenums">package com.autospark.migueljuliana.services;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.autospark.migueljuliana.exception.ResourceNotFoundException;
+import com.autospark.migueljuliana.models.Reservation;
+import com.autospark.migueljuliana.models.Sale;
+import com.autospark.migueljuliana.models.User;
+import com.autospark.migueljuliana.repositories.IReservationRepository;
+import com.autospark.migueljuliana.repositories.ISaleRepository;
+import com.autospark.migueljuliana.repositories.IUserRepository;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+<span class="fc" id="L21">@Slf4j</span>
+@Service
+@RequiredArgsConstructor
+public class SaleServiceImpl implements ISaleService {
+
+    private static final String RESERVATION_ENTITY = &quot;Reservation&quot;;
+    private static final String UNREGISTERED_CUSTOMER = &quot;Unregistered customer&quot;;
+    private static final String NOT_AVAILABLE = &quot;N/A&quot;;
+
+    private final ISaleRepository saleRepository;
+    private final IReservationRepository reservationRepository;
+    private final IUserRepository userRepository;
+
+    @Override
+    @Transactional(readOnly = true)
+    public List&lt;Sale&gt; findAll() {
+<span class="fc" id="L37">        log.debug(&quot;Fetching all sales&quot;);</span>
+<span class="fc" id="L38">        return (List&lt;Sale&gt;) saleRepository.findAll();</span>
+    }
+
+    @Override
+    @Transactional
+    public Sale save(Sale sale) {
+
+<span class="fc" id="L45">        log.debug(&quot;Saving sale for vehicle: {}&quot;, sale.getVehiclePlate());</span>
+
+        // Validar monto no negativo
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        if (sale.getAmount() &lt; 0) {</span>
+<span class="fc" id="L49">            throw new IllegalArgumentException(&quot;Amount cannot be negative&quot;);</span>
+        }
+
+        // Validar nombre del cliente
+<span class="fc bfc" id="L53" title="All 4 branches covered.">        if (sale.getCustomerName() == null || sale.getCustomerName().isEmpty()) {</span>
+<span class="fc" id="L54">            throw new IllegalArgumentException(&quot;Customer name is required&quot;);</span>
+        }
+
+<span class="fc" id="L57">        sale.setSaleDate(LocalDateTime.now());</span>
+<span class="fc" id="L58">        sale.setActive(true);</span>
+
+<span class="fc" id="L60">        return saleRepository.save(sale);</span>
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional&lt;Sale&gt; findById(Long id) {
+<span class="fc" id="L66">        log.debug(&quot;Fetching sale with id: {}&quot;, id);</span>
+<span class="fc" id="L67">        return saleRepository.findById(id);</span>
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+
+<span class="fc" id="L74">        log.info(&quot;Deleting sale with id: {}&quot;, id);</span>
+
+<span class="fc" id="L76">        saleRepository.deleteById(id);</span>
+
+<span class="fc" id="L78">        log.info(&quot;Sale with id: {} deleted successfully&quot;, id);</span>
+<span class="fc" id="L79">    }</span>
+
+    @Override
+    @Transactional
+    public Sale convertReservationToSale(Long reservationId) {
+
+<span class="fc" id="L85">        log.info(&quot;Converting reservation with id: {} to sale&quot;, reservationId);</span>
+
+<span class="fc" id="L87">        Reservation reservation = reservationRepository.findById(reservationId)</span>
+<span class="fc" id="L88">                .orElseThrow(() -&gt; {</span>
+<span class="fc" id="L89">                    log.error(&quot;Reservation not found with id: {}&quot;, reservationId);</span>
+<span class="fc" id="L90">                    return new ResourceNotFoundException(RESERVATION_ENTITY, reservationId);</span>
+                });
+
+<span class="fc" id="L93">        Optional&lt;User&gt; userOpt =</span>
+<span class="fc" id="L94">                userRepository.findByLicensePlate(reservation.getLicensePlate());</span>
+
+<span class="fc" id="L96">        Sale sale = new Sale();</span>
+
+<span class="fc" id="L98">        sale.setVehicleType(reservation.getVehicleType());</span>
+<span class="fc" id="L99">        sale.setVehiclePlate(reservation.getLicensePlate());</span>
+<span class="fc" id="L100">        sale.setServiceType(reservation.getServiceType());</span>
+<span class="fc" id="L101">        sale.setAmount(reservation.getValue());</span>
+<span class="fc" id="L102">        sale.setSaleDate(LocalDateTime.now());</span>
+<span class="fc" id="L103">        sale.setActive(true);</span>
+
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        if (userOpt.isPresent()) {</span>
+
+<span class="fc" id="L107">            User user = userOpt.get();</span>
+
+<span class="fc" id="L109">            sale.setCustomerName(user.getFullName());</span>
+<span class="fc" id="L110">            sale.setCustomerIdentification(user.getIdentityCard());</span>
+<span class="fc" id="L111">            sale.setCustomerPhone(user.getPhone());</span>
+
+<span class="fc" id="L113">            log.debug(&quot;Sale linked to user: {}&quot;, user.getEmail());</span>
+
+<span class="fc" id="L115">        } else {</span>
+
+<span class="fc" id="L117">            log.warn(&quot;User not found for license plate: {}&quot;, reservation.getLicensePlate());</span>
+
+<span class="fc" id="L119">            sale.setCustomerName(UNREGISTERED_CUSTOMER);</span>
+<span class="fc" id="L120">            sale.setCustomerIdentification(NOT_AVAILABLE);</span>
+<span class="fc" id="L121">            sale.setCustomerPhone(NOT_AVAILABLE);</span>
+        }
+
+<span class="fc" id="L124">        reservation.setActive(false);</span>
+<span class="fc" id="L125">        reservationRepository.save(reservation);</span>
+
+<span class="fc" id="L127">        Sale savedSale = saleRepository.save(sale);</span>
+
+<span class="fc" id="L129">        log.info(</span>
+                &quot;Reservation {} converted to sale successfully with id: {}&quot;,
+                reservationId,
+<span class="fc" id="L132">                savedSale.getId()</span>
+        );
+
+<span class="fc" id="L135">        return savedSale;</span>
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List&lt;Sale&gt; findByPlate(String plate) {
+
+<span class="fc" id="L142">        log.debug(&quot;Fetching sales for vehicle plate: {}&quot;, plate);</span>
+
+<span class="fc" id="L144">        return saleRepository.findByVehiclePlate(plate);</span>
+    }
+
+    @Override
+    @Transactional
+    public void deleteByPlate(String plate) {
+
+<span class="fc" id="L151">        log.info(&quot;Deleting all sales for vehicle plate: {}&quot;, plate);</span>
+
+<span class="fc" id="L153">        List&lt;Sale&gt; sales = saleRepository.findByVehiclePlate(plate);</span>
+
+<span class="fc bfc" id="L155" title="All 2 branches covered.">        if (!sales.isEmpty()) {</span>
+
+<span class="fc" id="L157">            saleRepository.deleteAll(sales);</span>
+
+<span class="fc" id="L159">            log.info(&quot;Deleted {} sales for plate: {}&quot;, sales.size(), plate);</span>
+
+        } else {
+
+<span class="fc" id="L163">            log.warn(&quot;No sales found for plate: {}&quot;, plate);</span>
+        }
+<span class="fc" id="L165">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
