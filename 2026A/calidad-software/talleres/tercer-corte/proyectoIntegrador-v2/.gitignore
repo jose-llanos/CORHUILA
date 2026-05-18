@@ -1,0 +1,9 @@
+# Reportes generados localmente — no se suben al repositorio
+docs/
+
+# Reportes de JaCoCo y Surefire
+backend/target/site/
+backend/target/surefire-reports/
+
+# Archivos de SonarQube local
+.sonar/

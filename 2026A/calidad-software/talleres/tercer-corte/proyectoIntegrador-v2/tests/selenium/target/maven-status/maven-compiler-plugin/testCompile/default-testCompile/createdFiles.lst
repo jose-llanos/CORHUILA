@@ -1,0 +1,5 @@
+com\medicita\selenium\pages\RegisterPage.class
+com\medicita\selenium\tests\LoginTest.class
+com\medicita\selenium\base\BaseTest.class
+com\medicita\selenium\pages\LoginPage.class
+com\medicita\selenium\tests\RegisterTest.class
