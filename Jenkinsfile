@@ -103,7 +103,7 @@ pipeline {
                         curl -I http://autospark_frontend:80 || true
 
                         echo "Validando backend dentro de Docker:"
-                        curl http://autospark_backend:8080/autospark/service || true
+                        curl -H "Host: localhost:8080" http://autospark_backend:8080/autospark/service || true
                     '''
                 }
             }
@@ -164,8 +164,8 @@ pipeline {
                 sh '''
                     echo "Limpiando reportes anteriores..."
 
-                    rm -rf $HOST_PROJECT_DIR/reports/jmeter/html
-                    rm -f $HOST_PROJECT_DIR/reports/jmeter/resultados.jtl
+                    rm -rf $HOST_PROJECT_DIR/reports/jmeter
+                    mkdir -p $HOST_PROJECT_DIR/reports/jmeter/html
 
                     mkdir -p $HOST_PROJECT_DIR/reports/jmeter
 
