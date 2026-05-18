@@ -1,0 +1,1 @@
+-- Admin user is created programmatically by DataInitializer on startup.
