@@ -216,44 +216,29 @@ pipeline {
             }
         }
 
-stage('Verificar reportes') {
-    steps {
-        sh '''
-            echo "Preparando carpeta de reportes finales..."
+    stage('Verificar reportes') {
+        steps {
+            sh '''
+                echo "Preparando carpeta de reportes finales..."
 
-            mkdir -p $HOST_PROJECT_DIR/reports/unitarias
-            mkdir -p $HOST_PROJECT_DIR/reports/selenium
-            mkdir -p $HOST_PROJECT_DIR/reports/jmeter
+                mkdir -p $PROJECT_DIR/reports/unitarias
+                mkdir -p $PROJECT_DIR/reports/selenium
+                mkdir -p $PROJECT_DIR/reports/jmeter
 
-            echo "Limpiando Unitarias y Selenium..."
-            docker run --rm -u root \
-              -v $HOST_PROJECT_DIR/reports:/reports \
-              alpine sh -c "rm -rf /reports/unitarias/* /reports/selenium/* && chmod -R 777 /reports"
+                echo "Limpiando Unitarias y Selenium..."
+                rm -rf $PROJECT_DIR/reports/unitarias/*
+                rm -rf $PROJECT_DIR/reports/selenium/*
 
-            echo "Copiando reporte JaCoCo a reports/unitarias..."
-            if [ -f "$BACKEND_DIR/target/site/jacoco/index.html" ]; then
-                cp -r $BACKEND_DIR/target/site/jacoco/* $HOST_PROJECT_DIR/reports/unitarias/
-            else
-                echo "ERROR: No se genero JaCoCo"
-                exit 1
-            fi
+                echo "Copiando reporte JaCoCo a reports/unitarias..."
+                cp -r $BACKEND_DIR/target/site/jacoco/* $PROJECT_DIR/reports/unitarias/
 
-            echo "Copiando reportes Selenium..."
-            if [ -d "$PROJECT_DIR/tests/selenium/target/surefire-reports" ]; then
-                cp -r $PROJECT_DIR/tests/selenium/target/surefire-reports $HOST_PROJECT_DIR/reports/selenium/
-            else
-                echo "ADVERTENCIA: No existe surefire-reports de Selenium"
-            fi
+                echo "Copiando reportes Selenium..."
+                cp -r $PROJECT_DIR/tests/selenium/target/surefire-reports $PROJECT_DIR/reports/selenium/ || true
+                cp -r $PROJECT_DIR/tests/selenium/test-output $PROJECT_DIR/reports/selenium/ || true
 
-            if [ -d "$PROJECT_DIR/tests/selenium/test-output" ]; then
-                cp -r $PROJECT_DIR/tests/selenium/test-output $HOST_PROJECT_DIR/reports/selenium/
-            else
-                echo "ADVERTENCIA: No existe test-output de Selenium"
-            fi
-
-            echo "Reportes generados:"
-            find $HOST_PROJECT_DIR/reports -maxdepth 4 -type f | head -100
-        '''
+                echo "Reportes generados:"
+                find $PROJECT_DIR/reports -maxdepth 4 -type f | head -100
+            '''
         }
     }
 }
@@ -267,4 +252,5 @@ stage('Verificar reportes') {
             echo 'El pipeline fallo.'
         }
     }
+
 }

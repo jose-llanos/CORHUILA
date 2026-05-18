@@ -133,7 +133,7 @@ $(document).ready(function() {
         widgets: ['zebra']
     });
 
-    var data = {"OkPercent": 99.98387096774194, "KoPercent": 0.016129032258064516};
+    var data = {"OkPercent": 100.0, "KoPercent": 0.0};
     var dataset = [
         {
             "label" : "FAIL",
@@ -173,7 +173,7 @@ $(document).ready(function() {
     });
 
     // Creates APDEX table
-    createTable($("#apdexTable"), {"supportsControllersDiscrimination": true, "overall": {"data": [0.9998387096774194, 500, 1500, "Total"], "isController": false}, "titles": ["Apdex", "T (Toleration threshold)", "F (Frustration threshold)", "Label"], "items": [{"data": [1.0, 500, 1500, "POST - Login"], "isController": false}, {"data": [1.0, 500, 1500, "GET - Servicios"], "isController": false}, {"data": [0.9993548387096775, 500, 1500, "POST - Crear Reserva"], "isController": false}, {"data": [1.0, 500, 1500, "GET - Usuarios"], "isController": false}]}, function(index, item){
+    createTable($("#apdexTable"), {"supportsControllersDiscrimination": true, "overall": {"data": [1.0, 500, 1500, "Total"], "isController": false}, "titles": ["Apdex", "T (Toleration threshold)", "F (Frustration threshold)", "Label"], "items": [{"data": [1.0, 500, 1500, "POST - Login"], "isController": false}, {"data": [1.0, 500, 1500, "GET - Servicios"], "isController": false}, {"data": [1.0, 500, 1500, "POST - Crear Reserva"], "isController": false}, {"data": [1.0, 500, 1500, "GET - Usuarios"], "isController": false}]}, function(index, item){
         switch(index){
             case 0:
                 item = item.toFixed(3);
@@ -187,7 +187,7 @@ $(document).ready(function() {
     }, [[0, 0]], 3);
 
     // Create statistics table
-    createTable($("#statisticsTable"), {"supportsControllersDiscrimination": true, "overall": {"data": ["Total", 6200, 1, 0.016129032258064516, 10.920483870967765, 1, 265, 6.0, 25.0, 32.0, 49.0, 77.09333267016488, 56.43679298730447, 18.13059402666559], "isController": false}, "titles": ["Label", "#Samples", "FAIL", "Error %", "Average", "Min", "Max", "Median", "90th pct", "95th pct", "99th pct", "Transactions/s", "Received", "Sent"], "items": [{"data": ["POST - Login", 1550, 0, 0.0, 6.3787096774193675, 1, 172, 4.0, 11.0, 16.0, 39.0, 19.646365422396855, 9.305163310412574, 4.777290029469548], "isController": false}, {"data": ["GET - Servicios", 1550, 0, 0.0, 6.4206451612903255, 2, 40, 5.0, 10.0, 14.0, 26.49000000000001, 19.689290296355576, 30.78374391061062, 3.230274189245837], "isController": false}, {"data": ["POST - Crear Reserva", 1550, 1, 0.06451612903225806, 24.571612903225777, 9, 265, 22.0, 37.0, 43.0, 71.49000000000001, 20.030756904149595, 8.323516512451377, 7.438879436651116], "isController": false}, {"data": ["GET - Usuarios", 1550, 0, 0.0, 6.310967741935485, 2, 51, 5.0, 10.0, 13.0, 27.49000000000001, 19.694293737214593, 9.36632915041358, 3.1926296488062715], "isController": false}]}, function(index, item){
+    createTable($("#statisticsTable"), {"supportsControllersDiscrimination": true, "overall": {"data": ["Total", 6200, 0, 0.0, 10.61225806451607, 1, 287, 6.0, 24.0, 31.0, 44.0, 78.32238504295098, 57.33771495231178, 18.419639120925975], "isController": false}, "titles": ["Label", "#Samples", "FAIL", "Error %", "Average", "Min", "Max", "Median", "90th pct", "95th pct", "99th pct", "Transactions/s", "Received", "Sent"], "items": [{"data": ["POST - Login", 1550, 0, 0.0, 5.3348387096774275, 1, 127, 4.0, 9.0, 12.0, 17.0, 19.96856561284172, 9.45776789280101, 4.855637536716395], "isController": false}, {"data": ["GET - Servicios", 1550, 0, 0.0, 6.405806451612891, 2, 41, 5.0, 11.0, 14.0, 22.49000000000001, 20.0, 31.26953125, 3.28125], "isController": false}, {"data": ["POST - Crear Reserva", 1550, 0, 0.0, 24.569677419354875, 8, 287, 21.0, 38.0, 43.0, 63.98000000000002, 20.273098252589723, 8.425444454980642, 7.528878435799675], "isController": false}, {"data": ["GET - Usuarios", 1550, 0, 0.0, 6.138709677419353, 2, 31, 5.0, 10.0, 13.0, 18.0, 20.003871717106538, 9.513560084209848, 3.2428151416403175], "isController": false}]}, function(index, item){
         switch(index){
             // Errors pct
             case 3:
@@ -217,7 +217,7 @@ $(document).ready(function() {
     }, [[0, 0]], 0, summaryTableHeader);
 
     // Create error table
-    createTable($("#errorsTable"), {"supportsControllersDiscrimination": false, "titles": ["Type of error", "Number of errors", "% in errors", "% in all samples"], "items": [{"data": ["409", 1, 100.0, 0.016129032258064516], "isController": false}]}, function(index, item){
+    createTable($("#errorsTable"), {"supportsControllersDiscrimination": false, "titles": ["Type of error", "Number of errors", "% in errors", "% in all samples"], "items": []}, function(index, item){
         switch(index){
             case 2:
             case 3:
@@ -228,7 +228,7 @@ $(document).ready(function() {
     }, [[1, 1]]);
 
         // Create top5 errors by sampler
-    createTable($("#top5ErrorsBySamplerTable"), {"supportsControllersDiscrimination": false, "overall": {"data": ["Total", 6200, 1, "409", 1, "", "", "", "", "", "", "", ""], "isController": false}, "titles": ["Sample", "#Samples", "#Errors", "Error", "#Errors", "Error", "#Errors", "Error", "#Errors", "Error", "#Errors", "Error", "#Errors"], "items": [{"data": [], "isController": false}, {"data": [], "isController": false}, {"data": ["POST - Crear Reserva", 1550, 1, "409", 1, "", "", "", "", "", "", "", ""], "isController": false}, {"data": [], "isController": false}]}, function(index, item){
+    createTable($("#top5ErrorsBySamplerTable"), {"supportsControllersDiscrimination": false, "overall": {"data": ["Total", 6200, 0, "", "", "", "", "", "", "", "", "", ""], "isController": false}, "titles": ["Sample", "#Samples", "#Errors", "Error", "#Errors", "Error", "#Errors", "Error", "#Errors", "Error", "#Errors", "Error", "#Errors"], "items": [{"data": [], "isController": false}, {"data": [], "isController": false}, {"data": [], "isController": false}, {"data": [], "isController": false}]}, function(index, item){
         return item;
     }, [[0, 0]], 0);
 
