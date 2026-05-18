@@ -7,7 +7,7 @@ import { ReservaUsuario } from './ReservaUsuario';
   providedIn: 'root'
 })
 export class TablaServiceService {
-  private urlEndpoint: string = "http://localhost:8080/autospark/reservas-con-usuarios";
+  private urlEndpoint: string = "/autospark/reservas-con-usuarios";
   private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
   constructor(private http: HttpClient) { }
 

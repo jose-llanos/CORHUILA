@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class RecuperarContraseniaService {
-  private urlEndpoint: string = "http://localhost:8080/autospark/recover-password";
+  private urlEndpoint: string = "/autospark/recover-password";
 
   constructor(private http: HttpClient) {}
 

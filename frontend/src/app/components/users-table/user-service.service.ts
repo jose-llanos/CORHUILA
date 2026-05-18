@@ -9,7 +9,7 @@ import { UsersTable } from './UsersTable';
 })
 export class UserServiceService {
 
-  private urlEndpoint: string = 'http://localhost:8080/autospark/users';
+  private urlEndpoint: string = '/autospark/users';
 
   private httpHeaders = new HttpHeaders({
     'Content-Type': 'application/json'

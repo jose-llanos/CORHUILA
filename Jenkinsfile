@@ -154,7 +154,7 @@ pipeline {
                     docker exec autospark_mysql mysql -uroot -proot autospark -e "SELECT id_servicios, name_service FROM services;"
 
                     echo "Validando servicios desde backend:"
-                    curl http://autospark_backend:8080/autospark/service || true
+                    curl -H "Host: localhost:8080" http://autospark_backend:8080/autospark/service || true
                 '''
             }
         }

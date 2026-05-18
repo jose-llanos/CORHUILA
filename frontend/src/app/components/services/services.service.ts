@@ -7,7 +7,7 @@ import { Observable } from "rxjs";
     providedIn: 'root'
 })
 export class ServicesService{
-    private urlEndpoint:string="http://localhost:8080/autospark/service"
+    private urlEndpoint:string="/autospark/service"
     private httpHeaders = new HttpHeaders({'Content-Type':'application/json'})
     constructor(private http : HttpClient) {}
 
