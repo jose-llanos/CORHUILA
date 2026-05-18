@@ -1,0 +1,92 @@
+/* Estilos globales para la barra de navegación */
+nav {
+    background-color: #016fff; /* Color de fondo de la barra (amarillo) */
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* Sombra más intensa y difusa para dar profundidad */
+    padding: 12px 20px; /* Espaciado más generoso */
+    position: fixed; /* Fija la barra en la parte superior */
+    top: 0; /* Asegura que esté en la parte superior */
+    left: 0; /* Asegura que esté alineada a la izquierda */
+    width: 100%; /* Asegura que ocupe todo el ancho */
+    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+    display: flex;
+    justify-content: space-between; /* Distribuye los elementos */
+    align-items: center; /* Centra verticalmente */
+    transition: background-color 0.3s ease-in-out; /* Suaviza el cambio de color */
+}
+
+/* Efecto al hacer hover sobre la barra de navegación */
+nav:hover {
+    background-color: #016fff; /* Cambio de color de fondo cuando se pasa el mouse */
+}
+
+/* Agregar un margen superior al contenido para que no quede debajo de la barra de navegación */
+body {
+    padding-top: 90px; /* Ajusta el valor según el alto de tu barra de navegación */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuentes modernas */
+}
+
+/* Estilo del texto del título en la barra */
+.navbar-brand {
+    font-size: 1.6rem; /* Tamaño de la fuente del título */
+    color: #ffffff; /* Color blanco */
+    font-weight: 600; /* Hacer el texto en negrita pero más suave */
+    text-transform: uppercase; /* Convertir a mayúsculas */
+    letter-spacing: 1.2px; /* Espaciado entre letras */
+    transition: color 0.3s ease-in-out, transform 0.3s ease-in-out; /* Suaviza transición de color y transformaciones */
+}
+
+.navbar-brand:hover {
+    color: #020100; /* Color amarillo al hacer hover sobre el título */
+    transform: scale(1.05); /* Efecto de aumento al hacer hover */
+}
+
+/* Estilos para los enlaces en la barra de navegación */
+.navbar-nav .nav-item .nav-link {
+    font-size: 1.1rem; /* Tamaño de la fuente de los enlaces */
+    color: #ffffff; /* Color blanco por defecto */
+    text-transform: uppercase; /* Enlaces en mayúsculas */
+    padding: 10px 18px; /* Espaciado alrededor de los enlaces */
+    transition: all 0.3s ease-in-out; /* Transición suave */
+    font-weight: 500; /* Peso de fuente más elegante */
+    border-radius: 25px; /* Bordes redondeados */
+}
+
+.navbar-nav .nav-item .nav-link:hover {
+    color: #000000; /* Cambio a verde cuando pasa el mouse */
+    background-color: #ffffff; /* Fondo blanco al hacer hover */
+    border-radius: 25px; /* Bordes redondeados */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Agrega sombra sutil al hacer hover */
+}
+
+/* Estilo para los enlaces activos */
+.navbar-nav .nav-item .nav-link.active {
+    font-weight: bold; /* Texto en negrita para el enlace activo */
+    color: #4CAF50; /* Color verde para el enlace activo */
+    border-bottom: 4px solid #4CAF50; /* Línea más gruesa debajo del enlace activo */
+    padding-bottom: 12px; /* Añade espacio extra debajo */
+}
+
+/* Estilos del botón de menú en dispositivos móviles */
+.navbar-toggler {
+    border: none; /* Quitar el borde del botón */
+    background: none; /* Quitar el fondo del botón */
+}
+
+.navbar-toggler-icon {
+    background-color: #ffffff; /* Icono del botón de menú en blanco */
+    border-radius: 5px; /* Bordes redondeados */
+}
+
+/* Estilos cuando el menú está colapsado */
+.collapse.navbar-collapse {
+    display: flex;
+    justify-content: flex-end; /* Alinea los elementos del menú a la derecha */
+    gap: 15px; /* Espaciado entre los enlaces */
+}
+
+/* Estilos para el contenedor de los enlaces */
+.navbar-nav {
+    margin-left: auto; /* Alinea los enlaces a la derecha */
+    display: flex;
+    gap: 20px; /* Espaciado entre los elementos */
+}

@@ -1,0 +1,90 @@
+/* Estilo general del carrito */
+.card {
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+}
+
+.card-header {
+    background-color: #016fff;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2em;
+    padding: 15px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Estilo de la tabla */
+table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    vertical-align: middle;
+}
+
+/* Estilo de las imágenes */
+table td img {
+    border-radius: 5px;
+    object-fit: cover;
+    width: 50px;
+    height: 50px;
+}
+
+/* Botones */
+.btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 0.9em;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    color: white;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+}
+
+/* Total del carrito */
+.mt-3 h5 {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-top: 20px;
+    color: #28a745;
+}
+
+/* Mensaje si el carrito está vacío */
+.alert-info {
+    font-size: 1.1em;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Estilo del campo de cantidad */
+input[type="number"] {
+    width: 80px;
+    text-align: center;
+    margin-right: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
