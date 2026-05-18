@@ -254,8 +254,9 @@ stage('Verificar reportes') {
             echo "Reportes generados:"
             find $HOST_PROJECT_DIR/reports -maxdepth 4 -type f | head -100
         '''
+        }
     }
-} 
+}
 
     post {
         success {
