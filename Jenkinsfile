@@ -159,28 +159,32 @@ pipeline {
             }
         }
 
-       stage('Pruebas de rendimiento JMeter') {
-    steps {
-        sh '''
-            echo "Limpiando reportes anteriores..."
+    stage('Pruebas de rendimiento JMeter') {
+        steps {
+            sh '''
+                echo "Limpiando reportes anteriores de JMeter..."
 
-            rm -rf $HOST_PROJECT_DIR/reports/jmeter
-            mkdir -p $HOST_PROJECT_DIR/reports/jmeter
+                mkdir -p $HOST_PROJECT_DIR/reports/jmeter
 
-            NETWORK=$(docker inspect autospark_backend --format '{{range $k,$v := .NetworkSettings.Networks}}{{$k}}{{end}}')
+                docker run --rm -u root \
+                -v $HOST_PROJECT_DIR/reports/jmeter:/reports \
+                alpine sh -c "rm -rf /reports/*"
 
-            echo "Red Docker detectada: $NETWORK"
+                NETWORK=$(docker inspect autospark_backend --format '{{range $k,$v := .NetworkSettings.Networks}}{{$k}}{{end}}')
 
-            docker run --rm --network $NETWORK \
-              -v $HOST_PROJECT_DIR/tests/jmeter:/tests \
-              -v $HOST_PROJECT_DIR/reports/jmeter:/reports \
-              justb4/jmeter \
-              -n -t $JMETER_TEST \
-              -l /reports/resultados.jtl \
-              -e -o /reports/html
-        '''
+                echo "Red Docker detectada: $NETWORK"
+
+                docker run --rm --network $NETWORK \
+                -u $(id -u):$(id -g) \
+                -v $HOST_PROJECT_DIR/tests/jmeter:/tests \
+                -v $HOST_PROJECT_DIR/reports/jmeter:/reports \
+                justb4/jmeter \
+                -n -t $JMETER_TEST \
+                -l /reports/resultados.jtl \
+                -e -o /reports/html
+            '''
+        }
     }
-}
 
         stage('Pruebas funcionales Selenium') {
             steps {
@@ -197,32 +201,46 @@ pipeline {
             }
         }
 
-       stage('Verificar reportes') {
-    steps {
-        sh '''
-            echo "Preparando carpeta de reportes finales..."
+        stage('Verificar reportes') {
+            steps {
+                sh '''
+                    echo "Preparando carpeta de reportes finales..."
 
-            mkdir -p $HOST_PROJECT_DIR/reports/jacoco
-            mkdir -p $HOST_PROJECT_DIR/reports/selenium
-            mkdir -p $HOST_PROJECT_DIR/reports/jmeter
+                    mkdir -p $HOST_PROJECT_DIR/reports/jacoco
+                    mkdir -p $HOST_PROJECT_DIR/reports/selenium
+                    mkdir -p $HOST_PROJECT_DIR/reports/jmeter
 
-            echo "Copiando reporte JaCoCo..."
-            rm -rf $HOST_PROJECT_DIR/reports/jacoco/*
-            cp -r $BACKEND_DIR/target/site/jacoco/* $HOST_PROJECT_DIR/reports/jacoco/ || true
+                    echo "Limpiando JaCoCo y Selenium..."
+                    docker run --rm -u root \
+                    -v $HOST_PROJECT_DIR/reports:/reports \
+                    alpine sh -c "rm -rf /reports/jacoco/* /reports/selenium/*"
 
-            echo "Copiando reportes Selenium..."
-            rm -rf $HOST_PROJECT_DIR/reports/selenium/*
-            cp -r $PROJECT_DIR/tests/selenium/target/surefire-reports $HOST_PROJECT_DIR/reports/selenium/ || true
-            cp -r $PROJECT_DIR/tests/selenium/test-output $HOST_PROJECT_DIR/reports/selenium/ || true
+                    echo "Copiando reporte JaCoCo..."
+                    if [ -d "$BACKEND_DIR/target/site/jacoco" ]; then
+                        cp -r $BACKEND_DIR/target/site/jacoco/* $HOST_PROJECT_DIR/reports/jacoco/
+                    else
+                        echo "No existe reporte JaCoCo en $BACKEND_DIR/target/site/jacoco"
+                        exit 1
+                    fi
 
-            echo "Reportes generados:"
-            ls -la $HOST_PROJECT_DIR/reports || true
-            ls -la $HOST_PROJECT_DIR/reports/jmeter || true
-            ls -la $HOST_PROJECT_DIR/reports/jacoco || true
-            ls -la $HOST_PROJECT_DIR/reports/selenium || true
-        '''
-    }
-}
+                    echo "Copiando reportes Selenium..."
+                    if [ -d "$PROJECT_DIR/tests/selenium/target/surefire-reports" ]; then
+                        cp -r $PROJECT_DIR/tests/selenium/target/surefire-reports $HOST_PROJECT_DIR/reports/selenium/
+                    else
+                        echo "No existe surefire-reports de Selenium"
+                    fi
+
+                    if [ -d "$PROJECT_DIR/tests/selenium/test-output" ]; then
+                        cp -r $PROJECT_DIR/tests/selenium/test-output $HOST_PROJECT_DIR/reports/selenium/
+                    else
+                        echo "No existe test-output de Selenium"
+                    fi
+
+                    echo "Reportes generados:"
+                    find $HOST_PROJECT_DIR/reports -maxdepth 3 -type f | head -50
+                '''
+            }
+        }
     }
 
     post {
