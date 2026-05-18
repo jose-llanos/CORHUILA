@@ -105,7 +105,29 @@ public class ReservationPage extends BasePage {
             System.out.println(option.getText());
         }
 
-        serviceSelect.selectByVisibleText(serviceType);
+        boolean selected = false;
+
+for (WebElement option : serviceSelect.getOptions()) {
+
+    String optionText = option.getText().trim();
+
+    System.out.println("Comparando con: " + optionText);
+
+    if (optionText.equalsIgnoreCase(serviceType.trim())) {
+
+        option.click();
+
+        selected = true;
+
+        break;
+    }
+}
+
+if (!selected) {
+    throw new RuntimeException(
+            "No se encontró el servicio: " + serviceType
+    );
+}
 
         System.out.println("Servicio seleccionado: " + serviceType);
 

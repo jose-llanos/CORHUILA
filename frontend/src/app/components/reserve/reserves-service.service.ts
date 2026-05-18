@@ -10,7 +10,7 @@ import { Services } from '../services/Service';
 })
 export class ReservesServiceService {
   private urlEndpoint: string = '/autospark/reserva';
-  private tiposServicioEndpoint: string = 'http://localhost:8080/autospark/service';
+  private tiposServicioEndpoint: string = '/autospark/service';
   private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(private http: HttpClient) {}
