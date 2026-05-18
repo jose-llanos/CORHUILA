@@ -57,13 +57,16 @@ pipeline {
                 }
             }
         }
-
         stage('Pruebas unitarias JUnit + JaCoCo') {
             steps {
                 dir("${BACKEND_DIR}") {
                     sh '''
-                        mvn test jacoco:report \
-                          $MAVEN_OPTS_RETRY
+                        echo "Ejecutando unitarias y JaCoCo..."
+                        mvn clean test jacoco:report $MAVEN_OPTS_RETRY
+
+                        echo "Contenido target/site:"
+                        ls -la target/site || true
+                        ls -la target/site/jacoco || true
                     '''
                 }
             }
@@ -190,11 +193,19 @@ pipeline {
             steps {
                 dir("${PROJECT_DIR}/tests/selenium") {
                     sh '''
+                        echo "Ejecutando Selenium..."
+                        ls -la
+
                         if [ -f pom.xml ]; then
-                            mvn test $MAVEN_OPTS_RETRY
+                            mvn clean test $MAVEN_OPTS_RETRY
+
+                            echo "Contenido target:"
+                            ls -la target || true
+                            ls -la target/surefire-reports || true
+                            ls -la test-output || true
                         else
                             echo "No se encontro pom.xml en tests/selenium"
-                            ls -la
+                            exit 1
                         fi
                     '''
                 }
@@ -213,35 +224,41 @@ pipeline {
                     echo "Limpiando JaCoCo y Selenium..."
                     docker run --rm -u root \
                     -v $HOST_PROJECT_DIR/reports:/reports \
-                    alpine sh -c "rm -rf /reports/jacoco/* /reports/selenium/*"
+                    alpine sh -c "rm -rf /reports/jacoco/* /reports/selenium/* && chmod -R 777 /reports"
 
-                    echo "Copiando reporte JaCoCo..."
-                    if [ -d "$BACKEND_DIR/target/site/jacoco" ]; then
+                    echo "Verificando origen JaCoCo..."
+                    ls -la $BACKEND_DIR/target/site || true
+                    ls -la $BACKEND_DIR/target/site/jacoco || true
+
+                    if [ -f "$BACKEND_DIR/target/site/jacoco/index.html" ]; then
                         cp -r $BACKEND_DIR/target/site/jacoco/* $HOST_PROJECT_DIR/reports/jacoco/
                     else
-                        echo "No existe reporte JaCoCo en $BACKEND_DIR/target/site/jacoco"
+                        echo "ERROR: No se genero JaCoCo"
                         exit 1
                     fi
 
-                    echo "Copiando reportes Selenium..."
+                    echo "Verificando origen Selenium..."
+                    ls -la $PROJECT_DIR/tests/selenium/target || true
+                    ls -la $PROJECT_DIR/tests/selenium/target/surefire-reports || true
+                    ls -la $PROJECT_DIR/tests/selenium/test-output || true
+
                     if [ -d "$PROJECT_DIR/tests/selenium/target/surefire-reports" ]; then
                         cp -r $PROJECT_DIR/tests/selenium/target/surefire-reports $HOST_PROJECT_DIR/reports/selenium/
                     else
-                        echo "No existe surefire-reports de Selenium"
+                        echo "ADVERTENCIA: No existe surefire-reports de Selenium"
                     fi
 
                     if [ -d "$PROJECT_DIR/tests/selenium/test-output" ]; then
                         cp -r $PROJECT_DIR/tests/selenium/test-output $HOST_PROJECT_DIR/reports/selenium/
                     else
-                        echo "No existe test-output de Selenium"
+                        echo "ADVERTENCIA: No existe test-output de Selenium"
                     fi
 
                     echo "Reportes generados:"
-                    find $HOST_PROJECT_DIR/reports -maxdepth 3 -type f | head -50
+                    find $HOST_PROJECT_DIR/reports -maxdepth 4 -type f | head -100
                 '''
             }
         }
-    }
 
     post {
         success {
