@@ -62,9 +62,13 @@ pipeline {
                 dir("${BACKEND_DIR}") {
                     sh '''
                         echo "Ejecutando unitarias y JaCoCo..."
-                        mvn clean test jacoco:report $MAVEN_OPTS_RETRY
+                        mvn test jacoco:report $MAVEN_OPTS_RETRY
 
-                        echo "Contenido target/site:"
+                        echo "Reconstruyendo JAR para Docker..."
+                        mvn package -DskipTests $MAVEN_OPTS_RETRY
+
+                        echo "Validando JAR y JaCoCo:"
+                        ls -la target/*.jar
                         ls -la target/site || true
                         ls -la target/site/jacoco || true
                     '''
