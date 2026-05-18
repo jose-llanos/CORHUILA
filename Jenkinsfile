@@ -137,13 +137,17 @@ stage('Preparar datos de prueba') {
 stage('Pruebas de rendimiento JMeter') {
     steps {
         sh '''
-            rm -rf $HOST_PROJECT_DIR/reports/jmeter/html
-            rm -f $HOST_PROJECT_DIR/reports/jmeter/resultados.jtl
+            echo "Limpiando reportes anteriores..."
+
+            sudo rm -rf $HOST_PROJECT_DIR/reports/jmeter/html
+            sudo rm -f $HOST_PROJECT_DIR/reports/jmeter/resultados.jtl
+
             mkdir -p $HOST_PROJECT_DIR/reports/jmeter
 
             NETWORK=$(docker inspect autospark_backend --format '{{range $k,$v := .NetworkSettings.Networks}}{{$k}}{{end}}')
 
             docker run --rm \
+              --user $(id -u):$(id -g) \
               --network "$NETWORK" \
               -v $HOST_PROJECT_DIR/tests/jmeter:/tests \
               -v $HOST_PROJECT_DIR/reports/jmeter:/reports \
@@ -153,6 +157,9 @@ stage('Pruebas de rendimiento JMeter') {
               -l /reports/resultados.jtl \
               -e \
               -o /reports/html
+
+            echo "Reporte JMeter generado en:"
+            echo "$HOST_PROJECT_DIR/reports/jmeter/html/index.html"
         '''
     }
 }
