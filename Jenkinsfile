@@ -8,7 +8,7 @@ pipeline {
         FRONTEND_DIR = '/workspace/frontend'
         DOCKER_DIR = '/workspace/docker'
         JMETER_TEST = '/tests/AutoSpark_LoadTest.jmx'
-        SONAR_HOST_URL = 'http://localhost:9000'
+        SONAR_HOST_URL = 'http://host.docker.internal:9000'
         MAVEN_OPTS_RETRY = '-Dmaven.wagon.http.retryHandler.count=5 -Dmaven.wagon.httpconnectionManager.ttlSeconds=120'
     }
 
