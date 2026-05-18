@@ -1,0 +1,41 @@
+<div class="card bg-light mb-7 my-5">
+    <p><p>
+    <div class="card-header">Inventario</div>
+    <div class="card-body">
+      <h5 class="card-title">Listado de Inventario</h5>
+      <button class="btn btn-rounded btn-primary" type="button" [routerLink]="['/producto/form']">Agregar Producto</button>
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Imagen</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let producto of productos">
+            <td>{{producto.id}}</td>
+            <td>{{producto.nombre}}</td>
+            <td>{{producto.descripcion}}</td>
+            <td>{{producto.precio | currency}}</td>
+            <td>{{producto.cantidad}}</td>
+            <td><img [src]="producto.imagenUrl" alt="{{producto.nombre}}" width="50"></td>
+            <td>
+              <button class="btn btn-primary" [routerLink]="['/producto/form', producto.id]">
+                Editar
+              </button>
+              <button class="btn btn-danger" (click)="eliminarProducto(producto)">
+                Eliminar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+    
