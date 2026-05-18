@@ -2,65 +2,215 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8"><title>Citas</title>
+    <meta charset="UTF-8">
+    <title>Citas</title>
+
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; background: #f0f4f8; }
-        .header { background: #1565C0; color: white; padding: 16px 30px; display: flex; justify-content: space-between; align-items: center; }
-        .header a { color: white; text-decoration: none; font-size: 13px; }
-        .content { padding: 30px; }
-        .btn-new { background: #28a745; color: white; padding: 10px 18px; border-radius: 6px; text-decoration: none; font-size: 14px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-        th { background: #1565C0; color: white; padding: 12px; text-align: left; font-size: 14px; }
-        td { padding: 11px 12px; border-bottom: 1px solid #eee; font-size: 14px; }
-        .badge { padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; }
-        .PENDIENTE { background: #fff3e0; color: #e65100; }
-        .EN_ATENCION { background: #e3f2fd; color: #1565C0; }
-        .FINALIZADA { background: #e8f5e9; color: #2e7d32; }
-        .btn-edit { background: #f57c00; color: white; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 12px; }
-        .btn-del { background: #e53935; color: white; padding: 5px 10px; border-radius: 4px; border: none; cursor: pointer; font-size: 12px; }
-        select.estado { font-size: 12px; padding: 4px; border-radius: 4px; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f0f4f8;
+        }
+
+        .header {
+            background: #1565C0;
+            color: white;
+            padding: 16px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header a {
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .btn-new {
+            background: #28a745;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        th {
+            background: #1565C0;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 11px 12px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        .badge {
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .PENDIENTE {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .EN_ATENCION {
+            background: #e3f2fd;
+            color: #1565C0;
+        }
+
+        .FINALIZADA {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .btn-edit {
+            background: #f57c00;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .btn-del {
+            background: #e53935;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        select.estado {
+            font-size: 12px;
+            padding: 4px;
+            border-radius: 4px;
+        }
     </style>
 </head>
+
 <body>
+
 <div class="header">
     <h2>📅 Gestión de Citas</h2>
-    <a href="/">← Inicio</a>
+    <a href="/">🏠 Inicio</a>
 </div>
+
 <div class="content">
-    <a href="/citas/nueva" class="btn-new">+ Nueva Cita</a>
+
+    <a href="/citas/nueva" class="btn-new">
+        + Nueva Cita
+    </a>
+
     <table>
         <thead>
-        <tr><th>ID</th><th>Mascota</th><th>Fecha</th><th>Motivo</th><th>Estado</th><th>Acciones</th></tr>
+        <tr>
+            <th>ID</th>
+            <th>Mascota</th>
+            <th>Fecha</th>
+            <th>Motivo</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
         </thead>
+
         <tbody>
+
         <tr th:each="c : ${listaCitas}">
+
             <td th:text="${c.id}"></td>
+
             <td th:text="${c.mascota != null ? c.mascota.nombre : '-'}"></td>
+
             <td th:text="${#temporals.format(c.fecha, 'dd/MM/yyyy HH:mm')}"></td>
+
             <td th:text="${c.motivo}"></td>
-            <td><span th:class="'badge ' + ${c.estado}" th:text="${c.estado}"></span></td>
+
             <td>
-                <!-- ✅ CORRECCIÓN: th:if movido al input, no al form -->
-                <form th:action="@{'/citas/' + ${c.id} + '/estado'}" method="post" style="display:inline">
-                    <input type="hidden" th:if="${_csrf != null}"
-                           th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                    <select name="estado" class="estado" onchange="this.form.submit()">
-                        <option th:value="PENDIENTE" th:selected="${c.estado == 'PENDIENTE'}">Pendiente</option>
-                        <option th:value="EN_ATENCION" th:selected="${c.estado == 'EN_ATENCION'}">En Atención</option>
-                        <option th:value="FINALIZADA" th:selected="${c.estado == 'FINALIZADA'}">Finalizada</option>
+                <span th:class="'badge ' + ${c.estado}"
+                      th:text="${c.estado}">
+                </span>
+            </td>
+
+            <td>
+
+                <!-- Cambiar estado -->
+                <form th:action="@{'/citas/' + ${c.id} + '/estado'}"
+                      method="post"
+                      style="display:inline">
+
+                    <select name="estado"
+                            class="estado"
+                            onchange="this.form.submit()">
+
+                        <option th:value="PENDIENTE"
+                                th:selected="${c.estado == 'PENDIENTE'}">
+                            Pendiente
+                        </option>
+
+                        <option th:value="EN_ATENCION"
+                                th:selected="${c.estado == 'EN_ATENCION'}">
+                            En Atención
+                        </option>
+
+                        <option th:value="FINALIZADA"
+                                th:selected="${c.estado == 'FINALIZADA'}">
+                            Finalizada
+                        </option>
+
                     </select>
                 </form>
-                <a th:href="@{'/citas/' + ${c.id} + '/editar'}" class="btn-edit">Editar</a>
-                <!-- ✅ CORRECCIÓN: th:if movido al input, no al form -->
-                <form th:action="@{'/citas/' + ${c.id} + '/eliminar'}" method="post" style="display:inline">
-                    <input type="hidden" th:if="${_csrf != null}"
-                           th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                    <button type="submit" class="btn-del" onclick="return confirm('¿Eliminar cita?')">Eliminar</button>
+
+                <!-- Editar -->
+                <a th:href="@{'/citas/' + ${c.id} + '/editar'}"
+                   class="btn-edit">
+                    Editar
+                </a>
+
+                <!-- Eliminar -->
+                <form th:action="@{'/citas/' + ${c.id} + '/eliminar'}"
+                      method="post"
+                      style="display:inline">
+
+                    <button type="submit"
+                            class="btn-del"
+                            onclick="return confirm('¿Eliminar cita?')">
+                        Eliminar
+                    </button>
+
                 </form>
+
             </td>
         </tr>
+
         </tbody>
     </table>
+
 </div>
+
 </body>
 </html>

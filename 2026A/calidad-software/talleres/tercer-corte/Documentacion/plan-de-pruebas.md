@@ -109,16 +109,14 @@ Este Plan de Pruebas cubre la validación integral del **Sistema de Gestión de 
 ### 4.1 Enfoque de prueba
 
 Se aplica un enfoque de **pruebas en capas**, siguiendo la pirámide de testing:
+      /\
+     /UI\ ← Selenium (5 casos mínimo)
+    /----\
+   / Int  \ ← Integración Spring (opcional)
+  /--------\
+ / Unitarias\ ← JUnit + Mockito (80% cobertura)
+/____________\
 
-```
-        /\
-       /UI\        ← Selenium (5 casos mínimo)
-      /----\
-     /  Int \      ← Integración Spring (opcional)
-    /--------\
-   / Unitarias\   ← JUnit + Mockito (80% cobertura)
-  /____________\
-```
 
 ### 4.2 Niveles de prueba
 
@@ -142,7 +140,7 @@ Se aplica un enfoque de **pruebas en capas**, siguiendo la pirámide de testing:
 
 - **Objetivo:** Evaluar el comportamiento del sistema bajo carga
 - **Herramienta:** Apache JMeter 5.6
-- **Escenarios:** Normal (5 usuarios), Carga (20 usuarios), Estrés (50 usuarios)
+- **Escenarios:** Normal (5 usuarios), Carga (30 usuarios), Estrés (100 usuarios)
 - **Métricas objetivo:**
   - Tiempo de respuesta promedio < 2 segundos (escenario normal)
   - Tasa de error < 1% (escenario normal y carga)
@@ -202,15 +200,17 @@ Se aplica un enfoque de **pruebas en capas**, siguiendo la pirámide de testing:
 
 | ID | Escenario | Usuarios | Ramp-up | Iteraciones | Métricas a medir |
 |----|-----------|----------|---------|-------------|-----------------|
-| JM-01 | Normal | 5 | 10 s | 3 | Tiempo respuesta, throughput |
-| JM-02 | Carga | 20 | 30 s | 5 | Tiempo respuesta, % error |
-| JM-03 | Estrés | 50 | 60 s | 5 | Punto de saturación, errores |
+| JM-01 | Normal | 5 | 5 s | 10 | Tiempo respuesta, throughput |
+| JM-02 | Carga | 30 | 15 s | 20 | Tiempo respuesta, % error |
+| JM-03 | Estrés | 100 | 30 s | 50 | Punto de saturación, errores |
 
 **Endpoints evaluados en cada escenario:**
-- `GET /` — Página principal
+- `GET /login` — Obtener formulario de autenticación
+- `POST /login` — Envío de credenciales (admin/admin123)
 - `GET /duenios` — Listado de dueños
 - `GET /mascotas` — Listado de mascotas
 - `GET /citas` — Listado de citas
+- `GET /tratamientos` — Listado de tratamientos
 
 ---
 
@@ -226,12 +226,9 @@ Se aplica un enfoque de **pruebas en capas**, siguiendo la pirámide de testing:
 | Baja | Defecto cosmético o menor | Próxima versión |
 
 ### 6.2 Ciclo de vida del defecto
-
-```
 Nuevo → Asignado → En corrección → Verificación → Cerrado
-                                 ↓
-                              Rechazado → Reabierto
-```
+↓
+Rechazado → Reabierto
 
 ---
 
@@ -290,7 +287,7 @@ Nuevo → Asignado → En corrección → Verificación → Cerrado
 | Código de pruebas JUnit | `src/test/java/.../service/` | Equipo |
 | Reporte JaCoCo | `target/site/jacoco/` | Maven |
 | Código Selenium + POM | `src/test/java/.../selenium/` | Equipo |
-| Plan JMeter | `src/test/jmeter/*.jmx` | Equipo |
+| Plan JMeter | `tests/jmeter/*.jmx` | Equipo |
 | Reporte JMeter HTML | `reports/jmeter/` | JMeter |
 | Reporte SonarQube | `reports/sonarqube/` / Dashboard | SonarQube |
 | Este plan de pruebas | `docs/plan-de-pruebas.md` | Equipo |

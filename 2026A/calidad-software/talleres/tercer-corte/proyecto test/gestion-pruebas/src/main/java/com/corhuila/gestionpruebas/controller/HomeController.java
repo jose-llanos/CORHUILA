@@ -10,4 +10,10 @@ public class HomeController {
     public String index() {
         return "index";
     }
+
+    // ✅ Método para mostrar el formulario de login
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
 }
