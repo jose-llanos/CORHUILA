@@ -50,7 +50,7 @@ pipeline {
             steps {
                 dir("${BACKEND_DIR}") {
                     sh '''
-                        mvn -U clean package \
+                        mvn clean package \
                           -DskipTests \
                           $MAVEN_OPTS_RETRY
                     '''
@@ -62,7 +62,7 @@ pipeline {
             steps {
                 dir("${BACKEND_DIR}") {
                     sh '''
-                        mvn -U test jacoco:report \
+                        mvn test jacoco:report \
                           $MAVEN_OPTS_RETRY
                     '''
                 }
@@ -74,7 +74,7 @@ pipeline {
                 dir("${BACKEND_DIR}") {
                     withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                         sh '''
-                            mvn -U sonar:sonar \
+                            mvn sonar:sonar \
                               -Dsonar.projectKey=autospark \
                               -Dsonar.projectName=autospark \
                               -Dsonar.host.url=$SONAR_HOST_URL \
@@ -189,7 +189,7 @@ pipeline {
                 dir("${PROJECT_DIR}/tests/selenium") {
                     sh '''
                         if [ -f pom.xml ]; then
-                            mvn -U test $MAVEN_OPTS_RETRY
+                            mvn test $MAVEN_OPTS_RETRY
                         else
                             echo "No se encontro pom.xml en tests/selenium"
                             ls -la
