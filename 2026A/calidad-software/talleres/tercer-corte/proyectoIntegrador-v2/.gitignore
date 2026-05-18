@@ -7,3 +7,7 @@ backend/target/surefire-reports/
 
 # Archivos de SonarQube local
 .sonar/
+
+# Resultados de JMeter (binarios y JTL grandes)
+tests/jmeter/results/
+tests/jmeter/target/

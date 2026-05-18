@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.medicita</groupId>
+    <artifactId>medicita-jmeter</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+    <name>MediCita — Pruebas de Rendimiento JMeter</name>
+
+    <properties>
+        <java.version>21</java.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <!-- URL base — sobreescribir con -Dapp.host=... -Dapp.port=... -->
+        <app.host>localhost</app.host>
+        <app.port>8080</app.port>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.lazerycode.jmeter</groupId>
+                <artifactId>jmeter-maven-plugin</artifactId>
+                <version>3.8.0</version>
+                <executions>
+                    <execution>
+                        <id>configuration</id>
+                        <goals>
+                            <goal>configure</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jmeter-tests</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jmeter</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- Leer el JMX desde la raíz del módulo (no src/test/jmeter) -->
+                    <testFilesDirectory>${project.basedir}</testFilesDirectory>
+                    <testFilesIncluded>
+                        <jMeterTestFile>medicita-performance-plan.jmx</jMeterTestFile>
+                    </testFilesIncluded>
+                    <!-- Resultados en tests/jmeter/results/ (ignorados por git) -->
+                    <resultsDirectory>${project.basedir}/results</resultsDirectory>
+                    <generateReports>true</generateReports>
+                    <!-- Variables que sobreescriben los defaults del JMX -->
+                    <propertiesUser>
+                        <HOST>${app.host}</HOST>
+                        <PORT>${app.port}</PORT>
+                    </propertiesUser>
+                    <!-- No fallar el build si hay errores HTTP (queremos ver los resultados) -->
+                    <ignoreResultFailures>true</ignoreResultFailures>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

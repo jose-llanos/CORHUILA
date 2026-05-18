@@ -1,0 +1,145 @@
+name: CI — MediCita QA Pipeline
+
+on:
+  push:
+    branches: [grupo11]
+    paths:
+      - '2026A/calidad-software/talleres/tercer-corte/proyectoIntegrador-v2/**'
+      - '.github/workflows/ci-medicita.yml'
+
+# Ruta base del proyecto dentro del repositorio
+env:
+  PROJECT: 2026A/calidad-software/talleres/tercer-corte/proyectoIntegrador-v2
+
+jobs:
+
+  # ══════════════════════════════════════════════════════════════
+  # JOB 1 — Pruebas unitarias + cobertura JaCoCo
+  # Sin dependencias externas; corre en todo push/PR
+  # ══════════════════════════════════════════════════════════════
+  unit-tests:
+    name: "Unit Tests & JaCoCo"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java 21 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Ejecutar tests unitarios y generar reporte de cobertura
+        working-directory: ${{ env.PROJECT }}/backend
+        run: |
+          chmod +x mvnw
+          ./mvnw verify
+
+      - name: Publicar reporte JaCoCo como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-report
+          path: ${{ env.PROJECT }}/backend/target/site/jacoco/
+          retention-days: 7
+
+  # ══════════════════════════════════════════════════════════════
+  # JOB 2 — Pruebas funcionales Selenium WebDriver (TC01–TC07)
+  # Requiere stack completo en Docker; solo corre si Job 1 pasa
+  # ══════════════════════════════════════════════════════════════
+  selenium-tests:
+    name: "Selenium Functional Tests"
+    runs-on: ubuntu-latest
+    needs: unit-tests
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java 21 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Levantar stack completo con Docker Compose
+        working-directory: ${{ env.PROJECT }}
+        run: docker compose -f docker/docker-compose.yml up -d --build
+
+      - name: Esperar backend (GET /api/public/specialties → HTTP 200)
+        run: |
+          echo "Esperando que el backend esté listo..."
+          timeout 120 bash -c \
+            'until curl -sf http://localhost:8080/api/public/specialties > /dev/null; do
+               sleep 3
+               echo "  backend no listo aún, reintentando..."
+             done'
+          echo "Backend listo."
+
+      - name: Esperar frontend (login.html → HTTP 200)
+        run: |
+          echo "Esperando que el frontend esté listo..."
+          timeout 60 bash -c \
+            'until curl -sf http://localhost/pages/auth/login.html > /dev/null; do
+               sleep 2
+             done'
+          echo "Frontend listo."
+
+      - name: Ejecutar pruebas Selenium (TC01–TC07)
+        working-directory: ${{ env.PROJECT }}/tests/selenium
+        run: mvn test -Dapp.url=http://localhost
+
+      - name: Detener servicios
+        if: always()
+        working-directory: ${{ env.PROJECT }}
+        run: docker compose -f docker/docker-compose.yml down -v
+
+  # ══════════════════════════════════════════════════════════════
+  # JOB 3 — Pruebas de rendimiento con JMeter (3 escenarios)
+  # Requiere backend en Docker; corre en paralelo con Job 2
+  # ══════════════════════════════════════════════════════════════
+  performance-tests:
+    name: "JMeter Performance Tests"
+    runs-on: ubuntu-latest
+    needs: unit-tests
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java 21 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Levantar stack completo con Docker Compose
+        working-directory: ${{ env.PROJECT }}
+        run: docker compose -f docker/docker-compose.yml up -d --build
+
+      - name: Esperar backend
+        run: |
+          echo "Esperando backend..."
+          timeout 120 bash -c \
+            'until curl -sf http://localhost:8080/api/public/specialties > /dev/null; do
+               sleep 3
+             done'
+          echo "Backend listo."
+
+      - name: Ejecutar plan JMeter (Normal → Carga → Estrés)
+        working-directory: ${{ env.PROJECT }}/tests/jmeter
+        run: mvn verify
+
+      - name: Publicar resultados JMeter como artefacto
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jmeter-results
+          path: ${{ env.PROJECT }}/tests/jmeter/results/
+          retention-days: 7
+
+      - name: Detener servicios
+        if: always()
+        working-directory: ${{ env.PROJECT }}
+        run: docker compose -f docker/docker-compose.yml down -v
