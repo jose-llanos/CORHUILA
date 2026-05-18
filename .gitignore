@@ -106,7 +106,7 @@ failsafe-reports/
 # =========================
 # REPORTS
 # =========================
-reports/
+
 # SOLO temporales/cache
 reports/tmp/
 reports/cache/
