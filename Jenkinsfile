@@ -8,7 +8,8 @@ pipeline {
         FRONTEND_DIR = '/workspace/frontend'
         DOCKER_DIR = '/workspace/docker'
         JMETER_TEST = '/tests/AutoSpark_LoadTest.jmx'
-        SONAR_HOST_URL = 'http://172.18.0.1:9000'
+        SONAR_HOST_URL = 'http://autospark_sonarqube:9000'
+        MAVEN_OPTS_RETRY = '-Dmaven.wagon.http.retryHandler.count=5 -Dmaven.wagon.httpconnectionManager.ttlSeconds=120'
     }
 
     stages {
@@ -24,17 +25,35 @@ pipeline {
 
                     echo "Maven:"
                     mvn -version
-
-                    echo "SonarQube:"
-                    curl -I $SONAR_HOST_URL || true
                 '''
+            }
+        }
+
+        stage('Levantar SonarQube') {
+            steps {
+                dir("${DOCKER_DIR}") {
+                    sh '''
+                        echo "Levantando SonarQube..."
+                        docker compose up -d sonarqube
+
+                        echo "Esperando SonarQube..."
+                        sleep 60
+
+                        docker ps
+                        curl -I $SONAR_HOST_URL || true
+                    '''
+                }
             }
         }
 
         stage('Compilar backend') {
             steps {
                 dir("${BACKEND_DIR}") {
-                    sh 'mvn clean package -DskipTests'
+                    sh '''
+                        mvn -U clean package \
+                          -DskipTests \
+                          $MAVEN_OPTS_RETRY
+                    '''
                 }
             }
         }
@@ -42,7 +61,10 @@ pipeline {
         stage('Pruebas unitarias JUnit + JaCoCo') {
             steps {
                 dir("${BACKEND_DIR}") {
-                    sh 'mvn test jacoco:report'
+                    sh '''
+                        mvn -U test jacoco:report \
+                          $MAVEN_OPTS_RETRY
+                    '''
                 }
             }
         }
@@ -52,11 +74,12 @@ pipeline {
                 dir("${BACKEND_DIR}") {
                     withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                         sh '''
-                            mvn sonar:sonar \
+                            mvn -U sonar:sonar \
                               -Dsonar.projectKey=autospark \
                               -Dsonar.projectName=autospark \
                               -Dsonar.host.url=$SONAR_HOST_URL \
-                              -Dsonar.token=$SONAR_TOKEN
+                              -Dsonar.token=$SONAR_TOKEN \
+                              $MAVEN_OPTS_RETRY
                         '''
                     }
                 }
@@ -71,7 +94,7 @@ pipeline {
                         docker compose up -d --build mysql backend frontend sonarqube
 
                         echo "Esperando frontend y backend..."
-                        sleep 30
+                        sleep 40
 
                         echo "Contenedores activos:"
                         docker ps
@@ -166,7 +189,7 @@ pipeline {
                 dir("${PROJECT_DIR}/tests/selenium") {
                     sh '''
                         if [ -f pom.xml ]; then
-                            mvn test
+                            mvn -U test $MAVEN_OPTS_RETRY
                         else
                             echo "No se encontro pom.xml en tests/selenium"
                             ls -la
@@ -180,9 +203,9 @@ pipeline {
             steps {
                 sh '''
                     echo "Reportes generados:"
-                    ls -la $PROJECT_DIR/reports || true
                     ls -la $HOST_PROJECT_DIR/reports || true
                     ls -la $HOST_PROJECT_DIR/reports/jmeter || true
+                    ls -la $HOST_PROJECT_DIR/reports/jmeter/html || true
                     ls -la $BACKEND_DIR/target/site/jacoco || true
                 '''
             }
