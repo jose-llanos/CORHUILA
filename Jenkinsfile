@@ -159,30 +159,28 @@ pipeline {
             }
         }
 
-        stage('Pruebas de rendimiento JMeter') {
-            steps {
-                sh '''
-                    echo "Limpiando reportes anteriores..."
+       stage('Pruebas de rendimiento JMeter') {
+    steps {
+        sh '''
+            echo "Limpiando reportes anteriores..."
 
-                    rm -rf $HOST_PROJECT_DIR/reports/jmeter
-                    mkdir -p $HOST_PROJECT_DIR/reports/jmeter/html
+            rm -rf $HOST_PROJECT_DIR/reports/jmeter
+            mkdir -p $HOST_PROJECT_DIR/reports/jmeter
 
-                    mkdir -p $HOST_PROJECT_DIR/reports/jmeter
+            NETWORK=$(docker inspect autospark_backend --format '{{range $k,$v := .NetworkSettings.Networks}}{{$k}}{{end}}')
 
-                    NETWORK=$(docker inspect autospark_backend --format '{{range $k,$v := .NetworkSettings.Networks}}{{$k}}{{end}}')
+            echo "Red Docker detectada: $NETWORK"
 
-                    echo "Red Docker detectada: $NETWORK"
-
-                    docker run --rm --network $NETWORK \
-                      -v $HOST_PROJECT_DIR/tests/jmeter:/tests \
-                      -v $HOST_PROJECT_DIR/reports/jmeter:/reports \
-                      justb4/jmeter \
-                      -n -t $JMETER_TEST \
-                      -l /reports/resultados.jtl \
-                      -e -o /reports/html
-                '''
-            }
-        }
+            docker run --rm --network $NETWORK \
+              -v $HOST_PROJECT_DIR/tests/jmeter:/tests \
+              -v $HOST_PROJECT_DIR/reports/jmeter:/reports \
+              justb4/jmeter \
+              -n -t $JMETER_TEST \
+              -l /reports/resultados.jtl \
+              -e -o /reports/html
+        '''
+    }
+}
 
         stage('Pruebas funcionales Selenium') {
             steps {
@@ -199,17 +197,32 @@ pipeline {
             }
         }
 
-        stage('Verificar reportes') {
-            steps {
-                sh '''
-                    echo "Reportes generados:"
-                    ls -la $HOST_PROJECT_DIR/reports || true
-                    ls -la $HOST_PROJECT_DIR/reports/jmeter || true
-                    ls -la $HOST_PROJECT_DIR/reports/jmeter/html || true
-                    ls -la $BACKEND_DIR/target/site/jacoco || true
-                '''
-            }
-        }
+       stage('Verificar reportes') {
+    steps {
+        sh '''
+            echo "Preparando carpeta de reportes finales..."
+
+            mkdir -p $HOST_PROJECT_DIR/reports/jacoco
+            mkdir -p $HOST_PROJECT_DIR/reports/selenium
+            mkdir -p $HOST_PROJECT_DIR/reports/jmeter
+
+            echo "Copiando reporte JaCoCo..."
+            rm -rf $HOST_PROJECT_DIR/reports/jacoco/*
+            cp -r $BACKEND_DIR/target/site/jacoco/* $HOST_PROJECT_DIR/reports/jacoco/ || true
+
+            echo "Copiando reportes Selenium..."
+            rm -rf $HOST_PROJECT_DIR/reports/selenium/*
+            cp -r $PROJECT_DIR/tests/selenium/target/surefire-reports $HOST_PROJECT_DIR/reports/selenium/ || true
+            cp -r $PROJECT_DIR/tests/selenium/test-output $HOST_PROJECT_DIR/reports/selenium/ || true
+
+            echo "Reportes generados:"
+            ls -la $HOST_PROJECT_DIR/reports || true
+            ls -la $HOST_PROJECT_DIR/reports/jmeter || true
+            ls -la $HOST_PROJECT_DIR/reports/jacoco || true
+            ls -la $HOST_PROJECT_DIR/reports/selenium || true
+        '''
+    }
+}
     }
 
     post {
