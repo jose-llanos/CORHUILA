@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="AutoSpark - Prueba 155 Usuarios (Fixed)" enabled="true">
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+    </TestPlan>
+    <hashTree>
+      <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
+        <stringProp name="HTTPSampler.domain">backend</stringProp>
+        <stringProp name="HTTPSampler.port">8080</stringProp>
+        <stringProp name="HTTPSampler.protocol">http</stringProp>
+      </ConfigTestElement>
+      <hashTree/>
+      
+      <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+        <collectionProp name="HeaderManager.headers">
+          <elementProp name="" elementType="Header">
+            <stringProp name="Header.name">Content-Type</stringProp>
+            <stringProp name="Header.value">application/json</stringProp>
+          </elementProp>
+        </collectionProp>
+      </HeaderManager>
+      <hashTree/>
+      
+      <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+        <stringProp name="ConstantTimer.delay">100</stringProp>
+      </ConstantTimer>
+      <hashTree/>
+      
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Estrés Extremo - 155 usuarios" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">30</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">155</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">60</stringProp>
+      </ThreadGroup>
+      <hashTree>
+        
+        <!-- JSR223 PreProcessor para generar datos dinámicos -->
+        <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Generador de Datos Dinámicos" enabled="true">
+          <stringProp name="scriptLanguage">groovy</stringProp>
+          <stringProp name="script"><![CDATA[
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import java.util.concurrent.atomic.AtomicInteger
+
+final String COUNTER_KEY = "autospark.v6.unique.reservation.counter"
+final String RUN_OFFSET_KEY = "autospark.v6.unique.reservation.run.offset.days"
+
+AtomicInteger counter
+int runOffsetDays
+
+synchronized (props) {
+    Object counterObject = props.get(COUNTER_KEY)
+
+    if (counterObject instanceof AtomicInteger) {
+        counter = (AtomicInteger) counterObject
+    } else {
+        counter = new AtomicInteger(0)
+        props.put(COUNTER_KEY, counter)
+    }
+
+    String offsetValue = props.getProperty(RUN_OFFSET_KEY)
+
+    if (offsetValue == null) {
+        long epochSeconds = Math.floorDiv(System.currentTimeMillis(), 1000L)
+        runOffsetDays = 365 + (int) Math.floorMod(epochSeconds, 10000L)
+        props.setProperty(RUN_OFFSET_KEY, String.valueOf(runOffsetDays))
+    } else {
+        runOffsetDays = Integer.parseInt(offsetValue)
+    }
+}
+
+int slot = counter.incrementAndGet()
+int zeroBasedSlot = slot - 1
+
+int minutesPerDay = 540
+int dayOffset = Math.floorDiv(zeroBasedSlot, minutesPerDay)
+int minuteOffset = Math.floorMod(zeroBasedSlot, minutesPerDay)
+
+LocalDate date = LocalDate.now().plusDays(runOffsetDays + dayOffset)
+LocalTime time = LocalTime.of(8, 0).plusMinutes(minuteOffset)
+
+vars.put("dynamicDate", date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+vars.put("dynamicTime", time.format(DateTimeFormatter.ofPattern("HH:mm:ss")))
+vars.put("dynamicLicensePlate", "TEST-" + runOffsetDays + "-" + slot)
+vars.put("dynamicValue", String.valueOf(25000 + Math.floorMod(slot, 125000)))
+]]></stringProp>
+        </JSR223PreProcessor>
+        <hashTree/>
+        
+        <!-- POST Login -->
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST Login" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <stringProp name="HTTPArgument.value">{"email":"juan@test.com","password":"Password123"}</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.path">/autospark/login</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        
+        <!-- GET Servicios -->
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET Servicios" enabled="true">
+          <stringProp name="HTTPSampler.path">/autospark/service</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        
+        <!-- GET Usuarios -->
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET Usuarios" enabled="true">
+          <stringProp name="HTTPSampler.path">/autospark/users</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        
+        <!-- POST Crear Reserva con datos dinámicos -->
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST Crear Reserva" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <stringProp name="HTTPArgument.value">{"vehicleType":"CAR","serviceType":"BASIC","licensePlate":"${dynamicLicensePlate}","value":${dynamicValue},"reservationDate":"${dynamicDate}","reservationTime":"${dynamicTime}"}</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.path">/autospark/reserva</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
