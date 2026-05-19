@@ -1,0 +1,12 @@
+/workspace/tests/selenium/src/test/java/edu/calidadsoftware/taskmanager/selenium/config/TestConfig.java
+/workspace/tests/selenium/src/test/java/edu/calidadsoftware/taskmanager/selenium/driver/DriverFactory.java
+/workspace/tests/selenium/src/test/java/edu/calidadsoftware/taskmanager/selenium/driver/DriverManager.java
+/workspace/tests/selenium/src/test/java/edu/calidadsoftware/taskmanager/selenium/pages/BasePage.java
+/workspace/tests/selenium/src/test/java/edu/calidadsoftware/taskmanager/selenium/pages/DashboardPage.java
+/workspace/tests/selenium/src/test/java/edu/calidadsoftware/taskmanager/selenium/pages/LoginPage.java
+/workspace/tests/selenium/src/test/java/edu/calidadsoftware/taskmanager/selenium/pages/TaskFormPage.java
+/workspace/tests/selenium/src/test/java/edu/calidadsoftware/taskmanager/selenium/pages/TaskListPage.java
+/workspace/tests/selenium/src/test/java/edu/calidadsoftware/taskmanager/selenium/report/ExtentReportManager.java
+/workspace/tests/selenium/src/test/java/edu/calidadsoftware/taskmanager/selenium/report/ExtentTestWatcher.java
+/workspace/tests/selenium/src/test/java/edu/calidadsoftware/taskmanager/selenium/tests/BaseUiTest.java
+/workspace/tests/selenium/src/test/java/edu/calidadsoftware/taskmanager/selenium/tests/TaskManagerUiTest.java

@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: edu.calidadsoftware.taskmanager.user.UserServiceTest
+-------------------------------------------------------------------------------
+Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.182 s - in edu.calidadsoftware.taskmanager.user.UserServiceTest

@@ -1,0 +1,6 @@
+projectKey=taskmanager
+serverUrl=http://sonarqube:9000
+serverVersion=9.9.8.100196
+dashboardUrl=http://sonarqube:9000/dashboard?id=taskmanager
+ceTaskId=AZ49RHx8fF45rXkQJB-8
+ceTaskUrl=http://sonarqube:9000/api/ce/task?id=AZ49RHx8fF45rXkQJB-8

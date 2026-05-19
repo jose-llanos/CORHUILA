@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApiExceptionHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">taskmanager</a> &gt; <a href="index.source.html" class="el_package">edu.calidadsoftware.taskmanager.common</a> &gt; <span class="el_source">ApiExceptionHandler.java</span></div><h1>ApiExceptionHandler.java</h1><pre class="source lang-java linenums">package edu.calidadsoftware.taskmanager.common;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.time.Instant;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+/**
+ * Manejo centralizado de errores para la API REST.
+ *
+ * Estandariza el formato de respuesta para facilitar pruebas automatizadas.
+ */
+@RestControllerAdvice(basePackages = &quot;edu.calidadsoftware.taskmanager.api&quot;)
+<span class="fc" id="L21">public class ApiExceptionHandler {</span>
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity&lt;Map&lt;String, Object&gt;&gt; handleNotFound(ResourceNotFoundException ex) {
+<span class="fc" id="L25">        return build(HttpStatus.NOT_FOUND, ex.getMessage(), null);</span>
+    }
+
+    @ExceptionHandler(DuplicateResourceException.class)
+    public ResponseEntity&lt;Map&lt;String, Object&gt;&gt; handleDuplicate(DuplicateResourceException ex) {
+<span class="fc" id="L30">        return build(HttpStatus.CONFLICT, ex.getMessage(), null);</span>
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity&lt;Map&lt;String, Object&gt;&gt; handleValidation(MethodArgumentNotValidException ex) {
+<span class="fc" id="L35">        Map&lt;String, String&gt; fieldErrors = new LinkedHashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        for (FieldError fe : ex.getBindingResult().getFieldErrors()) {</span>
+<span class="fc" id="L37">            fieldErrors.put(fe.getField(), fe.getDefaultMessage());</span>
+<span class="fc" id="L38">        }</span>
+<span class="fc" id="L39">        return build(HttpStatus.BAD_REQUEST, &quot;Validation failed&quot;, fieldErrors);</span>
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity&lt;Map&lt;String, Object&gt;&gt; handleAccessDenied(AccessDeniedException ex) {
+<span class="fc" id="L44">        return build(HttpStatus.FORBIDDEN, &quot;Access is denied&quot;, null);</span>
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity&lt;Map&lt;String, Object&gt;&gt; handleGeneric(Exception ex) {
+<span class="fc" id="L49">        return build(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), null);</span>
+    }
+
+    private ResponseEntity&lt;Map&lt;String, Object&gt;&gt; build(HttpStatus status, String message, Object details) {
+<span class="fc" id="L53">        Map&lt;String, Object&gt; body = new LinkedHashMap&lt;&gt;();</span>
+<span class="fc" id="L54">        body.put(&quot;timestamp&quot;, Instant.now().toString());</span>
+<span class="fc" id="L55">        body.put(&quot;status&quot;, status.value());</span>
+<span class="fc" id="L56">        body.put(&quot;error&quot;, status.getReasonPhrase());</span>
+<span class="fc" id="L57">        body.put(&quot;message&quot;, message);</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        if (details != null) {</span>
+<span class="fc" id="L59">            body.put(&quot;details&quot;, details);</span>
+        }
+<span class="fc" id="L61">        return ResponseEntity.status(status).body(body);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

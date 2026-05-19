@@ -1,0 +1,107 @@
+GUÍA TÉCNICA DE EJECUCIÓN — TASK MANAGER (Calidad de Software 2026A)
+Versión del proyecto: 1.0.0
+
+Propósito
+- Ejecutar el sistema localmente con Docker y generar evidencias de calidad (JUnit/JaCoCo, SonarQube, JMeter y Selenium).
+
+Requisitos
+- Windows + Docker Desktop funcionando.
+- PowerShell (recomendado).
+
+1) Levantar servicios (App + SonarQube)
+Desde la carpeta raíz del proyecto (donde está docker-compose.yml):
+
+  cd c:\Users\Alejandro\Desktop\Proyecto_Integrador_Calidad_Software\Trabjo
+
+  docker compose up -d --build
+
+URLs:
+- App:       http://localhost:8080
+- SonarQube: http://localhost:9000
+
+Credenciales (cargadas por data.sql):
+- admin / admin
+- user  / user
+
+2) Usar la aplicación (UI)
+1. Abrir http://localhost:8080
+2. Iniciar sesión con admin/admin
+3. Navegar a Dashboard y Tareas (CRUD + filtro)
+
+3) Pruebas JUnit + cobertura JaCoCo
+Ejecuta Maven dentro de contenedor (no requiere Java local):
+
+  docker run --rm -v "${PWD}:/workspace" -w /workspace/app maven:3.9-eclipse-temurin-11 mvn clean verify
+
+Evidencias generadas:
+- reports\entrega-2\jacoco\index.html
+- reports\entrega-2\jacoco\jacoco.xml
+
+4) SonarQube (análisis estático)
+1. Abrir SonarQube: http://localhost:9000
+2. Iniciar sesión (por defecto de Sonar): admin / admin (si es primera vez, puede pedir cambio de contraseña)
+3. Crear un token en: My Account → Security → Generate Tokens
+4. Ejecutar el escaneo con el token en variable de entorno (NO pegues el token en chats ni lo subas al repo):
+
+  $env:SONAR_TOKEN="TU_TOKEN"
+  docker run --rm --network taskmanager-network -v "${PWD}:/workspace" -w /workspace/app maven:3.9-eclipse-temurin-11 mvn verify sonar:sonar "-Dsonar.host.url=http://sonarqube:9000" "-Dsonar.projectKey=taskmanager" "-Dsonar.login=$env:SONAR_TOKEN"
+
+Resultado:
+- En SonarQube aparece el proyecto "taskmanager" con Issues + Coverage + Quality Gate.
+
+5) JMeter (rendimiento) en Docker
+Importante:
+- Dentro del contenedor, NO se usa localhost para llegar a la app.
+- Se usa el nombre del servicio Docker: app:8080
+
+Limpia evidencias anteriores (evita el error "results.jtl is not empty"):
+
+  Remove-Item -Force ".\reports\entrega-2\jmeter\results.jtl" -ErrorAction SilentlyContinue
+  Remove-Item -Recurse -Force ".\reports\entrega-2\jmeter\html" -ErrorAction SilentlyContinue
+
+Ejecuta el plan:
+
+  docker run --rm --network taskmanager-network -v "${PWD}:/workspace" -w /workspace justb4/jmeter:5.5 -n -t /workspace/tests/jmeter/plan_pruebas_taskmanager.jmx -JBASE_HOST=app -JBASE_PORT=8080 -l /workspace/reports/entrega-2/jmeter/results.jtl -e -o /workspace/reports/entrega-2/jmeter/html
+
+Evidencia:
+- reports\entrega-2\jmeter\html\index.html
+
+6) Selenium (UI) con Chrome en contenedor (standalone)
+6.1 Descargar imagen (una sola vez):
+
+  docker pull selenium/standalone-chrome:4.21.0
+
+6.2 Levantar el contenedor:
+
+  docker rm -f tm-selenium-standalone 2>$null
+  docker run -d --name tm-selenium-standalone --network taskmanager-network -p 4444:4444 --shm-size 2g selenium/standalone-chrome:4.21.0
+
+6.3 Ejecutar pruebas UI:
+
+  docker run --rm --network taskmanager-network -v "${PWD}:/workspace" -w /workspace maven:3.9-eclipse-temurin-11 mvn -f tests/selenium/pom.xml test -DremoteUrl=http://tm-selenium-standalone:4444/wd/hub -Dbrowser=chrome -Dheadless=true -DbaseUrl=http://app:8080
+
+Para ejecutar en Firefox (si usas Selenium Grid con nodo Firefox):
+
+  docker compose --profile selenium up -d
+  docker run --rm --network taskmanager-network -v "${PWD}:/workspace" -w /workspace maven:3.9-eclipse-temurin-11 mvn -f tests/selenium/pom.xml test -DremoteUrl=http://taskmanager-selenium-hub:4444/wd/hub -Dbrowser=firefox -Dheadless=true -DbaseUrl=http://app:8080
+
+Evidencia:
+- reports\entrega-2\selenium\extent-report.html
+
+7) Dónde está la documentación (Markdown)
+- docs\Especificacion.md
+- docs\Plan_de_Pruebas.md
+- docs\Reporte_de_Ejecucion.md
+- docs\Trabajo_Escrito_APA7_TaskManager.pdf
+- docs\Presentacion_Entrega4_TaskManager.pptx
+
+8) ¿Con qué lo abro? (\"Visual\" / VS Code)
+- .md / .txt / .yml / .java / .xml / .jmx: VS Code
+- Reportes .html: Chrome/Edge (navegador)
+- .pdf: cualquier lector PDF
+- .pptx: PowerPoint o LibreOffice
+
+Troubleshooting rápido
+- Error 100% fallos JMeter por conexión: usa -JBASE_HOST=app (no localhost).
+- JMeter "results.jtl is not empty": borra results.jtl y la carpeta html antes de correr.
+- Pull de Selenium falla con EOF por red: cambia temporalmente de red (hotspot) y vuelve a intentar.

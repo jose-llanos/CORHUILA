@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TaskService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">taskmanager</a> &gt; <a href="index.source.html" class="el_package">edu.calidadsoftware.taskmanager.task</a> &gt; <span class="el_source">TaskService.java</span></div><h1>TaskService.java</h1><pre class="source lang-java linenums">package edu.calidadsoftware.taskmanager.task;
+
+import edu.calidadsoftware.taskmanager.common.ResourceNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+/**
+ * Capa de servicio para Task.
+ *
+ * Centraliza reglas de negocio y acceso a datos. Esto facilita pruebas unitarias con mocks.
+ */
+@Service
+<span class="fc" id="L20">@RequiredArgsConstructor</span>
+public class TaskService {
+
+    private final TaskRepository taskRepository;
+    private final Validator validator;
+
+    @Transactional
+    public Task createTask(TaskForm form) {
+<span class="fc" id="L28">        validateOrThrow(form);</span>
+<span class="fc" id="L29">        Task task = Task.builder()</span>
+<span class="fc" id="L30">                .title(form.getTitle())</span>
+<span class="fc" id="L31">                .description(form.getDescription())</span>
+<span class="fc" id="L32">                .status(form.getStatus())</span>
+<span class="fc" id="L33">                .priority(form.getPriority())</span>
+<span class="fc" id="L34">                .build();</span>
+<span class="fc" id="L35">        return taskRepository.save(task);</span>
+    }
+
+    @Transactional
+    public Task updateTask(Long id, TaskForm form) {
+<span class="fc" id="L40">        validateOrThrow(form);</span>
+<span class="fc" id="L41">        Task existing = findById(id);</span>
+<span class="fc" id="L42">        existing.setTitle(form.getTitle());</span>
+<span class="fc" id="L43">        existing.setDescription(form.getDescription());</span>
+<span class="fc" id="L44">        existing.setStatus(form.getStatus());</span>
+<span class="fc" id="L45">        existing.setPriority(form.getPriority());</span>
+<span class="fc" id="L46">        return taskRepository.save(existing);</span>
+    }
+
+    @Transactional
+    public void deleteTask(Long id) {
+<span class="fc" id="L51">        Task existing = findById(id);</span>
+<span class="fc" id="L52">        taskRepository.delete(existing);</span>
+<span class="fc" id="L53">    }</span>
+
+    @Transactional(readOnly = true)
+    public Task findById(Long id) {
+<span class="fc" id="L57">        return taskRepository.findById(id)</span>
+<span class="fc" id="L58">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Task not found: id=&quot; + id));</span>
+    }
+
+    @Transactional(readOnly = true)
+    public List&lt;Task&gt; findAll() {
+<span class="fc" id="L63">        return taskRepository.findAll();</span>
+    }
+
+    @Transactional(readOnly = true)
+    public List&lt;Task&gt; findByStatus(TaskStatus status) {
+<span class="fc" id="L68">        return taskRepository.findByStatus(status);</span>
+    }
+
+    private void validateOrThrow(Object target) {
+<span class="fc" id="L72">        Set&lt;ConstraintViolation&lt;Object&gt;&gt; violations = validator.validate(target);</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        if (!violations.isEmpty()) {</span>
+<span class="fc" id="L74">            String details = violations.stream()</span>
+<span class="fc" id="L75">                    .map(v -&gt; v.getPropertyPath() + &quot;: &quot; + v.getMessage())</span>
+<span class="fc" id="L76">                    .collect(Collectors.joining(&quot;, &quot;));</span>
+<span class="fc" id="L77">            throw new IllegalArgumentException(&quot;Validation failed: &quot; + details);</span>
+        }
+<span class="fc" id="L79">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

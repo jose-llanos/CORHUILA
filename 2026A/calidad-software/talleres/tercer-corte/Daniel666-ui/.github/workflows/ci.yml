@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+
+jobs:
+  build-test-sonar:
+    runs-on: ubuntu-latest
+
+    services:
+      sonarqube:
+        image: sonarqube:9.9-community
+        ports:
+          - 9000:9000
+        env:
+          SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
+          SONAR_FORCEAUTHENTICATION: "false"
+          SONAR_WEB_JAVAOPTS: "-Dsonar.forceAuthentication=false"
+          SONAR_CE_JAVAOPTS: "-Dsonar.forceAuthentication=false"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: "11"
+          cache: maven
+
+      - name: Build + Unit Tests + JaCoCo
+        run: mvn -f app/pom.xml verify
+
+      - name: Wait SonarQube
+        run: |
+          for i in {1..120}; do
+            if curl -fsS http://localhost:9000/api/system/status | grep -q '"status":"UP"'; then
+              echo "SonarQube is UP"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "SonarQube not ready"
+          exit 1
+
+      - name: SonarQube Analysis
+        run: |
+          mvn -f app/pom.xml sonar:sonar \
+            -Dsonar.host.url=http://localhost:9000 \
+            -Dsonar.projectKey=taskmanager
+
+      - name: Upload JaCoCo Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-report
+          path: reports/entrega-2/jacoco

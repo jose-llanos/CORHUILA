@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: edu.calidadsoftware.taskmanager.task.TaskServiceTest
+-------------------------------------------------------------------------------
+Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.855 s - in edu.calidadsoftware.taskmanager.task.TaskServiceTest

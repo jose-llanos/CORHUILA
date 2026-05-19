@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Módulo de pruebas funcionales: Selenium WebDriver 4.x (Page Object Model).
+
+  Se ejecuta de forma independiente al módulo /app.
+  Ejemplo:
+    mvn -f tests/selenium/pom.xml test -Dbrowser=chrome -DbaseUrl=http://localhost:8080
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>edu.calidadsoftware</groupId>
+    <artifactId>taskmanager-selenium</artifactId>
+    <version>1.0.0</version>
+    <name>taskmanager-selenium</name>
+
+    <properties>
+        <maven.compiler.release>11</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <junit.version>5.10.3</junit.version>
+        <selenium.version>4.23.0</selenium.version>
+        <webdrivermanager.version>5.9.2</webdrivermanager.version>
+        <extentreports.version>5.1.2</extentreports.version>
+        <slf4j.version>2.0.13</slf4j.version>
+    </properties>
+
+    <dependencies>
+        <!-- Selenium WebDriver -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+
+        <!-- Gestión automática de drivers (Chrome/Firefox) -->
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>${webdrivermanager.version}</version>
+        </dependency>
+
+        <!-- JUnit 5 -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Reporte HTML: ExtentReports -->
+        <dependency>
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>${extentreports.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Logging simple para Selenium -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <useModulePath>false</useModulePath>
+                    <systemPropertyVariables>
+                        <!-- Valores por defecto; se pueden sobrescribir por -D -->
+                        <baseUrl>${baseUrl}</baseUrl>
+                        <browser>${browser}</browser>
+                        <headless>${headless}</headless>
+                        <remoteUrl>${remoteUrl}</remoteUrl>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

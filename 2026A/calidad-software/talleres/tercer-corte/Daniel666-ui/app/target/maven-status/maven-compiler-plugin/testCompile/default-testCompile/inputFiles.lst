@@ -1,0 +1,15 @@
+/workspace/app/src/test/java/edu/calidadsoftware/taskmanager/task/TaskServiceTest.java
+/workspace/app/src/test/java/edu/calidadsoftware/taskmanager/common/GlobalExceptionHandlerTest.java
+/workspace/app/src/test/java/edu/calidadsoftware/taskmanager/task/TaskValidationTest.java
+/workspace/app/src/test/java/edu/calidadsoftware/taskmanager/web/DashboardControllerTest.java
+/workspace/app/src/test/java/edu/calidadsoftware/taskmanager/TaskManagerApplicationTest.java
+/workspace/app/src/test/java/edu/calidadsoftware/taskmanager/web/LoginControllerTest.java
+/workspace/app/src/test/java/edu/calidadsoftware/taskmanager/security/SecurityConfigTest.java
+/workspace/app/src/test/java/edu/calidadsoftware/taskmanager/web/TaskControllerTest.java
+/workspace/app/src/test/java/edu/calidadsoftware/taskmanager/WebSecurityIntegrationTest.java
+/workspace/app/src/test/java/edu/calidadsoftware/taskmanager/common/ApiExceptionHandlerTest.java
+/workspace/app/src/test/java/edu/calidadsoftware/taskmanager/security/CustomUserDetailsServiceTest.java
+/workspace/app/src/test/java/edu/calidadsoftware/taskmanager/user/UserServiceTest.java
+/workspace/app/src/test/java/edu/calidadsoftware/taskmanager/api/UserRestControllerTest.java
+/workspace/app/src/test/java/edu/calidadsoftware/taskmanager/api/TaskRestControllerTest.java
+/workspace/app/src/test/java/edu/calidadsoftware/taskmanager/user/UserResponseTest.java

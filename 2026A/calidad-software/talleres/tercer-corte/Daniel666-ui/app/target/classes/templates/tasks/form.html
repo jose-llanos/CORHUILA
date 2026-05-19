@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Task Manager - Task Form</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" href="/css/styles.css"/>
+</head>
+<body>
+<div class="container">
+    <div class="nav">
+        <div>
+            <a th:href="@{/dashboard}" href="/dashboard">Dashboard</a>
+            <a th:href="@{/tasks}" href="/tasks">Tasks</a>
+        </div>
+        <div class="actions">
+            <form class="inline" th:action="@{/logout}" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button class="btn" type="submit">Logout</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <h1 class="title" th:text="${mode == 'edit' ? 'Editar tarea' : 'Crear tarea'}">Crear tarea</h1>
+        <p class="muted">Completa los campos y guarda los cambios.</p>
+
+        <form th:if="${mode == 'edit'}"
+              th:object="${taskForm}"
+              th:action="@{/tasks/{id}(id=${taskId})}"
+              method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+            <label for="title">Title</label>
+            <input id="title" type="text" th:field="*{title}" required/>
+            <div class="error-text" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title error</div>
+
+            <label for="description">Description</label>
+            <textarea id="description" th:field="*{description}" placeholder="Optional"></textarea>
+            <div class="error-text" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description error</div>
+
+            <label for="status">Status</label>
+            <select id="status" th:field="*{status}">
+                <option th:each="st : ${statuses}" th:value="${st}" th:text="${st}">PENDING</option>
+            </select>
+            <div class="error-text" th:if="${#fields.hasErrors('status')}" th:errors="*{status}">Status error</div>
+
+            <label for="priority">Priority</label>
+            <select id="priority" th:field="*{priority}">
+                <option th:each="pr : ${priorities}" th:value="${pr}" th:text="${pr}">MEDIUM</option>
+            </select>
+            <div class="error-text" th:if="${#fields.hasErrors('priority')}" th:errors="*{priority}">Priority error</div>
+
+            <div style="margin-top: 14px;">
+                <button class="btn btn-primary" type="submit" th:text="${mode == 'edit' ? 'Actualizar' : 'Crear'}">Crear</button>
+                <a class="btn" th:href="@{/tasks}">Cancelar</a>
+            </div>
+        </form>
+
+        <form th:if="${mode != 'edit'}"
+              th:object="${taskForm}"
+              th:action="@{/tasks}"
+              method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+            <label for="title">Title</label>
+            <input id="title" type="text" th:field="*{title}" required/>
+            <div class="error-text" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title error</div>
+
+            <label for="description">Description</label>
+            <textarea id="description" th:field="*{description}" placeholder="Optional"></textarea>
+            <div class="error-text" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description error</div>
+
+            <label for="status">Status</label>
+            <select id="status" th:field="*{status}">
+                <option th:each="st : ${statuses}" th:value="${st}" th:text="${st}">PENDING</option>
+            </select>
+            <div class="error-text" th:if="${#fields.hasErrors('status')}" th:errors="*{status}">Status error</div>
+
+            <label for="priority">Priority</label>
+            <select id="priority" th:field="*{priority}">
+                <option th:each="pr : ${priorities}" th:value="${pr}" th:text="${pr}">MEDIUM</option>
+            </select>
+            <div class="error-text" th:if="${#fields.hasErrors('priority')}" th:errors="*{priority}">Priority error</div>
+
+            <div style="margin-top: 14px;">
+                <button class="btn btn-primary" type="submit" th:text="${mode == 'edit' ? 'Actualizar' : 'Crear'}">Crear</button>
+                <a class="btn" th:href="@{/tasks}">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

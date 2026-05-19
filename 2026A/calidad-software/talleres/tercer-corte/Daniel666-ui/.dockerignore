@@ -1,0 +1,9 @@
+# Archivos y carpetas que no deben enviarse al contexto de build de Docker.
+
+**/target/
+**/.git/
+**/.idea/
+**/.vscode/
+**/*.iml
+**/node_modules/
+**/reports/

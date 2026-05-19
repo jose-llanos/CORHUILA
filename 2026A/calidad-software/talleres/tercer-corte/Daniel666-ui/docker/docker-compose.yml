@@ -1,0 +1,112 @@
+services:
+  sonarqube:
+    image: sonarqube:9.9-community
+    container_name: taskmanager-sonarqube
+    ports:
+      - "9000:9000"
+    environment:
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
+      SONAR_FORCEAUTHENTICATION: "false"
+      SONAR_WEB_JAVAOPTS: "-Dsonar.forceAuthentication=false"
+      SONAR_CE_JAVAOPTS: "-Dsonar.forceAuthentication=false"
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+    networks:
+      - taskmanager-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:9000/api/system/status | grep -q '\"status\":\"UP\"'"]
+      interval: 15s
+      timeout: 5s
+      retries: 30
+
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: taskmanager-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:h2:mem:taskmanagerdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"
+      SPRING_DATASOURCE_USERNAME: "sa"
+      SPRING_DATASOURCE_PASSWORD: ""
+      SPRING_JPA_HIBERNATE_DDL_AUTO: "create-drop"
+      SPRING_SQL_INIT_MODE: "always"
+      SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION: "true"
+      TASKMANAGER_BASE_URL: "http://localhost:8080"
+      SONAR_HOST_URL: "http://sonarqube:9000"
+    depends_on:
+      sonarqube:
+        condition: service_healthy
+    networks:
+      - taskmanager-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/login >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+  selenium-hub:
+    image: selenium/hub:4.21.0
+    container_name: taskmanager-selenium-hub
+    profiles: ["selenium"]
+    ports:
+      - "4444:4444"
+      - "4442:4442"
+      - "4443:4443"
+    networks:
+      - taskmanager-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:4444/status | grep -q '\"ready\":true'"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+  chrome:
+    image: selenium/node-chrome:4.21.0
+    container_name: taskmanager-selenium-chrome
+    profiles: ["selenium"]
+    shm_size: 2gb
+    depends_on:
+      selenium-hub:
+        condition: service_healthy
+    environment:
+      SE_EVENT_BUS_HOST: selenium-hub
+      SE_EVENT_BUS_PUBLISH_PORT: 4442
+      SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
+    networks:
+      - taskmanager-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:5555/status | grep -q '\"ready\":true'"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+  firefox:
+    image: selenium/node-firefox:4.21.0
+    container_name: taskmanager-selenium-firefox
+    profiles: ["selenium"]
+    shm_size: 2gb
+    depends_on:
+      selenium-hub:
+        condition: service_healthy
+    environment:
+      SE_EVENT_BUS_HOST: selenium-hub
+      SE_EVENT_BUS_PUBLISH_PORT: 4442
+      SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
+    networks:
+      - taskmanager-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:5555/status | grep -q '\"ready\":true'"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+networks:
+  taskmanager-network:
+    name: taskmanager-network
+
+volumes:
+  sonarqube_data:
+  sonarqube_extensions:

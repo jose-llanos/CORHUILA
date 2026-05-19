@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Error 400</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" href="/css/styles.css"/>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <h1 class="title">Error 400 — Solicitud inválida</h1>
+        <p class="muted">Se detectó un problema con la solicitud.</p>
+        <div class="alert alert-error">
+            <div><strong>Mensaje:</strong> <span th:text="${message}">Bad request</span></div>
+            <div class="muted">Ruta: <span th:text="${path}">/</span></div>
+        </div>
+        <div style="margin-top: 14px;">
+            <a class="btn btn-primary" th:href="@{/dashboard}">Volver al dashboard</a>
+            <a class="btn" th:href="@{/tasks}">Ir a tareas</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

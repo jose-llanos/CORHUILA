@@ -1,0 +1,12 @@
+edu/calidadsoftware/taskmanager/selenium/pages/DashboardPage.class
+edu/calidadsoftware/taskmanager/selenium/driver/DriverFactory.class
+edu/calidadsoftware/taskmanager/selenium/report/ExtentTestWatcher.class
+edu/calidadsoftware/taskmanager/selenium/tests/TaskManagerUiTest.class
+edu/calidadsoftware/taskmanager/selenium/pages/LoginPage.class
+edu/calidadsoftware/taskmanager/selenium/report/ExtentReportManager.class
+edu/calidadsoftware/taskmanager/selenium/pages/TaskFormPage.class
+edu/calidadsoftware/taskmanager/selenium/tests/BaseUiTest.class
+edu/calidadsoftware/taskmanager/selenium/driver/DriverManager.class
+edu/calidadsoftware/taskmanager/selenium/pages/TaskListPage.class
+edu/calidadsoftware/taskmanager/selenium/pages/BasePage.class
+edu/calidadsoftware/taskmanager/selenium/config/TestConfig.class

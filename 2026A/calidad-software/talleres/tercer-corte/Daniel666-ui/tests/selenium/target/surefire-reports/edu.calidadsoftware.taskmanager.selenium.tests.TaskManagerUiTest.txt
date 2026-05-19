@@ -1,0 +1,72 @@
+-------------------------------------------------------------------------------
+Test set: edu.calidadsoftware.taskmanager.selenium.tests.TaskManagerUiTest
+-------------------------------------------------------------------------------
+Tests run: 6, Failures: 0, Errors: 4, Skipped: 0, Time elapsed: 80.33 s <<< FAILURE! -- in edu.calidadsoftware.taskmanager.selenium.tests.TaskManagerUiTest
+edu.calidadsoftware.taskmanager.selenium.tests.TaskManagerUiTest.tc06_filterByStatus -- Time elapsed: 20.74 s <<< ERROR!
+org.openqa.selenium.TimeoutException: 
+Expected condition failed: waiting for url to contain "/tasks". Current url: "http://app:8080/login?logout=true" (tried for 15 second(s) with 500 milliseconds interval)
+Build info: version: '4.23.0', revision: '4df0a231af'
+System info: os.name: 'Linux', os.arch: 'amd64', os.version: '6.6.87.2-microsoft-standard-WSL2', java.version: '11.0.31'
+Driver info: org.openqa.selenium.remote.RemoteWebDriver
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 125.0.6422.76, chrome: {chromedriverVersion: 125.0.6422.76 (67dcf7562b8f..., userDataDir: /tmp/.org.chromium.Chromium...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:41217}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: any, proxy: Proxy(), se:bidiEnabled: false, se:cdp: ws://172.20.0.4:4444/sessio..., se:cdpVersion: 125.0.6422.76, se:vnc: ws://172.20.0.4:4444/sessio..., se:vncEnabled: true, se:vncLocalAddress: ws://172.20.0.4:7900, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Session ID: 96c025507121853e8ea271a38e7f89c8
+	at org.openqa.selenium.support.ui.WebDriverWait.timeoutException(WebDriverWait.java:84)
+	at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:228)
+	at edu.calidadsoftware.taskmanager.selenium.pages.BasePage.waitUrlContains(BasePage.java:46)
+	at edu.calidadsoftware.taskmanager.selenium.pages.TaskFormPage.submit(TaskFormPage.java:44)
+	at edu.calidadsoftware.taskmanager.selenium.tests.TaskManagerUiTest.tc06_filterByStatus(TaskManagerUiTest.java:135)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1541)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1541)
+
+edu.calidadsoftware.taskmanager.selenium.tests.TaskManagerUiTest.tc03_createTask -- Time elapsed: 17.76 s <<< ERROR!
+org.openqa.selenium.TimeoutException: 
+Expected condition failed: waiting for url to contain "/tasks". Current url: "http://app:8080/login?logout=true" (tried for 15 second(s) with 500 milliseconds interval)
+Build info: version: '4.23.0', revision: '4df0a231af'
+System info: os.name: 'Linux', os.arch: 'amd64', os.version: '6.6.87.2-microsoft-standard-WSL2', java.version: '11.0.31'
+Driver info: org.openqa.selenium.remote.RemoteWebDriver
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 125.0.6422.76, chrome: {chromedriverVersion: 125.0.6422.76 (67dcf7562b8f..., userDataDir: /tmp/.org.chromium.Chromium...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:39205}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: any, proxy: Proxy(), se:bidiEnabled: false, se:cdp: ws://172.20.0.4:4444/sessio..., se:cdpVersion: 125.0.6422.76, se:vnc: ws://172.20.0.4:4444/sessio..., se:vncEnabled: true, se:vncLocalAddress: ws://172.20.0.4:7900, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Session ID: 8d89396c5aa81ed76cc36f85e4d5d2cd
+	at org.openqa.selenium.support.ui.WebDriverWait.timeoutException(WebDriverWait.java:84)
+	at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:228)
+	at edu.calidadsoftware.taskmanager.selenium.pages.BasePage.waitUrlContains(BasePage.java:46)
+	at edu.calidadsoftware.taskmanager.selenium.pages.TaskFormPage.submit(TaskFormPage.java:44)
+	at edu.calidadsoftware.taskmanager.selenium.tests.TaskManagerUiTest.tc03_createTask(TaskManagerUiTest.java:60)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1541)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1541)
+
+edu.calidadsoftware.taskmanager.selenium.tests.TaskManagerUiTest.tc04_editTask -- Time elapsed: 18.01 s <<< ERROR!
+org.openqa.selenium.TimeoutException: 
+Expected condition failed: waiting for url to contain "/tasks". Current url: "http://app:8080/login?logout=true" (tried for 15 second(s) with 500 milliseconds interval)
+Build info: version: '4.23.0', revision: '4df0a231af'
+System info: os.name: 'Linux', os.arch: 'amd64', os.version: '6.6.87.2-microsoft-standard-WSL2', java.version: '11.0.31'
+Driver info: org.openqa.selenium.remote.RemoteWebDriver
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 125.0.6422.76, chrome: {chromedriverVersion: 125.0.6422.76 (67dcf7562b8f..., userDataDir: /tmp/.org.chromium.Chromium...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:37235}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: any, proxy: Proxy(), se:bidiEnabled: false, se:cdp: ws://172.20.0.4:4444/sessio..., se:cdpVersion: 125.0.6422.76, se:vnc: ws://172.20.0.4:4444/sessio..., se:vncEnabled: true, se:vncLocalAddress: ws://172.20.0.4:7900, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Session ID: 12511bc599fa6d10a59d8126550de866
+	at org.openqa.selenium.support.ui.WebDriverWait.timeoutException(WebDriverWait.java:84)
+	at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:228)
+	at edu.calidadsoftware.taskmanager.selenium.pages.BasePage.waitUrlContains(BasePage.java:46)
+	at edu.calidadsoftware.taskmanager.selenium.pages.TaskFormPage.submit(TaskFormPage.java:44)
+	at edu.calidadsoftware.taskmanager.selenium.tests.TaskManagerUiTest.tc04_editTask(TaskManagerUiTest.java:81)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1541)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1541)
+
+edu.calidadsoftware.taskmanager.selenium.tests.TaskManagerUiTest.tc05_deleteTask -- Time elapsed: 18.19 s <<< ERROR!
+org.openqa.selenium.TimeoutException: 
+Expected condition failed: waiting for url to contain "/tasks". Current url: "http://app:8080/login?logout=true" (tried for 15 second(s) with 500 milliseconds interval)
+Build info: version: '4.23.0', revision: '4df0a231af'
+System info: os.name: 'Linux', os.arch: 'amd64', os.version: '6.6.87.2-microsoft-standard-WSL2', java.version: '11.0.31'
+Driver info: org.openqa.selenium.remote.RemoteWebDriver
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 125.0.6422.76, chrome: {chromedriverVersion: 125.0.6422.76 (67dcf7562b8f..., userDataDir: /tmp/.org.chromium.Chromium...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:36645}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: any, proxy: Proxy(), se:bidiEnabled: false, se:cdp: ws://172.20.0.4:4444/sessio..., se:cdpVersion: 125.0.6422.76, se:vnc: ws://172.20.0.4:4444/sessio..., se:vncEnabled: true, se:vncLocalAddress: ws://172.20.0.4:7900, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Session ID: 9fb78128b2e0abc5220b38223a88188c
+	at org.openqa.selenium.support.ui.WebDriverWait.timeoutException(WebDriverWait.java:84)
+	at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:228)
+	at edu.calidadsoftware.taskmanager.selenium.pages.BasePage.waitUrlContains(BasePage.java:46)
+	at edu.calidadsoftware.taskmanager.selenium.pages.TaskFormPage.submit(TaskFormPage.java:44)
+	at edu.calidadsoftware.taskmanager.selenium.tests.TaskManagerUiTest.tc05_deleteTask(TaskManagerUiTest.java:109)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1541)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1541)
+

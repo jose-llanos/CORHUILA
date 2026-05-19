@@ -1,0 +1,77 @@
+name: Selenium Nightly
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  selenium:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: "11"
+          cache: maven
+
+      - name: Build and Start Stack (Docker Compose)
+        run: |
+          docker compose -f docker/docker-compose.yml --profile selenium up -d --build
+
+      - name: Wait App
+        run: |
+          for i in {1..120}; do
+            if curl -fsS http://localhost:8080/login >/dev/null; then
+              echo "App is ready"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "App not ready"
+          docker compose -f docker/docker-compose.yml logs --no-color app || true
+          exit 1
+
+      - name: Wait Selenium Hub
+        run: |
+          for i in {1..120}; do
+            if curl -fsS http://localhost:4444/status | grep -q '"ready":true'; then
+              echo "Selenium Hub is ready"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Selenium Hub not ready"
+          docker compose -f docker/docker-compose.yml logs --no-color selenium-hub || true
+          exit 1
+
+      - name: Run Selenium Tests (Remote Grid)
+        run: |
+          mvn -f tests/selenium/pom.xml test \
+            -DremoteUrl=http://localhost:4444/wd/hub \
+            -Dbrowser=chrome \
+            -Dheadless=true \
+            -DbaseUrl=http://localhost:8080
+
+      - name: Run Selenium Tests (Remote Grid - Firefox)
+        run: |
+          mvn -f tests/selenium/pom.xml test \
+            -DremoteUrl=http://localhost:4444/wd/hub \
+            -Dbrowser=firefox \
+            -Dheadless=true \
+            -DbaseUrl=http://localhost:8080
+
+      - name: Upload Selenium Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: selenium-report
+          path: reports/entrega-2/selenium
+
+      - name: Stop Stack
+        if: always()
+        run: docker compose -f docker/docker-compose.yml --profile selenium down -v
