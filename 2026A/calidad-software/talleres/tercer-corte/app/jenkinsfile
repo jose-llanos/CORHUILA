@@ -104,7 +104,7 @@ pipeline {
             steps {
                 sh '''
                     docker run --rm --network docker_qa-net \
-                        -v jenkins-docker_jenkins_home:/var/jenkins_home \
+                        -v docker_jenkins_data:/var/jenkins_home \
                         -w /var/jenkins_home/workspace/pipeline/${PROJECT_DIR}/tests/jmeter \
                         justb4/jmeter:5.5 \
                         -n \
