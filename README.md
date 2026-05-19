@@ -1,4 +1,7 @@
 # AutoSpark - Plataforma de Automatización de Pruebas
+> *Nota:* El proyecto cuenta con dos versiones relacionadas con la implementación de Jenkins, organizadas en diferentes ramas del repositorio.  
+> La versión principal se encuentra en la rama `grupo2`, mientras que la segunda versión del proyecto está disponible en esta rama (`grupo2.1`).
+
 
 ## Descripción del Proyecto
 
