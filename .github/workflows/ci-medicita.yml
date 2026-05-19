@@ -2,7 +2,7 @@ name: CI — MediCita QA Pipeline
 
 on:
   push:
-    branches: [grupo11]
+    branches: [kaleth]
     paths:
       - '2026A/calidad-software/talleres/tercer-corte/proyectoIntegrador-v2/**'
       - '.github/workflows/ci-medicita.yml'
