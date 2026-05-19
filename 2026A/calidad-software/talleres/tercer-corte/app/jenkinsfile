@@ -77,6 +77,10 @@ pipeline {
                             -Dsonar.token=${SONAR_TOKEN}
                     '''
                 }
+                sh '''
+                    mkdir -p app/target/sonar
+                    docker cp ${APP_CONTAINER}:/app/target/sonar/. app/target/sonar/ || true
+                '''
             }
         }
 
@@ -101,7 +105,7 @@ pipeline {
         stage('JMeter Performance') {
             steps {
                 sh '''
-                    docker run --rm --network qa-net \
+                    docker run --rm --network docker_qa-net \
                         -v $WORKSPACE/tests/jmeter:/tests \
                         justb4/jmeter:5.5 \
                         -n \
