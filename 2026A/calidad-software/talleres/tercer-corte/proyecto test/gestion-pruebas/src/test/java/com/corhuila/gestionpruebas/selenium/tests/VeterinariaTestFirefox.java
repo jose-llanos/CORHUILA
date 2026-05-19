@@ -59,7 +59,6 @@ public class VeterinariaTestFirefox {
         if (driver != null) driver.quit();
     }
 
-    // ───────────────────────────────────────────────────────────────────
 
     @Test
     @Order(1)
