@@ -75,12 +75,11 @@ pipeline {
                         docker exec ${APP_CONTAINER} \
                             ./mvnw -f /app/pom.xml sonar:sonar \
                             -Dsonar.token=${SONAR_TOKEN}
+
+                        mkdir -p app/target/sonar
+                        docker cp ${APP_CONTAINER}:/app/target/sonar/. app/target/sonar/ || true
                     '''
                 }
-                sh '''
-                    mkdir -p app/target/sonar
-                    docker cp ${APP_CONTAINER}:/app/target/sonar/. app/target/sonar/ || true
-                '''
             }
         }
 
@@ -106,16 +105,17 @@ pipeline {
             steps {
                 sh '''
                     docker run --rm --network docker_qa-net \
-                        -v $WORKSPACE/tests/jmeter:/tests \
+                        -v jenkins-docker_jenkins_home:/var/jenkins_home \
+                        -w /var/jenkins_home/workspace/pipeline/tests/jmeter \
                         justb4/jmeter:5.5 \
                         -n \
-                        -t /tests/plan_de_carga.jmx \
+                        -t plan_de_carga.jmx \
                         -Jusers=10 \
                         -Jrampup=5 \
                         -Jduration=60 \
-                        -l /tests/results.jtl \
+                        -l results.jtl \
                         -e \
-                        -o /tests/report
+                        -o report
                 '''
             }
 
