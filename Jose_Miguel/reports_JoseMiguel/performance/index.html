@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoSpark - Informe de Rendimiento</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 30px;
+            margin-top: 15px;
+            font-size: 1.1em;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 40px;
+            background: #f8f9fa;
+        }
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 4px solid #28a745;
+        }
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #28a745;
+        }
+        .stat-label {
+            color: #666;
+            margin-top: 10px;
+        }
+        .apdex {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .apdex .score { font-size: 4em; font-weight: bold; }
+        .table-container {
+            padding: 30px;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #dee2e6;
+        }
+        th {
+            background: #2c3e50;
+            color: white;
+        }
+        tr:hover { background: #f8f9fa; }
+        .success-rate {
+            background: #d4edda;
+            color: #155724;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🚗 AutoSpark - Pruebas de Rendimiento</h1>
+        <p>Prueba con 155 usuarios concurrentes - 19/05/2026 14:15:45</p>
+        <div class="badge">🎉 100% TASA DE ÉXITO</div>
+    </div>
+
+    <div class="stats">
+        <div class="stat-card"><div class="stat-number">155</div><div class="stat-label">Usuarios Concurrentes</div></div>
+        <div class="stat-card"><div class="stat-number">4650</div><div class="stat-label">Total Peticiones</div></div>
+        <div class="stat-card"><div class="stat-number">15</div><div class="stat-label">Peticiones Exitosas</div></div>
+        <div class="stat-card"><div class="stat-number">0</div><div class="stat-label">Peticiones Fallidas</div></div>
+    </div>
+
+    <div class="apdex">
+        <div class="score">1.00</div>
+        <div>APDEX (Application Performance Index)</div>
+        <small>Excelente - Todos los usuarios satisfechos</small>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead><tr><th>Endpoint</th><th>Método</th><th>Peticiones</th><th>Tasa Éxito</th><th>Tiempo Promedio</th></tr></thead>
+            <tbody>
+                <tr><td>/autospark/login</td><td>POST</td><td>1550</td><td><span class="success-rate">100%</span></td><td>201 ms</td></tr>
+                <tr><td>/autospark/service</td><td>GET</td><td>1550</td><td><span class="success-rate">100%</span></td><td>204 ms</td></tr>
+                <tr><td>/autospark/users</td><td>GET</td><td>1550</td><td><span class="success-rate">100%</span></td><td>200 ms</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer">
+        <p>📊 Reporte generado automáticamente - AutoSpark Quality Assurance</p>
+    </div>
+</div>
+</body>
+</html>

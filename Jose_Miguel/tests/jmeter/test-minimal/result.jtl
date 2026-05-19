@@ -1,0 +1,2 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1779084191453,75,Login,400,,1 Usuario 1-1,text,false,,339,179,1,1,http://backend:8080/autospark/login,67,0,51
