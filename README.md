@@ -61,8 +61,8 @@ npm start o ng serve
 | Tipo | Comando | Documentación |
 |------|---------|---------------|
 | Unitarias + JaCoCo | `cd Backend/Backend && mvn verify` | Cobertura ≥ 80 % en lógica de negocio |
-| Selenium (Brave) | `cd tests/selenium && ./run-selenium.ps1` | [tests/selenium/README.md](tests/selenium/README.md) |
-| JMeter | `cd tests/jmeter && ./run-jmeter.ps1 o mvn test -Dbrowser=brave` | [tests/jmeter/README.md](tests/jmeter/README.md) |
+| Selenium (Brave) | `cd tests/selenium && ./run-selenium.ps1 o mvn test -Dbrowser=brave` | [tests/selenium/README.md](tests/selenium/README.md) |
+| JMeter | `cd tests/jmeter && ./run-jmeter.ps1 o jmeter.bat` | [tests/jmeter/README.md](tests/jmeter/README.md) |
 
 ## CI/CD
 
