@@ -1,0 +1,68 @@
+<div class="full-page-container">
+  <div class="tabla-center-container">
+
+    <h2 class="titulo-tabla">Gestión de usuarios</h2>
+
+    <table class="tabla-usuarios">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Cédula</th>
+          <th>Email</th>
+          <th>Teléfono</th>
+          <th>Placa</th>
+          <th>Rol</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let usuario of usuarios">
+          <td>{{ usuario.fullName }}</td>
+          <td>{{ usuario.identityCard }}</td>
+          <td>{{ usuario.email }}</td>
+          <td>{{ usuario.phone }}</td>
+          <td>{{ usuario.licensePlate }}</td>
+
+          <td>
+            <span
+              class="badge-role"
+              [ngClass]="{
+                'admin-role': usuario.role === 'ADMIN',
+                'customer-role': usuario.role === 'CUSTOMER'
+              }"
+            >
+              {{ usuario.role === 'ADMIN' ? 'ADMINISTRADOR' : 'CLIENTE' }}
+            </span>
+          </td>
+
+          <td>
+            <button
+              class="btn-role btn-admin"
+              *ngIf="usuario.role === 'CUSTOMER'"
+              (click)="cambiarRol(usuario)"
+            >
+              Subir a admin
+            </button>
+
+            <button
+              class="btn-role btn-customer"
+              *ngIf="usuario.role === 'ADMIN'"
+              (click)="cambiarRol(usuario)"
+            >
+              Bajar a cliente
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+<div *ngIf="mensajeModal" class="modal">
+  <div class="modal-content">
+    <p>{{ mensajeModal }}</p>
+    <button (click)="cerrarModal()">Cerrar</button>
+  </div>
+</div>

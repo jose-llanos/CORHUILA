@@ -1,0 +1,75 @@
+<div class="registro-container">
+  <div class="form-container">
+    <form #formRef="ngForm" (ngSubmit)="registrarReserva()" novalidate>
+
+      <label class="small-label">Tipo de Vehículo:</label>
+      <select [(ngModel)]="reservaForm.vehicleType" name="vehicleType" required>
+        <option value="CARRO">Carro</option>
+        <option value="CAMIONETA">Camioneta</option>
+        <option value="CAMION">Camión</option>
+        <option value="VAN">Van</option>
+        <option value="CAMPER">Camper</option>
+        <option value="DEPORTIVO">Deportivo</option>
+      </select>
+
+      <label class="small-label">Placa del coche:</label>
+      <input type="text" [(ngModel)]="reservaForm.licensePlate" name="licensePlate" required />
+
+      <label class="small-label">Tipo de Servicio:</label>
+      <select [(ngModel)]="servicioSeleccionado" name="serviceType" required (change)="actualizarPrecio()">
+        <option value="" disabled selected>Seleccione</option>
+        <option *ngFor="let servicio of tiposServicio" [ngValue]="servicio">
+          {{ servicio.name }}
+        </option>
+      </select>
+
+      <label class="small-label">Valor:</label>
+      <input type="number" [(ngModel)]="reservaForm.value" name="value" required min="0" />
+
+      <label class="small-label">Fecha de la reserva:</label>
+      <input
+        class="fecha-input"
+        type="date"
+        [(ngModel)]="reservaForm.reservationDate"
+        name="reservationDate"
+        required
+        [min]="fechaMinimaDate"
+        (change)="validarFechaSeleccionada()"
+      />
+
+      <label class="small-label">Hora de la reserva:</label>
+      <select [(ngModel)]="reservaForm.reservationTime" name="reservationTime" required (change)="validarFechaSeleccionada()">
+        <option value="" disabled selected>Seleccione una hora</option>
+        <option value="08:00:00">08:00 AM</option>
+        <option value="09:00:00">09:00 AM</option>
+        <option value="10:00:00">10:00 AM</option>
+        <option value="11:00:00">11:00 AM</option>
+        <option value="12:00:00">12:00 PM</option>
+        <option value="13:00:00">01:00 PM</option>
+        <option value="14:00:00">02:00 PM</option>
+        <option value="15:00:00">03:00 PM</option>
+        <option value="16:00:00">04:00 PM</option>
+        <option value="17:00:00">05:00 PM</option>
+      </select>
+
+      <p *ngIf="fechaOcupada" class="fecha-error">
+        Ese horario ya está ocupado. Selecciona otro.
+      </p>
+
+      <button type="submit" [disabled]="formRef.invalid || fechaOcupada || !reservaForm.reservationTime">
+        Registrar Reserva
+      </button>
+    </form>
+  </div>
+
+  <div class="image-container">
+    <img src="https://aguagenesis.com/wp-content/uploads/2019/03/Lavaderos-de-Carros.jpg" alt="Car Wash">
+  </div>
+</div>
+
+<div *ngIf="mensajeModal" class="modal">
+  <div class="modal-content">
+    <p>{{ mensajeModal }}</p>
+    <button (click)="cerrarModal()">Cerrar</button>
+  </div>
+</div>
