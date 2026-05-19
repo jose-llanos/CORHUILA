@@ -1,0 +1,35 @@
+<div class="card bg-light mb-7 my-5">
+    <p></p>
+    <p></p>
+    <div class="card-header">Productos</div>
+    <div class="card-body">
+      <h5 class="card-title">Lista de productos</h5>
+  
+      <!-- Fila de productos -->
+      <div class="row">
+        <div class="col-md-4 mb-4" *ngFor="let producto of productos">
+          <div class="card">
+            <!-- Imagen del producto -->
+            <img [src]="producto.imagenUrl" class="card-img-top" alt="{{producto.nombre}}" style="height: 200px; object-fit: cover;">
+            <div class="card-body">
+              <!-- Nombre del producto -->
+              <h5 class="card-title">{{ producto.nombre }}</h5>
+              <!-- Descripción del producto -->
+              <p class="card-text">{{ producto.descripcion }}</p>
+              <!-- Precio del producto -->
+              <p class="card-text">{{ producto.precio | currency }}</p>
+  
+              <!-- Campo de cantidad -->
+              <input type="number" [(ngModel)]="producto.cantidad" min="1" class="form-control mb-2" />
+  
+              <!-- Botón para agregar al carrito -->
+              <button class="btn btn-primary" (click)="addToCart(producto)">
+                Agregar al carrito
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

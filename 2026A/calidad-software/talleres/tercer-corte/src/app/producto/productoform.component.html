@@ -1,0 +1,51 @@
+<div class="card bg-dark text-white card mb-7 my-5">
+    <p><p>
+    <div class="card-header">
+      {{ titulo }}
+    </div>
+    <div class="card-body">
+      <form>
+        <div class="form-group row">
+          <label for="nombre" class="col-form-label col-sm-2">Nombre del Producto:</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" [(ngModel)]="producto.nombre" name="nombre" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="descripcion" class="col-form-label col-sm-2">Descripción:</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" [(ngModel)]="producto.descripcion" name="descripcion" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="precio" class="col-form-label col-sm-2">Precio:</label>
+          <div class="col-sm-6">
+            <input type="number" class="form-control" [(ngModel)]="producto.precio" name="precio" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="cantidad" class="col-form-label col-sm-2">Cantidad:</label>
+          <div class="col-sm-6">
+            <input type="number" class="form-control" [(ngModel)]="producto.cantidad" name="cantidad" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="imagen" class="col-form-label col-sm-2">Imagen:</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" [(ngModel)]="producto.imagenUrl" name="imagen" placeholder="producto1.jpg" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <button type="button" class="btn btn-primary" (click)="save()">
+              {{ producto.id === 0 ? 'Crear' : 'Actualizar' }}
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="cancel()">
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  

@@ -1,0 +1,64 @@
+/* Asegúrate de que el body ocupe toda la altura de la ventana */
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Contenedor principal para contenido */
+.content {
+    flex-grow: 1;
+    padding: 20px;
+    padding-bottom: 80px; /* Añadir espacio al fondo para que no se cubra por el footer */
+}
+
+/* Footer siempre al fondo pero sin tapar contenido */
+footer {
+    background-color: #016fff; /* Color de fondo del footer */
+    color: white;
+    height: 70px; /* Aumentar ligeramente la altura */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px -4px 12px rgba(0, 0, 0, 0.15); /* Sombra más suave */
+    border-top-left-radius: 15px; /* Bordes más redondeados */
+    border-top-right-radius: 15px; /* Bordes más redondeados */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: fixed;  /* Mantiene el footer fijo en la parte inferior */
+    bottom: 0;        /* Siempre en la parte inferior */
+    left: 0;
+    z-index: 10;      /* Asegura que esté por encima del contenido */
+    transition: background-color 0.3s ease-in-out; /* Transición suave para el color de fondo */
+}
+
+/* Efecto al hacer hover sobre el footer */
+footer:hover {
+    background-color: #016fff; /* Cambio de color cuando pasa el mouse */
+}
+
+/* Ajustes dentro del footer */
+footer .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center; /* Asegura que el texto esté centrado */
+}
+
+/* Estilo del texto dentro del footer */
+footer .text-white {
+    margin: 5px 0;
+    padding: 0;
+    font-size: 1.1em;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); /* Añadir sombra al texto para darle más profundidad */
+    transition: color 0.3s ease-in-out; /* Transición suave en el color */
+}
+
+/* Efecto al hacer hover sobre el texto del footer */
+footer .text-white:hover {
+    color: #4CAF50; /* Cambio de color cuando pasa el mouse sobre el texto */
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4); /* Sombra más pronunciada al hacer hover */
+}
+

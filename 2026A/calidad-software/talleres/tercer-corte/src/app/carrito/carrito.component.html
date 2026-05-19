@@ -1,0 +1,65 @@
+<div class="card bg-light mb-7 my-5">
+    <p></p>
+    <p></p>
+    <div class="card-header">Carrito de Compras</div>
+    <div class="card-body">
+      <h5 class="card-title">Productos en el Carrito</h5>
+  
+      <!-- Verificar si hay productos en el carrito -->
+      <div *ngIf="carritoItems.length > 0; else noItemsMessage">
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>Imagen</th> <!-- Columna de imagen -->
+              <th>Nombre</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+              <th>Total</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of carritoItems">
+              <!-- Imagen del producto -->
+              <td>
+                <img [src]="item.producto.imagenUrl" alt="{{ item.producto.nombre }}" width="50" height="50" />
+              </td>
+              <!-- Nombre del producto -->
+              <td>{{ item.producto.nombre }}</td>
+              <!-- Precio del producto -->
+              <td>{{ item.producto.precio | currency }}</td>
+              <td>
+                <!-- Campo de cantidad con validación -->
+                <input type="number" [(ngModel)]="item.cantidad" min="1"
+                (change)="actualizarCantidad(item)" class="form-control" />
+              </td>
+              <!-- Total calculado con el precio y la cantidad -->
+              <td>{{ item.total | currency }}</td>
+              <td>
+                <!-- Botón para eliminar un producto del carrito -->
+                <button class="btn btn-danger" (click)="eliminarProducto(item)">
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+  
+        <!-- Botón para vaciar el carrito -->
+        <button class="btn btn-warning" (click)="vaciarCarrito()">Vaciar Carrito</button>
+  
+        <!-- Mostrar el total del carrito -->
+        <div class="mt-3">
+          <h5>Total: {{ calcularTotal() | currency }}</h5>
+        </div>
+      </div>
+  
+      <!-- Mensaje si no hay productos en el carrito -->
+      <ng-template #noItemsMessage>
+        <div class="alert alert-info">
+          <strong>Tu carrito está vacío</strong>. Agrega productos para verlos aquí.
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  
