@@ -459,7 +459,8 @@ Authorization: Bearer <token>
 **Calidad de Software 2026A**
  
 - Elkin Stiven Contreras Rojas 
-- David Felipe Perdomo Castillo]
+- David Felipe Perdomo Castillo
+- David Santiago Gomez
 
 **Docente:** Jose Miguel Mosquera
  
