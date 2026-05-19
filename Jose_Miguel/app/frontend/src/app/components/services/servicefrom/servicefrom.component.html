@@ -1,0 +1,36 @@
+<div class="registro-container">
+  <div class="form-container">
+    <form [formGroup]="serviceForm" (ngSubmit)="guardarServicio()">
+      <label for="name">Nombre del Servicio</label>
+      <input type="text" id="name" formControlName="name" placeholder="Ej. Lavado Interiores" />
+      <div *ngIf="serviceForm.get('name')?.invalid && serviceForm.get('name')?.touched" style="color: white;">
+        El nombre es obligatorio.
+      </div>
+
+      <label for="description">Descripción</label>
+      <input type="text" id="description" formControlName="description" placeholder="Ej. Lavado exterior e interior completo" />
+      <div *ngIf="serviceForm.get('description')?.invalid && serviceForm.get('description')?.touched" style="color: white;">
+        La descripción es obligatoria.
+      </div>
+
+      <label for="price">Precio</label>
+      <input type="number" id="price" formControlName="price" placeholder="Ej. 150" />
+      <div *ngIf="serviceForm.get('price')?.invalid && serviceForm.get('price')?.touched" style="color: white;">
+        El precio es obligatorio.
+      </div>
+
+      <label for="active">Disponible</label>
+      <input type="checkbox" id="active" formControlName="active" />
+
+      <label for="imageUrl">URL de la Imagen</label>
+      <input type="text" id="imageUrl" formControlName="imageUrl" placeholder="Ej. https://tuservicio.com/imagen.jpg" />
+      <div *ngIf="serviceForm.get('imageUrl')?.invalid && serviceForm.get('imageUrl')?.touched" style="color: white;">
+        La URL de la imagen es obligatoria.
+      </div>
+      <button type="submit">{{ isEdit ? 'Actualizar Servicio' : 'Crear Servicio' }}</button>
+    </form>
+  </div>
+  <div class="image-container">
+    <img src="https://www.boxesdelavado.net/data/5795/galerias/dc7b0013def575e7b3c253b45b2c087b0699d3da.jpeg" alt="Imagen servicio" />
+  </div>
+</div>

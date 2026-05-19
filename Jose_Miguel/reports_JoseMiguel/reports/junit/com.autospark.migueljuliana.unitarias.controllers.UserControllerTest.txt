@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.autospark.migueljuliana.unitarias.controllers.UserControllerTest
+-------------------------------------------------------------------------------
+Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.743 s -- in com.autospark.migueljuliana.unitarias.controllers.UserControllerTest
