@@ -1,0 +1,68 @@
+<nav class="navbar navbar-expand-lg colorBarra">
+  <div class="container-fluid">
+    <!-- Logo y Nombre -->
+    <a class="navbar-brand d-flex align-items-center" routerLink="/">
+      <img src="https://i.postimg.cc/C14MR50C/o-bg-remover-gen-2t-S4-Kz-Nu-QLRM05-Sby-I05npm-XRTc.png"
+        alt="Logo MAP PARKING" class="me-2" style="height: 40px;">
+      <span class="fw-bold text-white">MAP PARKING</span>
+    </a>
+
+    <!-- Botón de hamburguesa -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Menú de navegación -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link colorTexto" [routerLink]="['/home']">Inicio</a>
+        </li>
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link colorTexto" [routerLink]="['/ingreso']">Registrar Ingreso</a>
+        </li>
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link colorTexto" [routerLink]="['/lista-ingresos']">Ver Ingreso</a>
+        </li>
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link colorTexto" [routerLink]="['/servicios']">Servicios</a>
+        </li>
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link colorTexto" [routerLink]="['/contacto']">Contacto</a>
+        </li>
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link colorTexto" [routerLink]="['/reservas']">Reserva</a>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle colorTexto" href="#" id="navbarDropdown" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            Tarifas
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" routerLink="/tarifaAdmin">TarifasAdmin</a></li>
+
+            <li><a class="dropdown-item text-danger" routerLink="/tarifaCliente">Tarifa Vista Cliente</a></li>
+          </ul>
+        </li>
+
+        <!-- Menú desplegable -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle colorTexto" href="#" id="navbarDropdown" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            Mi Cuenta
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" routerLink="/cliente">Perfil</a></li>
+
+            <li><a class="dropdown-item text-danger" (click)="cerrarSesion()">Cerrar Sesión</a></li>
+          </ul>
+        </li>
+
+        <!-- Botón de inicio de sesión -->
+
+      </ul>
+    </div>
+  </div>
+</nav>

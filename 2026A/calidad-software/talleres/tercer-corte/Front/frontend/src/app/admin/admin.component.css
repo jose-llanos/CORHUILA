@@ -1,0 +1,474 @@
+/* === Configuración global === */
+body {
+    color: #ffffff; /* Texto blanco */
+    background: #121212; /* Fondo negro */
+    font-family: 'Open Sans', sans-serif;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-size: 13px;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased;
+}
+
+/* === Contenedor principal === */
+.profile-nav, .profile-info {
+    margin-top: 30px;
+}
+
+/* === Encabezado del perfil === */
+.profile-nav .user-heading {
+    background: #1e1e1e; /* Color oscuro */
+    color: #ffffff;
+    border-radius: 4px 4px 0 0;
+    padding: 30px;
+    text-align: center;
+}
+
+/* === Imagen de perfil === */
+.profile-nav .user-heading a img {
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    border: 5px solid rgba(255, 255, 255, 0.2);
+}
+
+/* === Lista de navegación lateral === */
+.profile-nav ul {
+    background: #1e1e1e; /* Fondo gris oscuro */
+    border-radius: 4px;
+    padding: 10px 0;
+}
+
+.profile-nav ul > li {
+    border-bottom: 1px solid #2c2c2c; /* Bordes oscuros */
+    line-height: 30px;
+}
+
+.profile-nav ul > li > a {
+    display: block;
+    padding: 10px 15px;
+    color: #bdbdbd; /* Texto gris claro */
+    border-left: 5px solid transparent;
+    background: #333333; /* Fondo gris medio */
+    text-decoration: none;
+}
+
+.profile-nav ul > li > a:hover, 
+.profile-nav ul > li > a:focus, 
+.profile-nav ul li.active a {
+    background: #444444 !important; /* Gris oscuro */
+    border-left: 5px solid #ffffff; /* Resaltado blanco */
+    color: #ffffff !important;
+}
+
+/* === Información del perfil === */
+.bio-graph-heading {
+    background: #1e1e1e;
+    color: #ffffff;
+    text-align: center;
+    font-style: italic;
+    padding: 40px 110px;
+    border-radius: 4px 4px 0 0;
+    font-size: 16px;
+}
+
+.bio-graph-info {
+    color: #bdbdbd;
+}
+
+/* === Actividad reciente === */
+.activity span {
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    border-radius: 50%;
+    background: #333;
+    text-align: center;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+/* === Panel de publicaciones === */
+.profile-info .panel-footer {
+    background-color: #1e1e1e;
+    border-top: 1px solid #333;
+}
+
+.profile-info .panel-footer ul li a {
+    color: #bdbdbd;
+}
+
+/* === Lista de resúmenes === */
+ul.summary-list > li > a {
+    padding: 10px 0;
+    display: inline-block;
+    color: #bdbdbd;
+}
+
+ul.summary-list > li {
+    border-right: 1px solid #333;
+}
+
+ul.summary-list > li:last-child {
+    border-right: none;
+}
+
+
+/* === PERFIL === */
+
+.profile {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #1a1a1a; /* Fondo oscuro */
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #222; /* Fondo más oscuro */
+}
+
+@media (max-width: 800px) {
+  .profile-container {
+      display: none !important;
+  }
+}
+
+.profile-sidebar {
+  padding: 30px 10px 5px 10px;
+  background-color: #333; /* Color oscuro */
+}
+
+.profile-pic img {
+  width: 70%;
+  height: 70%;
+  float: none;
+  margin: 0 auto;
+  border-radius: 50% !important;
+  border: 3px solid #444; /* Borde oscuro para contraste */
+}
+
+.profile-user-title {
+  text-align: center;
+  font-family: "Lato", "Arial", sans-serif;
+}
+
+.profile-user-title-name {
+  font-weight: 700;
+  font-size: 2.5em;
+  color: #fff; /* Letras blancas */
+}
+
+.profile-user-title-job {
+  text-transform: uppercase;
+  font-size: 1.5em;
+  color: #bbb; /* Gris claro */
+}
+
+.profile-usermenu {
+  margin-top: 10px;
+  font-family: "Lato", "Arial", sans-serif;
+}
+
+.profile-usermenu ul li {
+  border-bottom: 1px solid #444; /* Borde oscuro */
+}
+
+.profile-usermenu ul li:last-child {
+  border-bottom: none;
+}
+
+.profile-usermenu ul li a {
+  color: #fff; /* Letras blancas */
+  background-color: #222;
+  display: block;
+  padding: 10px;
+}
+
+.profile-usermenu ul li a:hover {
+  background-color: #555; /* Gris oscuro */
+  color: #fff;
+}
+
+.profile-usermenu ul li.active a {
+  background-color: #666; /* Gris medio */
+  color: #fff;
+  border-left: 4px solid #888;
+  margin-left: -4px;
+}
+
+/* === SECCIONES === */
+
+.about {
+  background-color: #333;
+  padding: 20px;
+}
+
+.about-text {
+  color: #fff;
+  font-family: "Lato", "Arial", sans-serif;
+  text-align: justify;
+  font-size: 1.25em;
+}
+
+.about-picture img {
+  border-radius: 50%;
+  width: 70%;
+  height: auto;
+  display: block;
+  margin: auto;
+  margin-top: 30px;
+  border: 3px solid #555;
+}
+
+.portfolio {
+  background-color: #444;
+  padding: 20px;
+}
+
+.portfolio-text {
+  color: #fff;
+  font-family: "Lato", "Arial", sans-serif;
+  font-size: 1.25em;
+}
+
+.photo {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.photo img {
+  width: 80%;
+  height: auto;
+  display: block;
+  margin: auto;
+  border: 3px solid #666;
+}
+
+.contact {
+  background-color: #222;
+  padding: 20px;
+}
+
+.contact p,
+label,
+button {
+  font-family: "Lato", "Arial", sans-serif;
+  color: #fff;
+}
+
+.contact p {
+  font-size: 2.5em;
+  font-weight: 700;
+}
+
+.contact label {
+  display: block;
+  font-size: 1.25em;
+}
+
+.contact input,
+.contact textarea {
+  border-radius: 5px;
+  width: 100%;
+  border: none;
+  margin: 2px;
+  padding: 2px 5px;
+  font-size: 1.25em;
+  background-color: #444; /* Fondo de inputs oscuro */
+  color: #fff; /* Texto blanco */
+}
+
+.contact button {
+  border-radius: 10px;
+  background-color: #666;
+  font-weight: 700;
+  font-size: 1.25em;
+  border: none;
+  padding: 5px;
+  color: #fff;
+  transition: background 0.3s ease;
+}
+
+.contact button:hover {
+  background-color: #888; /* Cambio de color al pasar el mouse */
+}
+
+/* === CALENDARIO === */
+
+/* Widget para agendar citas */
+
+/* Estilos base */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 18px;
+}
+
+/* Colores del calendario */
+.blue {
+  background-color: #066ddb;
+}
+
+.orange {
+  background-color: #db5006;
+}
+
+/* Fix para diseño de contenedores con elementos flotantes */
+.clearfix::before,
+.clearfix::after {
+  content: " ";
+  display: table;
+}
+
+.clearfix::after {
+  clear: both;
+}
+
+/* Estilo de enfoque para accesibilidad */
+.tab-focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
+/* Ocultar elementos visualmente pero mantener accesibilidad */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* Contenedor del calendario */
+form.appt-calendar-wrapper {
+  margin: 0 auto;
+  width: 450px;
+}
+
+/* Contenedor de la tabla del calendario */
+.appt-calendar-wrapper .appt-calendar {
+  float: left;
+  width: 65%;
+}
+
+/* Controles para cambiar de mes */
+.appt-calendar .month-controls {
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.month-controls .prev,
+.month-controls .next {
+  border-radius: 3px;
+  flex: 1;
+  font-size: 26px;
+  padding: 5px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.month-controls .prev:hover,
+.month-controls .next:hover {
+  background: #066ddb;
+  color: white;
+}
+
+/* Mes y año */
+.month-controls p {
+  flex: 5;
+  font-size: 22px;
+  font-weight: bold;
+  margin: 0;
+  padding-top: 10px;
+  text-align: center;
+}
+
+/* Semana */
+.week {
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.week label {
+  flex: 1;
+  padding: 6px;
+  position: relative;
+  cursor: pointer;
+}
+
+/* Días de la semana */
+.week label .day {
+  background: #99c2ff;
+  left: 0;
+  padding: 6px 0;
+  position: absolute;
+  top: 0;
+  text-align: center;
+  width: 100%;
+}
+
+.week label .day:hover {
+  background: #066ddb;
+  color: white;
+}
+
+/* Ocultar radio buttons del calendario */
+.week label input[type="radio"] {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+  pointer-events: none;
+}
+
+/* Día seleccionado */
+.week label input[type="radio"]:checked ~ .day {
+  background: #db5006;
+  color: white;
+}
+
+/* Días deshabilitados */
+.week .day.sat,
+.week .day.sun,
+.week .day.off {
+  background: #ccc;
+  color: #666;
+}
+
+.week .day.out {
+  background: #eee;
+  color: #444;
+}
+
+/* Contenedor de horarios */
+.appt-times {
+  float: left;
+  height: 275px;
+  margin-left: 15px;
+  position: relative;
+  width: 30%;
+}
+
+/* Lista de horarios */
+.appt-times select {
+  display: block;
+  font-size: 18px;
+  height: 205px;
+  margin-top: 7px;
+  width: 100%;
+}
+
+/* Opciones dentro de la lista */
+.appt-times option:hover {
+  background: #066ddb;
+  color: white;
+}
+
+.appt-times option:checked {
+  background-color: #db5006;
+  background-image: linear-gradient(#db5006, #db5006);
+  color: white;
+}

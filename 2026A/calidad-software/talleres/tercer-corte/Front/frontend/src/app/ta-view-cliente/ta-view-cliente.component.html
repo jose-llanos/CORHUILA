@@ -1,0 +1,24 @@
+<div class="tarifa-container">
+  <div class="card" *ngFor="let tarifa of tarifas">
+    <div class="card-content">
+      <h3 class="card-title">Tarifa ({{ tarifa.tipoVehiculo }})</h3>
+      
+      <div class="card-image">
+        <img [src]="tarifa.imagen" [alt]="'Imagen de ' + tarifa.tipoVehiculo" />
+      </div>
+  
+      <div class="tarifa-precio">
+        <div class="precio-item">
+          <span class="precio">${{ tarifa.tarifaDiurna }}</span>
+          <span class="etiqueta">Diurna / hr</span>
+        </div>
+        <div class="precio-item">
+          <span class="precio">${{ tarifa.tarifaNocturna }}</span>
+          <span class="etiqueta">Nocturna / hr</span>
+        </div>
+      </div>
+  
+      <button class="btn">Reservar</button>
+    </div>
+  </div>
+</div>

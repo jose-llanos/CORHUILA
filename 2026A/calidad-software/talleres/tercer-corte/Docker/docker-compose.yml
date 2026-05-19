@@ -1,0 +1,48 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: parking-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: map_parking
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - parking-net
+
+  app:
+    build:
+      context: ../Backend
+      dockerfile: Dockerfile
+    container_name: parking-app
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/map_parking?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    networks:
+      - parking-net
+
+  sonarqube:
+    image: sonarqube:community
+    container_name: parking-sonar
+    ports:
+      - "9000:9000"
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    networks:
+      - parking-net
+
+networks:
+  parking-net:
+    driver: bridge
+
+volumes:
+  db_data:

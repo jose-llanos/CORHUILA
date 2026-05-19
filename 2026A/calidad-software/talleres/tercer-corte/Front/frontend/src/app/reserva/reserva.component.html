@@ -1,0 +1,88 @@
+<div id="wrapper">
+  <h2>Reservar servicio</h2>
+
+  <!-- Selección del tipo de vehículo -->
+  <label class="form-label">Tipo de vehículo</label>
+  <select [(ngModel)]="reserved.tipo_vehiculo" (change)="actualizarPrecio()" class="form-control">
+    <option value="" disabled selected>Seleccione</option>
+    <option *ngFor="let vehiculo of tipo_vehiculo" [value]="vehiculo">{{ vehiculo }}</option>
+  </select>
+
+  <!-- Selección del tipo de servicio -->
+  <label class="form-label">Tipo de servicio</label>
+  <select [(ngModel)]="reserved.tipo_servicio" (change)="actualizarPrecio()" class="form-control">
+    <option value="" disabled selected>Seleccione</option>
+    <option *ngFor="let servicio of tipo_servicio" [value]="servicio">{{ servicio }}</option>
+  </select>
+
+  <!-- Número de horas -->
+  <label for="horas" class="form-label">Número de horas</label>
+  <input
+    type="number"
+    id="horas"
+    [(ngModel)]="reserved.horas"
+    class="form-control"
+    (change)="onChange('horas', reserved.horas)"
+  />
+
+  <!-- Fecha de la reserva -->
+  <label for="birthdate" class="form-label">Fecha</label>
+  <p class="form-help-text">Seleccione la fecha de la reserva</p>
+  <input
+    type="date"
+    id="birthdate"
+    placeholder="Fecha"
+    [(ngModel)]="reserved.fecha"
+    class="form-control"
+    (change)="onChange('fecha', reserved.fecha)"
+  />
+
+  <!-- Botón para guardar cambios solo visible cuando estás editando -->
+  <button *ngIf="editando" (click)="actualizarReserva()" class="btn btn-primary">Guardar</button>
+
+  <!-- Botón para registrar una nueva reserva solo visible cuando no estás editando -->
+  <button *ngIf="!editando" (click)="registrarReserva()" class="btn btn-success">Reservar</button>
+
+  <hr />
+
+  <h3>Mis Reservas</h3>
+
+  <!-- Tabla de reservas -->
+  <table class="table" *ngIf="reservas.length > 0">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Vehículo</th>
+        <th scope="col">Servicio</th>
+        <th scope="col">Horas</th>
+        <th scope="col">Fecha</th>
+        <th scope="col">Precio</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let reserva of reservas; let i = index">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ reserva.tipo_vehiculo }}</td>
+        <td>{{ reserva.tipo_servicio }}</td>
+        <td>{{ reserva.horas }}</td>
+        <td>{{ reserva.fecha }}</td>
+        <td>{{ reserva.precio }}</td>
+        <td>
+          <!-- Botón para editar la reserva -->
+          <button (click)="editarReserva(reserva)" class="btn btn-sm btn-warning">Editar</button>
+
+          <!-- Botón para eliminar la reserva -->
+          <button (click)="eliminarReserva(reserva.id)" class="btn btn-sm btn-danger">Eliminar</button>
+
+          <!-- Botón para confirmar la reserva -->
+          <button (click)="confirmarReserva(reserva.id)" class="btn btn-sm btn-success">Confirmar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Mensajes condicionales -->
+  <p *ngIf="reservas.length === 0 && !isLoading">No tienes reservas registradas.</p>
+  <p *ngIf="isLoading">Cargando reservas...</p>
+</div>

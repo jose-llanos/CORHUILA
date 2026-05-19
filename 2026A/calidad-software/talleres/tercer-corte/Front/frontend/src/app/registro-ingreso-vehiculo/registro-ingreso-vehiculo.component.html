@@ -1,0 +1,43 @@
+<div class="registro-ingreso-container">
+    <h2>Registrar Ingreso de Vehículo</h2>
+    <div *ngIf="registroExitoso" class="alert alert-success" role="alert" style="margin-bottom: 16px;">
+        ¡Registro exitoso!
+    </div>
+    <form #formIngreso="ngForm" (ngSubmit)="registrarIngreso(formIngreso)">
+        <div>
+            <label for="placa">Placa:</label>
+            <input id="placa" name="placa" type="text" required [(ngModel)]="placa" maxlength="7">
+        </div>
+        <div>
+            <label for="tipoVehiculo">Tipo de Vehículo:</label>
+            <select id="tipoVehiculo" name="tipoVehiculo" required [(ngModel)]="tipoVehiculo">
+                <option value="" disabled selected>Selecciona</option>
+                <option value="Carro">Carro</option>
+                <option value="Moto">Moto</option>
+            </select>
+        </div>
+        <div>
+            <label for="ubicacion">Punto de Ubicación:</label>
+            <input id="ubicacion" name="ubicacion" type="text" required [(ngModel)]="ubicacion"
+                placeholder="Ej: Parqueadero 3, Zona A">
+        </div>
+        <div>
+            <label for="horaIngreso">Hora de Ingreso:</label>
+            <input id="horaIngreso" name="horaIngreso" type="time" required [(ngModel)]="horaIngreso">
+        </div>
+        <button type="submit">Registrar Ingreso</button>
+    </form>
+    
+     <div class="modal-exito" *ngIf="registroExitoso">
+        <div class="modal-contenido">
+            <div class="icono-exito">
+                <svg width="70" height="70" viewBox="0 0 70 70">
+                    <circle cx="35" cy="35" r="33" fill="none" stroke="#b2e6c1" stroke-width="4"/>
+                    <polyline points="20,38 32,50 50,25" fill="none" stroke="#4bb543" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h2>Registro exitoso</h2>
+            <p>Vehículo registrado correctamente</p>
+        </div>
+    </div>
+</div>

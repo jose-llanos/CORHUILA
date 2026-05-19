@@ -1,0 +1,40 @@
+<div class="container my-5">
+  <div class="text-center mb-4">
+    <h1 class="fw-bold text-primary">Calcular Tarifa</h1>
+    <p class="text-muted fs-5">Ingresa los datos de tu vehículo y las horas de estacionamiento para calcular el costo.</p>
+  </div>
+
+  <div class="card shadow-lg border-0">
+    <div class="card-body">
+      <form>
+        <div class="mb-3">
+          <label for="typecar" class="form-label">Tipo de Vehículo</label>
+          <select id="typecar" class="form-select" [(ngModel)]="vehiculo.typecar" name="typecar" required>
+            <option value="" disabled selected>Selecciona el tipo de vehículo</option>
+            <option valu  e="Automóvil">Automóvil</option>
+            <option value="Camioneta">Camioneta</option>
+            <option value="Moto">Moto</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="plate" class="form-label">Placa del Vehículo</label>
+          <input type="text" id="plate" class="form-control" [(ngModel)]="vehiculo.plate" name="plate" required />
+        </div>
+
+        <div class="mb-3">
+          <label for="hours" class="form-label">Horas de Estacionamiento</label>
+          <input type="number" id="hours" class="form-control" [(ngModel)]="vehiculo.hours" name="hours" min="1" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100" (click)="calcularTarifa()">Calcular Tarifa</button>
+      </form>
+    </div>
+  </div>
+
+  <div *ngIf="resultado" class="alert alert-success mt-4">
+    <h4 class="alert-heading">Total a Pagar</h4>
+    <p>El costo total para tu vehículo es: <strong>{{ resultado | currency:'USD' }}</strong></p>
+  </div>
+  
+</div>

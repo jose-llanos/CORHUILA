@@ -1,0 +1,86 @@
+/* Fondo del header */
+.colorBarra {
+    background-color: #2c3e50; /* Azul oscuro */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    transition: background-color 0.3s ease-in-out;
+}
+
+.colorBarra:hover {
+    background-color: #34495e; /* Azul ligeramente más claro al pasar el mouse */
+}
+
+/* Estilo del texto */
+.colorTexto {
+    color: white !important;
+    font-size: 1.2rem;
+    margin-right: 15px;
+    font-weight: 500; /* Peso del texto */
+    transition: color 0.3s ease-in-out;
+}
+
+.colorTexto:hover {
+    color: #f1c40f !important; /* Amarillo suave al pasar el mouse */
+}
+
+/* Estilo de los enlaces de navegación */
+.navbar-nav .nav-link {
+    color: white !important;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #f1c40f !important; /* Amarillo suave */
+    background-color: rgba(255, 255, 255, 0.1); /* Fondo blanco translúcido */
+}
+
+/* Enlace activo */
+.navbar-nav .nav-link.active {
+    color: #f1c40f !important; /* Amarillo */
+    background-color: rgba(255, 255, 255, 0.2); /* Fondo blanco translúcido */
+    font-weight: bold;
+}
+
+/* Logo del header */
+.navbar-brand img {
+    max-height: 50px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.navbar-brand img:hover {
+    transform: scale(1.1); /* Efecto de zoom al pasar el mouse */
+}
+
+/* Botón de hamburguesa */
+.navbar-toggler {
+    border: none;
+    background-color: #f1c40f; /* Amarillo */
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.navbar-toggler:hover {
+    background-color: #d4ac0d; /* Amarillo más oscuro */
+}
+
+/* Fondo del dropdown */
+.dropdown-menu {
+    background-color: #34495e; /* Azul oscuro */
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.dropdown-item {
+    color: white !important;
+    transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.dropdown-item:hover {
+    color: #f1c40f !important; /* Amarillo */
+    background-color: rgba(255, 255, 255, 0.1); /* Fondo blanco translúcido */
+}

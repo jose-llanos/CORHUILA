@@ -1,0 +1,111 @@
+<div class="lista-ingresos-container">
+    <h2>Ingresos Registrados</h2>
+    <div *ngIf="cargando">Cargando...</div>
+    <table *ngIf="!cargando && ingresos.length > 0">
+        <thead>
+            <tr>
+                <th>Placa</th>
+                <th>Tipo Vehículo</th>
+                <th>Ubicación</th>
+                <th>Hora Ingreso</th>
+                <th>Fecha Ingreso</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let ingreso of ingresos">
+                <td>{{ ingreso.placa }}</td>
+                <td>{{ ingreso.tipoVehiculo }}</td>
+                <td>{{ ingreso.ubicacion }}</td>
+                <td>{{ ingreso.horaIngreso }}</td>
+                <td>{{ ingreso.fechaIngreso }}</td>
+                <td>
+                    <button class="btn btn-primary" (click)="mostrarFormularioPago(ingreso)">Liberar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Formulario de pago para ingreso seleccionado -->
+    <div *ngIf="ingresoSeleccionado" class="formulario-pago">
+        <article class="card">
+            <div class="container">
+                <div class="card-title">
+                    <h2>Pago</h2>
+                </div>
+                <form #formPago="ngForm">
+                    <div class="card-body">
+                        <div class="payment-type">
+                            <h4>Elige un método de pago</h4>
+                            <div class="types flex justify-space-between">
+                                <div class="type" [class.selected]="metodoPago === 'efectivo'"
+                                    (click)="seleccionarMetodoPago('efectivo')">
+                                    <div class="logo">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                    </div>
+                                    <div class="text">
+                                        <p>Efectivo</p>
+                                    </div>
+                                </div>
+                                <div class="type" [class.selected]="metodoPago === 'nequi'"
+                                    (click)="seleccionarMetodoPago('nequi')">
+                                    <div class="logo">
+                                        <i class="fas fa-wallet"></i>
+                                    </div>
+                                    <div class="text">
+                                        <p>Nequi</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="payment-info flex justify-space-between">
+                            <!-- Campos de Efectivo -->
+                            <div class="field full" *ngIf="metodoPago === 'efectivo'">
+                                <label for="valorEfectivo">Valor a pagar</label>
+                                <div style="position: relative;">
+                                    <span
+                                        style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #888;">$</span>
+                                    <input id="valorEfectivo" name="valorEfectivo" type="text"
+                                        placeholder="Valor a pagar" required [ngModel]="valorEfectivo"
+                                        (ngModelChange)="formatearValorEfectivo($event)" style="padding-left: 24px;">
+                                </div>
+                            </div>
+                            <!-- Campos de Nequi -->
+                            <div class="column billing" *ngIf="metodoPago === 'nequi'">
+                                <div class="title">
+                                    <h4>Pago con Nequi</h4>
+                                </div>
+                                <div class="field full">
+                                    <label for="nequi-numero">Número de Teléfono Nequi</label>
+                                    <input id="nequi-numero" name="nequiNumero" type="text" placeholder="Ej: 3001234567"
+                                        required pattern="[0-9]*" maxlength="10" minlength="10" ngModel>
+                                </div>
+                                <div class="field full">
+                                    <label for="nequi-nombre">Nombre Completo</label>
+                                    <input id="nequi-nombre" name="nequiNombre" type="text"
+                                        placeholder="Nombre Completo" required ngModel>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="mostrarError" class="mensaje-error" style="color: #f44336; margin-top: 10px;">
+                            Por favor, completa todos los campos correctamente antes de pagar.
+                        </div>
+                    </div>
+                    <div class="card-actions flex justify-space-between">
+                        <div class="flex-start">
+                            <button class="button button-secondary" type="button"
+                                (click)="cancelarPago()">Cancelar</button>
+                        </div>
+                        <div class="flex-end">
+                            <button class="button button-primary" type="button"
+                                (click)="onPagar(formPago)">Pagar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </article>
+    </div>
+    <div *ngIf="!cargando && ingresos.length === 0">
+        No hay ingresos registrados.
+    </div>
+</div>

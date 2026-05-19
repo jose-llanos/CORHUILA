@@ -1,0 +1,33 @@
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container my-5">
+  <div class="row">
+    <!-- Panel de Navegación -->
+    <div class="col-md-3">
+      <div class="panel bg-light shadow rounded">
+        <div class="user-heading text-center p-4">
+          <img src="https://i.postimg.cc/C14MR50C/o-bg-remover-gen-2t-S4-Kz-Nu-QLRM05-Sby-I05npm-XRTc.png" 
+               alt="Admin" class="img-fluid rounded-circle mb-3" style="max-width: 120px;">
+          <h3 class="fw-bold">ADMIN1237654</h3>
+          <p class="text-muted">Administrador</p>
+        </div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" [routerLink]="['/cliente']" routerLinkActive="router-link-active" ><i class="fa fa-user"></i> Perfil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" [routerLink]="['/tarifaAdmin']" routerLinkActive="router-link-active" ><i class="fa fa-user"></i> Gestionar Servicios</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link active" [routerLink]="['/reservas']" routerLinkActive="router-link-active" ><i class="fa fa-user"></i> Gestionar Reservas</a>
+          </li>
+
+
+          <li class="nav-item">
+            <a class="nav-link" href="#cerrar-sesion"><i class="fa fa-sign-out"></i> Cerrar Sesión</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  

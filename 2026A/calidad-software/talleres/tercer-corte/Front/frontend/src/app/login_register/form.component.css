@@ -1,0 +1,98 @@
+/* Estilos generales del formulario */
+.register-box {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+  }
+  
+  /* Estilos para etiquetas */
+  .form-label {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* Estilos para los inputs */
+  .form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  /* Estilos para los mensajes de error */
+  .error {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+  /* Estilos para el botón de registro */
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Estilos para la visibilidad de contraseña */
+  .position-relative {
+    position: relative;
+  }
+  
+  .btn-outline-secondary {
+    border: none;
+    background: none;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+  
+  /* Responsividad */
+  @media (max-width: 768px) {
+    .register-box {
+      width: 90%;
+    }
+  }
+  
+  .placeholder-transparent option[value=""][disabled] {
+    color: #6c757d; /* Color tenue para el placeholder */
+}
+
+select:invalid {
+    color: #6c757d; /* Color tenue cuando no se selecciona nada */
+}
+
+select:not(:invalid) {
+    color: #000; /* Color normal cuando se selecciona algo */
+}
+
+.position-absolute button {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #6c757d; /* Gris oscuro */
+  cursor: pointer;
+}
+
+.position-absolute button:hover {
+  color: #007bff; /* Azul al pasar el mouse */
+}
+
+.position-absolute i {
+  font-size: 1.2rem;
+}

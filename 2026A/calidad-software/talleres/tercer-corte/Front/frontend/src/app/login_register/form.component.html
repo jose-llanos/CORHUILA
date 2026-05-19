@@ -1,0 +1,112 @@
+<div class="container-fluid bg-dark text-white d-flex align-items-center justify-content-center py-5">
+    <div class="row w-75">
+        <!-- Columna del logo -->
+        <div class="col-md-6 d-flex flex-column align-items-center justify-content-center text-center">
+            <img src="https://i.postimg.cc/C14MR50C/o-bg-remover-gen-2t-S4-Kz-Nu-QLRM05-Sby-I05npm-XRTc.png" 
+                 alt="MAP PARKING" class="img-fluid logo">
+        </div>
+  
+        <!-- Columna del formulario -->
+        <div class="col-md-6">
+            <div class="register-box bg-white p-4 rounded shadow">
+                <h2 class="text-center fw-bold text-dark">REGISTRO</h2>
+                
+                <form [formGroup]="registroForm" (ngSubmit)="create()">
+                    <!-- Campo Nombre -->
+                    <div class="form-group mb-3">
+                        <input type="text" class="form-control" formControlName="name" placeholder="Nombre">
+                        <div *ngIf="formControls['name'].invalid && formControls['name'].touched">
+                            <small class="text-danger">El nombre es obligatorio</small>
+                        </div>
+                    </div>
+  
+                    <!-- Campo Apellido -->
+                    <div class="form-group mb-3">
+                        <input type="text" class="form-control" formControlName="lastname" placeholder="Apellido">
+                        <div *ngIf="formControls['lastname'].invalid && formControls['lastname'].touched">
+                            <small class="text-danger">El apellido es obligatorio</small>
+                        </div>
+                    </div>
+  
+                    <!-- Campo Teléfono -->
+                    <div class="form-group mb-3">
+                        <input type="text" class="form-control" formControlName="phone" placeholder="Teléfono">
+                        <div *ngIf="formControls['phone'].invalid && formControls['phone'].touched">
+                            <small class="text-danger">Ingrese un número de teléfono válido</small>
+                        </div>
+                    </div>
+  
+                    <!-- Campo Placa -->
+                    <div class="form-group mb-3">
+                        <input type="text" class="form-control" formControlName="plate" placeholder="Placa">
+                        <div *ngIf="formControls['plate'].invalid && formControls['plate'].touched">
+                            <small class="text-danger">Ingrese una placa válida (máx. 8 caracteres sin espacios)</small>
+                        </div>
+                    </div>
+  
+                    <!-- Campo Tipo de Vehículo -->
+                    <div class="form-group mb-3">
+                        <select class="form-control" formControlName="typecar" required>
+                            <option value="" disabled selected>Tipo de Vehículo</option>
+                            <option value="Auto">Auto</option>
+                            <option value="Moto">Moto</option>
+                            <option value="Camioneta">Camioneta</option>
+                        </select>
+                        <div *ngIf="formControls['typecar'].invalid && formControls['typecar'].touched">
+                            <small class="text-danger">Seleccione un tipo de vehículo</small>
+                        </div>
+                    </div>
+  
+                    <!-- Campo Correo Electrónico -->
+                    <div class="form-group mb-3">
+                        <input type="email" class="form-control" formControlName="email" placeholder="E-mail">
+                        <div *ngIf="formControls['email'].invalid && formControls['email'].touched">
+                            <small class="text-danger">Ingrese un correo electrónico válido</small>
+                        </div>
+                    </div>
+
+                     <!-- Campo Rol (Cliente Nuevo) -->
+                     <div class="form-group mb-3">
+                        <select class="form-control placeholder-transparent" formControlName="rol" required>
+                            <option value="" disabled selected hidden>Rol</option>
+                            <option value="Cliente Nuevo">Cliente Nuevo</option>
+                            <option value="Administrador">Administrador</option>
+
+                        </select>
+                        <div *ngIf="formControls['rol'].invalid && formControls['rol'].touched">
+                            <small class="text-danger">Seleccione un rol</small>
+                        </div>
+                    </div>
+  
+                    <!-- Campo Contraseña -->
+                    <div class="form-group mb-3 position-relative">
+                        <input [type]="showPassword ? 'text' : 'password'" class="form-control" formControlName="password" placeholder="Contraseña">
+                        <button type="button" class="btn btn-outline-secondary position-absolute top-50 end-0 translate-middle-y me-2" (click)="togglePasswordVisibility()">
+                            <i [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                        </button>
+                        <div *ngIf="formControls['password'].invalid && formControls['password'].touched">
+                            <small class="text-danger">La contraseña debe tener al menos 6 caracteres</small>
+                        </div>
+                    </div>
+  
+                    <div class="form-group mb-3 position-relative">
+                        <input [type]="showPassword ? 'text' : 'password'" class="form-control" formControlName="confirmarPassword" placeholder="Confirmar Contraseña">
+                        <div *ngIf="registroForm.hasError('noCoincide') && registroForm.touched">
+                            <small class="text-danger">Las contraseñas no coinciden</small>
+                        </div>
+                    </div>
+  
+                    <!-- Botón de Registro -->
+                    <button type="submit" class="btn btn-primary fw-bold w-100">REGISTRARSE</button>
+                </form>
+  
+                <!-- Enlace para iniciar sesión -->
+                <p class="login-link text-center text-dark mt-3">
+                    ¿Ya tienes una cuenta? 
+                    <a href="#" (click)="navigateToLogin()">Iniciar sesión</a>
+                </p>
+            </div>
+        </div>
+    </div>
+  </div>
+  

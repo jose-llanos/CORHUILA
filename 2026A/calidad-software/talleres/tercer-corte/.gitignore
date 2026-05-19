@@ -1,0 +1,28 @@
+# Build
+**/target/
+**/dist/
+**/.angular/
+**/node_modules/
+
+# IDE
+**/.idea/
+**/*.iml
+.vscode/
+
+# Logs
+**/*.log
+
+# Reportes generados (mantener estructura con .gitkeep)
+reports/jmeter/results.jtl
+reports/jmeter/html-report/
+reports/selenium/surefire-reports/
+
+# Drivers locales
+tests/selenium/drivers/
+
+# Secretos locales (copiar desde application.properties.example)
+Backend/Backend/src/main/resources/application.properties
+
+# OS
+Thumbs.db
+.DS_Store

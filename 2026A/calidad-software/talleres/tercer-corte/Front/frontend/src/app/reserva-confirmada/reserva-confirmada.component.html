@@ -1,0 +1,179 @@
+<div class="reserva-container">
+  <h2>Reservas Confirmadas</h2>
+
+  <!-- Mensaje condicional si no hay reservas -->
+  <p *ngIf="reservas.length === 0" class="mensaje-vacio">
+    No tienes reservas confirmadas.
+  </p>
+
+  <!-- Tabla de reservas -->
+  <table class="tabla-reservas" *ngIf="reservas.length > 0">
+    <thead>
+      <tr>
+        <th>Vehículo</th>
+        <th>Servicio</th>
+        <th>Horas</th>
+        <th>Fecha</th>
+        <th>Precio</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of reservas">
+        <td>{{ r.tipo_vehiculo }}</td>
+        <td>{{ r.tipo_servicio }}</td>
+        <td>{{ r.horas }}</td>
+        <td>{{ r.fecha }}</td>
+        <td>{{ r.precio | currency:'COP':'symbol':'1.0-0' }}</td>
+        <td>
+          <!-- Botón para pagar -->
+          <button (click)="mostrarFormularioPago(r)" class="btn btn-primary">
+            Pagar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="reservaSeleccionada" class="formulario-pago">
+  <article class="card">
+    <div class="container">
+      <div class="card-title">
+        <h2>Pago</h2>
+      </div>
+      <form #formPago="ngForm">
+        <div class="card-body">
+          <div class="payment-type">
+            <h4>Elige un método de pago</h4>
+            <div class="types flex justify-space-between">
+              <div class="type" [class.selected]="metodoPago === 'tarjeta'" (click)="seleccionarMetodoPago('tarjeta')">
+                <div class="logo">
+                  <i class="far fa-credit-card"></i>
+                </div>
+                <div class="text">
+                  <p>Pagar con Tarjeta</p>
+                </div>
+              </div>
+              <div class="type" [class.selected]="metodoPago === 'paypal'" (click)="seleccionarMetodoPago('paypal')">
+                <div class="logo">
+                  <i class="fab fa-paypal"></i>
+                </div>
+                <div class="text">
+                  <p>Pagar con PayPal</p>
+                </div>
+              </div>
+              <div class="type" [class.selected]="metodoPago === 'nequi'" (click)="seleccionarMetodoPago('nequi')">
+                <div class="logo">
+                  <i class="fas fa-wallet"></i>
+                </div>
+                <div class="text">
+                  <p>Pagar con Nequi</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="payment-info flex justify-space-between">
+            <!-- Campos de Tarjeta -->
+            <div class="column billing" *ngIf="metodoPago === 'tarjeta'">
+              <div class="title">
+                <div class="num">1</div>
+                <h4>Información de Facturación</h4>
+              </div>
+              <div class="field full">
+                <label for="name">Nombre Completo</label>
+                <input id="name" name="name" type="text" placeholder="Nombre Completo" required ngModel>
+              </div>
+              <div class="field full">
+                <label for="billing-email">Correo Electrónico</label>
+                <input id="billing-email" name="billingEmail" type="email" placeholder="correo@ejemplo.com" required  pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$" ngModel>
+              </div>
+              <div class="flex justify-space-between">
+                <div class="field half">
+                  <label for="city">Ciudad</label>
+                  <input id="city" name="city" type="text" placeholder="Ciudad" required ngModel>
+                </div>
+                <div class="field half">
+                  <label for="state">Departamento</label>
+                  <input id="state" name="state" type="text" placeholder="Departamento" required ngModel>
+                </div>
+              </div>
+              <div class="field full">
+                <label for="zip">Código Postal</label>
+                <input id="zip" name="zip" type="number" placeholder="Código Postal" required pattern="[0-9]*" ngModel>
+              </div>
+            </div>
+            <div class="column shipping" *ngIf="metodoPago === 'tarjeta'">
+              <div class="title">
+                <div class="num">2</div>
+                <h4>Información de Tarjeta</h4>
+              </div>
+              <div class="field full">
+                <label for="cardname">Nombre en la Tarjeta</label>
+                <input id="cardname" name="cardname" type="text" placeholder="Nombre en la Tarjeta" required ngModel>
+              </div>
+              <div class="field full">
+                <label for="cardnumber">Número de Tarjeta</label>
+                <input id="cardnumber" name="cardnumber" type="text" placeholder="1234-5678-9012-3456" required pattern="[0-9\-]*" maxlength="23" minlength="13" [(ngModel)]="numeroTarjeta" (input)="formatearNumeroTarjeta()">
+              </div>
+              <div class="flex justify-space-between">
+                <div class="field half">
+                  <label for="expmonth">Mes Exp.</label>
+                  <input id="expmonth" name="expmonth" type="text" placeholder="12" required pattern="[0-9]*" maxlength="2" minlength="1" ngModel>
+                </div>
+                <div class="field half">
+                  <label for="expyear">Año Exp.</label>
+                  <input id="expyear" name="expyear" type="text" placeholder="25" required pattern="[0-9]*" maxlength="2" minlength="2" ngModel>
+                </div>
+              </div>
+              <div class="field full">
+                <label for="cvc">CVC</label>
+                <input id="cvc" name="cvc" type="text" placeholder="468" required pattern="[0-9]*" maxlength="3" minlength="3" ngModel>
+              </div>
+            </div>
+            <!-- Campos de PayPal -->
+            <div class="column billing" *ngIf="metodoPago === 'paypal'">
+              <div class="title">
+                <div class="num">1</div>
+                <h4>Datos de PayPal</h4>
+              </div>
+              <div class="field full">
+                <label for="paypal-email">Correo de PayPal</label>
+                <input id="paypal-email" name="paypalEmail" type="email" placeholder="correo@ejemplo.com" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$" ngModel>
+              </div>
+              <div class="field full">
+                <label for="paypal-nombre">Nombre Completo</label>
+                <input id="paypal-nombre" name="paypalNombre" type="text" placeholder="Nombre Completo" required ngModel>
+              </div>
+            </div>
+            <!-- Campos de Nequi -->
+            <div class="column billing" *ngIf="metodoPago === 'nequi'">
+              <div class="title">
+                <div class="num">1</div>
+                <h4>Datos de Nequi</h4>
+              </div>
+              <div class="field full">
+                <label for="nequi-numero">Número de Teléfono Nequi</label>
+                <input id="nequi-numero" name="nequiNumero" type="text" placeholder="Ej: 3001234567" required pattern="[0-9]*" maxlength="10" minlength="10" ngModel>
+              </div>
+              <div class="field full">
+                <label for="nequi-nombre">Nombre Completo</label>
+                <input id="nequi-nombre" name="nequiNombre" type="text" placeholder="Nombre Completo" required ngModel>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="mostrarError" class="mensaje-error" style="color: #f44336; margin-top: 10px;">
+            Por favor, completa todos los campos correctamente antes de pagar.
+          </div>
+        </div>
+        <div class="card-actions flex justify-space-between">
+          <div class="flex-start">
+            <button class="button button-secondary" type="button" (click)="cancelarPago()">Cancelar</button>
+          </div>
+          <div class="flex-end">
+            <button class="button button-primary" type="button" (click)="onPagar(formPago)">Pagar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </article>
+</div>

@@ -1,0 +1,42 @@
+<div class="contact-container">
+    <!-- Sección de información de contacto -->
+    <div class="contact-info">
+
+        <h2>Contacto</h2>
+        <p>Utiliza las siguientes vías de contacto, o rellena el formulario.</p>
+
+        <p><strong>Vía E-mail</strong><br>
+            <a [href]="'mailto:' + email">{{ email.replace('@', '[at]') }}</a>
+        </p>
+
+        <p><strong>En nuestras redes sociales</strong><br>
+            <a href="#">{{ socialHandle }}</a>
+        </p>
+
+        <p><strong>Por teléfono</strong><br>
+            <a [href]="'tel:' + phone">{{ phone }}</a>
+        </p>
+
+        <div class="social-icons">
+          
+            <a [href]="'https://wa.me/' + phone" target="_blank">
+                <img src="https://cdn-icons-png.flaticon.com/128/3670/3670051.png" alt="WhatsApp">
+            </a>
+            <img src="https://cdn-icons-png.flaticon.com/128/854/854901.png" alt="Google Maps">
+            <img src="https://cdn-icons-png.flaticon.com/128/2111/2111463.png" alt="Instagram">
+        </div>
+    </div>
+
+    <!-- Sección del formulario -->
+    <div class="contact-form">
+        <form>
+            <input type="text" placeholder="Escribe tu nombre" required>
+            <input type="email" placeholder="Escribe tu e-mail" required>
+            <input type="tel" placeholder="Escribe tu teléfono (Opcional)">
+            <textarea placeholder="Escribe tu mensaje" required></textarea>
+            <button type="submit">ENVIAR MENSAJE</button>
+        </form>
+
+        <p class="footer-text">2024 - Oscar Areiza - Diego Mora - Hermes Pascuas</p>
+    </div>
+</div>

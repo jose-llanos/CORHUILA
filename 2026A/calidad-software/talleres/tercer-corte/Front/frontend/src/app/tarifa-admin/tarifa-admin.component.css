@@ -1,0 +1,143 @@
+.admin-container {
+    padding: 5rem 2rem 2rem; /* Espacio superior aumentado */
+    max-width: 900px;
+    margin: 0 auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .agregar-btn {
+    margin-bottom: 1.5rem;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .agregar-btn:hover {
+    background-color: #45a049;
+  }
+  
+  .tarifa-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .tarifa-table th {
+    background-color: #f0f0f0;
+    padding: 12px;
+    border-bottom: 2px solid #ddd;
+    text-transform: uppercase;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .tarifa-table td {
+    border-bottom: 1px solid #eee;
+    padding: 12px;
+    text-align: center;
+    vertical-align: middle;
+  }
+  
+  .tarifa-table img {
+    width: 50px;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  .tarifa-table button {
+    margin: 0 5px;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+    color: white;
+  }
+  
+  .tarifa-table .modificar-btn {
+    background-color: #1976D2;
+  }
+  
+  .tarifa-table .modificar-btn:hover {
+    background-color: #1565C0;
+  }
+  
+  .tarifa-table .eliminar-btn {
+    background-color: #E53935;
+  }
+  
+  .tarifa-table .eliminar-btn:hover {
+    background-color: #C62828;
+  }
+  
+  .formulario {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  }
+  
+  .formulario h3 {
+    margin-bottom: 1.5rem;
+    font-size: 22px;
+    color: #333;
+    text-align: center;
+  }
+  
+  .formulario input {
+    display: block;
+    margin-bottom: 1rem;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+  
+  .formulario .form-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .formulario .form-buttons button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .formulario .form-buttons .guardar-btn {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .formulario .form-buttons .guardar-btn:hover {
+    background-color: #43A047;
+  }
+  
+  .formulario .form-buttons .cancelar-btn {
+    background-color: #9E9E9E;
+    color: white;
+  }
+  
+  .formulario .form-buttons .cancelar-btn:hover {
+    background-color: #757575;
+  }
+  

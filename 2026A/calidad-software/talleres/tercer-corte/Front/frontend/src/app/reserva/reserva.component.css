@@ -1,0 +1,212 @@
+/* ================= GLOBAL ================= */
+body {
+  font-family: 'Montserrat', sans-serif;
+  color: #3C3C3C;
+  margin: 0;
+  padding: 0;
+  background-color: silver;
+}
+
+#wrapper {
+  width: 100%;
+  padding: 1rem;
+  background-color: #fff;
+}
+
+hr {
+  margin: 5rem 0;
+}
+
+/* ================= FORM ELEMENTOS ================= */
+input, select {
+  font-family: inherit;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  outline: none;
+  background-color: #f9f9f9;
+  color: #333;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Inputs dentro de contenedores oscuros */
+.input-container input,
+.input-container select {
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  padding: 0;
+}
+
+/* ================= FORM LABELS ================= */
+.form-label {
+  display: block;
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+
+.form-help-text {
+  margin: 0.25rem 0;
+  font-size: 1.25rem;
+  color: #C2C2C2;
+}
+
+/* ================= INPUT CONTAINERS ================= */
+.input-container,
+.input-container3 {
+  display: flex;
+  align-items: center;
+  background-color: #1c1c1c;
+  border-radius: 25px;
+  padding: 0.75rem 1rem;
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.input-container select {
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+}
+
+.input-container select::-ms-expand {
+  display: none;
+}
+
+.input-container::after {
+  content: '▼';
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #fff;
+  font-size: 0.875rem;
+}
+
+.input-container select option {
+  background-color: #1c1c1c;
+  color: #fff;
+}
+
+/* ================= INPUT FIELDS POR CLASE ================= */
+.uno input  { padding-left: 40%; }
+.dos input  { padding-left: 40%; }
+.tres input { padding-left: 38%; }
+.cuatro input { padding-left: 44%; }
+.cinco input { padding-left: 42%; }
+.seis input  { padding-left: 30%; }
+
+.uno input, .dos input, .tres input,
+.cuatro input, .cinco input, .seis input {
+  font-size: 1rem;
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  color: #fff;
+}
+
+/* ================= TITULOS ================= */
+.input-container3 h2 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: rgba(165, 6, 3, 0.8);
+  text-align: center;
+  margin: 0 auto;
+}
+
+/* ================= CARD ================= */
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.card-body {
+  width: 90vw;
+  max-width: 800px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.card {
+  position: relative;
+  border-radius: 35px;
+  background-color: #FBDC6A;
+  padding: 2rem;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: black;
+  letter-spacing: 1px;
+  margin-bottom: 2rem;
+}
+
+/* ================= BOTÓN MEJORADO ================= */
+.btn {
+  background-color: #1c1c1c ;
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  margin-top: 2rem;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* ================= MENSAJES ================= */
+small {
+  position: absolute;
+  background-color: rgba(255, 251, 0, 0.8);
+  color: #000;
+  padding: 0.5rem;
+  border-radius: 15px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  transform: translateY(-100%);
+  transition: opacity 0.3s ease-in-out;
+}
+
+.mensaje-error {
+  background-color: rgba(255, 0, 0, 0.8);
+  color: #fff;
+  padding: 0.75rem 1rem;
+  border-radius: 15px;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.875rem;
+  font-weight: bold;
+  width: 280px;
+  margin-bottom: 1.25rem;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* ================= ANIMACIONES ================= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

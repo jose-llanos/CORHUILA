@@ -1,0 +1,49 @@
+<div class="container my-5">
+  <!-- Título Principal -->
+  <div class="text-center mb-5">
+    <h1 class="fw-bold text-white">Nuestros Servicios</h1> <!-- Cambiado a text-white -->
+    <p class="text-light fs-5"> <!-- Cambiado a text-light -->
+      Ofrecemos una variedad de servicios diseñados para satisfacer tus necesidades de estacionamiento.
+    </p>
+  </div>
+
+  <!-- Información Adicional -->
+  <div class="row align-items-center mb-5">
+    <div class="col-md-6">
+      <h2 class="fw-bold text-white">¿Por qué elegirnos?</h2> <!-- Cambiado a text-white -->
+      <p class="text-light"> <!-- Cambiado a text-light -->
+        En <strong>MAP PARKING</strong>, nos esforzamos por ofrecerte la mejor experiencia de estacionamiento. 
+        Contamos con servicios personalizados, tarifas competitivas y un sistema de reservas fácil de usar. 
+        Ya sea que necesites estacionar por unas horas o por un mes, tenemos la solución perfecta para ti.
+      </p>
+      <ul class="list-unstyled">
+        <li><i class="bi bi-check-circle text-success" style="margin-right: 8px; "> </i> <span class="text-light">Estacionamiento seguro y confiable</span></li>
+        <li><i class="bi bi-check-circle text-success" style="margin-right: 8px;"> </i> <span class="text-light ">Tarifas accesibles para todos los vehículos</span></li>
+        <li><i class="bi bi-check-circle text-success" style="margin-right: 8px;"> </i> <span class="text-light">Servicio al cliente disponible 24/7</span></li>
+      </ul>
+    </div>
+    <div class="col-md-6 text-center">
+      <img src="https://cdn-icons-png.flaticon.com/512/1167/1167984.png" alt="Estacionamiento" class="img-fluid rounded shadow-lg" />
+    </div>
+  </div>
+
+  <!-- Lista de Servicios -->
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <!-- Servicio Dinámico -->
+    <div class="col" *ngFor="let servicio of servicios">
+      <div class="card h-100 shadow-lg border-0">
+        <img [src]="servicio.imagen" class="card-img-top" [alt]="servicio.titulo" />
+        <div class="card-body">
+          <h5 class="card-title text-primary fw-bold">{{ servicio.titulo }}</h5>
+          <p class="card-text text-muted">{{ servicio.descripcion }}</p>
+
+          <div class=" border-0 text-center">
+            <button class="btn btn-primary fw-bold" type="button" [routerLink]="['/servicio_detalle']">
+              Más información
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
