@@ -7,6 +7,9 @@ El proyecto implementa una arquitectura Full Stack con backend en Spring Boot y 
 
 El objetivo principal del proyecto fue construir un entorno completo de integración continua y pruebas automatizadas utilizando herramientas modernas de QA y DevOps.
 
+> **Nota:** El proyecto cuenta con dos versiones relacionadas con la implementación de Jenkins, organizadas en diferentes ramas del repositorio.  
+> La versión principal se encuentra en la rama actual, mientras que la segunda versión del proyecto está disponible en la rama `grupo2.1`.
+
 ---
 
 # Tecnologías Utilizadas
