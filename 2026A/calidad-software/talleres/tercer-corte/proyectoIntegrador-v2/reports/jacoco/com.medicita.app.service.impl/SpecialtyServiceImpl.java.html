@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SpecialtyServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report"></a> &gt; <a href="index.source.html" class="el_package">com.medicita.app.service.impl</a> &gt; <span class="el_source">SpecialtyServiceImpl.java</span></div><h1>SpecialtyServiceImpl.java</h1><pre class="source lang-java linenums">package com.medicita.app.service.impl;
+
+import com.medicita.app.dto.specialty.SpecialtyDTO;
+import com.medicita.app.dto.specialty.SpecialtyRequest;
+import com.medicita.app.entity.Specialty;
+import com.medicita.app.exception.ResourceNotFoundException;
+import com.medicita.app.repository.SpecialtyRepository;
+import com.medicita.app.service.SpecialtyService;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class SpecialtyServiceImpl implements SpecialtyService {
+
+    private final SpecialtyRepository specialtyRepository;
+    private final ModelMapper modelMapper;
+
+    @Override
+    @Transactional(readOnly = true)
+    public List&lt;SpecialtyDTO&gt; findAll() {
+<span class="fc" id="L29">        return specialtyRepository.findAll().stream()</span>
+<span class="fc" id="L30">                .map(s -&gt; modelMapper.map(s, SpecialtyDTO.class))</span>
+<span class="fc" id="L31">                .collect(Collectors.toList());</span>
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List&lt;SpecialtyDTO&gt; findAllActive() {
+<span class="fc" id="L37">        return specialtyRepository.findByActiveTrue().stream()</span>
+<span class="fc" id="L38">                .map(s -&gt; modelMapper.map(s, SpecialtyDTO.class))</span>
+<span class="fc" id="L39">                .collect(Collectors.toList());</span>
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public SpecialtyDTO findById(UUID id) {
+<span class="fc" id="L45">        return modelMapper.map(</span>
+<span class="fc" id="L46">                specialtyRepository.findById(id)</span>
+<span class="fc" id="L47">                        .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Specialty&quot;, &quot;id&quot;, id)),</span>
+<span class="fc" id="L48">                SpecialtyDTO.class);</span>
+    }
+
+    @Override
+    public SpecialtyDTO create(SpecialtyRequest request) {
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (specialtyRepository.existsByName(request.getName())) {</span>
+<span class="fc" id="L54">            throw new RuntimeException(&quot;Specialty already exists with name: &quot; + request.getName());</span>
+        }
+<span class="fc" id="L56">        Specialty specialty = modelMapper.map(request, Specialty.class);</span>
+<span class="fc" id="L57">        return modelMapper.map(specialtyRepository.save(specialty), SpecialtyDTO.class);</span>
+    }
+
+    @Override
+    public SpecialtyDTO update(UUID id, SpecialtyRequest request) {
+<span class="fc" id="L62">        Specialty specialty = specialtyRepository.findById(id)</span>
+<span class="fc" id="L63">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Specialty&quot;, &quot;id&quot;, id));</span>
+<span class="fc" id="L64">        specialty.setName(request.getName());</span>
+<span class="fc" id="L65">        specialty.setDescription(request.getDescription());</span>
+<span class="fc" id="L66">        return modelMapper.map(specialtyRepository.save(specialty), SpecialtyDTO.class);</span>
+    }
+
+    @Override
+    public void delete(UUID id) {
+<span class="fc" id="L71">        Specialty specialty = specialtyRepository.findById(id)</span>
+<span class="fc" id="L72">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Specialty&quot;, &quot;id&quot;, id));</span>
+<span class="fc" id="L73">        specialty.setActive(false);</span>
+<span class="fc" id="L74">        specialtyRepository.save(specialty);</span>
+<span class="fc" id="L75">    }</span>
+
+    @Override
+    public void activate(UUID id) {
+<span class="fc" id="L79">        Specialty specialty = specialtyRepository.findById(id)</span>
+<span class="pc" id="L80">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Specialty&quot;, &quot;id&quot;, id));</span>
+<span class="fc" id="L81">        specialty.setActive(true);</span>
+<span class="fc" id="L82">        specialtyRepository.save(specialty);</span>
+<span class="fc" id="L83">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AppointmentServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report"></a> &gt; <a href="index.source.html" class="el_package">com.medicita.app.service.impl</a> &gt; <span class="el_source">AppointmentServiceImpl.java</span></div><h1>AppointmentServiceImpl.java</h1><pre class="source lang-java linenums">package com.medicita.app.service.impl;
+
+import com.medicita.app.dto.appointment.AppointmentDTO;
+import com.medicita.app.dto.appointment.AppointmentRequest;
+import com.medicita.app.dto.appointment.AppointmentStatusUpdateRequest;
+import com.medicita.app.entity.Appointment;
+import com.medicita.app.entity.Doctor;
+import com.medicita.app.entity.DoctorSchedule;
+import com.medicita.app.entity.Patient;
+import com.medicita.app.enums.AppointmentStatus;
+import com.medicita.app.enums.LeaveStatus;
+import com.medicita.app.enums.Weekday;
+import com.medicita.app.exception.ResourceNotFoundException;
+import com.medicita.app.repository.AppointmentRepository;
+import com.medicita.app.repository.DoctorLeaveRepository;
+import com.medicita.app.repository.DoctorRepository;
+import com.medicita.app.repository.DoctorScheduleRepository;
+import com.medicita.app.repository.PatientRepository;
+import com.medicita.app.service.AppointmentService;
+import com.medicita.app.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class AppointmentServiceImpl implements AppointmentService {
+
+    private final AppointmentRepository appointmentRepository;
+    private final PatientRepository patientRepository;
+    private final DoctorRepository doctorRepository;
+    private final DoctorLeaveRepository doctorLeaveRepository;
+    private final DoctorScheduleRepository doctorScheduleRepository;
+    private final UserService userService;
+
+    @Override
+    public AppointmentDTO create(AppointmentRequest request) {
+<span class="fc" id="L47">        Patient patient = patientRepository.findByUser(userService.getCurrentUser())</span>
+<span class="fc" id="L48">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Patient profile not found for current user&quot;));</span>
+
+<span class="fc" id="L50">        Doctor doctor = doctorRepository.findById(request.getDoctorId())</span>
+<span class="fc" id="L51">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Doctor&quot;, &quot;id&quot;, request.getDoctorId()));</span>
+
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (!doctor.isActive()) {</span>
+<span class="fc" id="L54">            throw new RuntimeException(&quot;Doctor is not currently active&quot;);</span>
+        }
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        if (appointmentRepository.existsByDoctorAndDateTime(doctor, request.getAppointmentDateTime())) {</span>
+<span class="fc" id="L57">            throw new RuntimeException(&quot;El doctor ya tiene una cita en ese horario.&quot;);</span>
+        }
+
+<span class="fc" id="L60">        LocalDate appointmentDate = request.getAppointmentDateTime().toLocalDate();</span>
+<span class="fc" id="L61">        LocalTime appointmentTime = request.getAppointmentDateTime().toLocalTime();</span>
+<span class="fc" id="L62">        Weekday weekday = Weekday.valueOf(appointmentDate.getDayOfWeek().name());</span>
+
+<span class="fc" id="L64">        DoctorSchedule schedule = doctorScheduleRepository</span>
+<span class="fc" id="L65">                .findByDoctorAndWeekDay(doctor, weekday)</span>
+<span class="fc" id="L66">                .orElse(null);</span>
+<span class="fc bfc" id="L67" title="All 4 branches covered.">        if (schedule == null || !schedule.isActive()) {</span>
+<span class="fc" id="L68">            throw new RuntimeException(&quot;El médico no atiende ese día (día de descanso).&quot;);</span>
+        }
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        if (appointmentTime.isBefore(schedule.getStartTime())</span>
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">                || !appointmentTime.isBefore(schedule.getEndTime())) {</span>
+<span class="fc" id="L72">            throw new RuntimeException(&quot;La hora seleccionada está fuera del horario laboral del médico (&quot;</span>
+<span class="fc" id="L73">                    + schedule.getStartTime() + &quot; – &quot; + schedule.getEndTime() + &quot;).&quot;);</span>
+        }
+
+<span class="fc" id="L76">        boolean onLeave = doctorLeaveRepository.findByDoctorAndStatus(doctor, LeaveStatus.APPROVED)</span>
+<span class="fc" id="L77">                .stream()</span>
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">                .anyMatch(leave -&gt; !appointmentDate.isBefore(leave.getStartDate())</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">                        &amp;&amp; !appointmentDate.isAfter(leave.getEndDate()));</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        if (onLeave) {</span>
+<span class="fc" id="L81">            throw new RuntimeException(&quot;El médico está en permiso aprobado en esa fecha.&quot;);</span>
+        }
+
+<span class="fc" id="L84">        Appointment appointment = Appointment.builder()</span>
+<span class="fc" id="L85">                .patient(patient)</span>
+<span class="fc" id="L86">                .doctor(doctor)</span>
+<span class="fc" id="L87">                .dateTime(request.getAppointmentDateTime())</span>
+<span class="fc" id="L88">                .reason(request.getReason())</span>
+<span class="fc" id="L89">                .build();</span>
+<span class="fc" id="L90">        return toDTO(appointmentRepository.save(appointment));</span>
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page&lt;AppointmentDTO&gt; findByCurrentPatient(Pageable pageable) {
+<span class="fc" id="L96">        Patient patient = patientRepository.findByUser(userService.getCurrentUser())</span>
+<span class="fc" id="L97">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Patient profile not found for current user&quot;));</span>
+<span class="fc" id="L98">        return appointmentRepository.findByPatient(patient, pageable).map(this::toDTO);</span>
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List&lt;AppointmentDTO&gt; findByCurrentDoctor() {
+<span class="fc" id="L104">        Doctor doctor = doctorRepository.findByUser(userService.getCurrentUser())</span>
+<span class="pc" id="L105">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Doctor profile not found for current user&quot;));</span>
+<span class="fc" id="L106">        return appointmentRepository.findByDoctor(doctor).stream()</span>
+<span class="fc" id="L107">                .map(this::toDTO)</span>
+<span class="fc" id="L108">                .collect(Collectors.toList());</span>
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List&lt;AppointmentDTO&gt; findByDoctorWeekly(UUID doctorId, LocalDate weekStart) {
+<span class="nc" id="L114">        Doctor doctor = doctorRepository.findById(doctorId)</span>
+<span class="nc" id="L115">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Doctor&quot;, &quot;id&quot;, doctorId));</span>
+<span class="nc" id="L116">        return appointmentRepository.findByDoctorAndDateTimeBetween(</span>
+<span class="nc" id="L117">                        doctor,</span>
+<span class="nc" id="L118">                        weekStart.atStartOfDay(),</span>
+<span class="nc" id="L119">                        weekStart.plusDays(6).atTime(23, 59, 59))</span>
+<span class="nc" id="L120">                .stream()</span>
+<span class="nc" id="L121">                .map(this::toDTO)</span>
+<span class="nc" id="L122">                .collect(Collectors.toList());</span>
+    }
+
+    @Override
+    public AppointmentDTO updateStatus(UUID id, AppointmentStatusUpdateRequest request) {
+<span class="fc" id="L127">        Appointment appointment = appointmentRepository.findById(id)</span>
+<span class="fc" id="L128">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Appointment&quot;, &quot;id&quot;, id));</span>
+<span class="fc" id="L129">        appointment.setStatus(request.getStatus());</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">        if (request.getNotes() != null) {</span>
+<span class="fc" id="L131">            appointment.setNotes(request.getNotes());</span>
+        }
+<span class="fc" id="L133">        return toDTO(appointmentRepository.save(appointment));</span>
+    }
+
+    @Override
+    public void cancel(UUID id) {
+<span class="fc" id="L138">        Appointment appointment = appointmentRepository.findById(id)</span>
+<span class="fc" id="L139">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Appointment&quot;, &quot;id&quot;, id));</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">        if (!appointment.getPatient().getUser().getId().equals(userService.getCurrentUser().getId())) {</span>
+<span class="fc" id="L141">            throw new RuntimeException(&quot;Only the patient who made this appointment can cancel it&quot;);</span>
+        }
+<span class="fc" id="L143">        appointment.setStatus(AppointmentStatus.CANCELLED);</span>
+<span class="fc" id="L144">        appointmentRepository.save(appointment);</span>
+<span class="fc" id="L145">    }</span>
+
+    @Override
+    @Transactional(readOnly = true)
+    public List&lt;AppointmentDTO&gt; findAll() {
+<span class="fc" id="L150">        return appointmentRepository.findAll().stream()</span>
+<span class="fc" id="L151">                .map(this::toDTO)</span>
+<span class="fc" id="L152">                .collect(Collectors.toList());</span>
+    }
+
+    private AppointmentDTO toDTO(Appointment appointment) {
+<span class="fc" id="L156">        Doctor doctor = appointment.getDoctor();</span>
+<span class="fc" id="L157">        Patient patient = appointment.getPatient();</span>
+<span class="fc" id="L158">        return AppointmentDTO.builder()</span>
+<span class="fc" id="L159">                .id(appointment.getId())</span>
+<span class="fc" id="L160">                .patientFullName(patient.getUser().getFirstName() + &quot; &quot; + patient.getUser().getLastName())</span>
+<span class="fc" id="L161">                .doctorFullName(doctor.getUser().getFirstName() + &quot; &quot; + doctor.getUser().getLastName())</span>
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">                .specialtyName(doctor.getSpecialty() != null ? doctor.getSpecialty().getName() : null)</span>
+<span class="fc" id="L163">                .appointmentDateTime(appointment.getDateTime())</span>
+<span class="fc" id="L164">                .status(appointment.getStatus().name())</span>
+<span class="fc" id="L165">                .reason(appointment.getReason())</span>
+<span class="fc" id="L166">                .notes(appointment.getNotes())</span>
+<span class="fc" id="L167">                .build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

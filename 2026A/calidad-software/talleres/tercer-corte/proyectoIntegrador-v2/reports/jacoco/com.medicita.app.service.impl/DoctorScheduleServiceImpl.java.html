@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DoctorScheduleServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report"></a> &gt; <a href="index.source.html" class="el_package">com.medicita.app.service.impl</a> &gt; <span class="el_source">DoctorScheduleServiceImpl.java</span></div><h1>DoctorScheduleServiceImpl.java</h1><pre class="source lang-java linenums">package com.medicita.app.service.impl;
+
+import com.medicita.app.dto.schedule.DoctorAvailabilityDTO;
+import com.medicita.app.dto.schedule.DoctorScheduleDTO;
+import com.medicita.app.dto.schedule.DoctorScheduleRequest;
+import com.medicita.app.entity.Appointment;
+import com.medicita.app.entity.Doctor;
+import com.medicita.app.entity.DoctorSchedule;
+import com.medicita.app.enums.AppointmentStatus;
+import com.medicita.app.enums.LeaveStatus;
+import com.medicita.app.enums.Weekday;
+import com.medicita.app.exception.ResourceNotFoundException;
+import com.medicita.app.repository.AppointmentRepository;
+import com.medicita.app.repository.DoctorLeaveRepository;
+import com.medicita.app.repository.DoctorRepository;
+import com.medicita.app.repository.DoctorScheduleRepository;
+import com.medicita.app.service.DoctorScheduleService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class DoctorScheduleServiceImpl implements DoctorScheduleService {
+
+    private final DoctorScheduleRepository doctorScheduleRepository;
+    private final DoctorRepository doctorRepository;
+    private final AppointmentRepository appointmentRepository;
+    private final DoctorLeaveRepository doctorLeaveRepository;
+
+    @Override
+    @Transactional(readOnly = true)
+    public List&lt;DoctorScheduleDTO&gt; findByDoctor(UUID doctorId) {
+<span class="fc" id="L45">        Doctor doctor = doctorRepository.findById(doctorId)</span>
+<span class="fc" id="L46">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Doctor&quot;, &quot;id&quot;, doctorId));</span>
+<span class="fc" id="L47">        return doctorScheduleRepository.findByDoctor(doctor).stream()</span>
+<span class="fc" id="L48">                .map(this::toDTO)</span>
+<span class="fc" id="L49">                .collect(Collectors.toList());</span>
+    }
+
+    @Override
+    public DoctorScheduleDTO create(UUID doctorId, DoctorScheduleRequest request) {
+<span class="fc" id="L54">        Doctor doctor = doctorRepository.findById(doctorId)</span>
+<span class="fc" id="L55">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Doctor&quot;, &quot;id&quot;, doctorId));</span>
+<span class="fc" id="L56">        DoctorSchedule schedule = DoctorSchedule.builder()</span>
+<span class="fc" id="L57">                .doctor(doctor)</span>
+<span class="fc" id="L58">                .weekDay(request.getWeekDay())</span>
+<span class="fc" id="L59">                .startTime(request.getStartTime())</span>
+<span class="fc" id="L60">                .endTime(request.getEndTime())</span>
+<span class="fc" id="L61">                .build();</span>
+<span class="fc" id="L62">        return toDTO(doctorScheduleRepository.save(schedule));</span>
+    }
+
+    @Override
+    public DoctorScheduleDTO update(UUID scheduleId, DoctorScheduleRequest request) {
+<span class="fc" id="L67">        DoctorSchedule schedule = doctorScheduleRepository.findById(scheduleId)</span>
+<span class="fc" id="L68">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;DoctorSchedule&quot;, &quot;id&quot;, scheduleId));</span>
+<span class="fc" id="L69">        schedule.setWeekDay(request.getWeekDay());</span>
+<span class="fc" id="L70">        schedule.setStartTime(request.getStartTime());</span>
+<span class="fc" id="L71">        schedule.setEndTime(request.getEndTime());</span>
+<span class="fc" id="L72">        return toDTO(doctorScheduleRepository.save(schedule));</span>
+    }
+
+    @Override
+    public void delete(UUID scheduleId) {
+<span class="fc" id="L77">        DoctorSchedule schedule = doctorScheduleRepository.findById(scheduleId)</span>
+<span class="fc" id="L78">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;DoctorSchedule&quot;, &quot;id&quot;, scheduleId));</span>
+<span class="fc" id="L79">        schedule.setActive(false);</span>
+<span class="fc" id="L80">        doctorScheduleRepository.save(schedule);</span>
+<span class="fc" id="L81">    }</span>
+
+    @Override
+    public List&lt;DoctorScheduleDTO&gt; replaceWeekly(UUID doctorId, List&lt;DoctorScheduleRequest&gt; weekly) {
+<span class="fc" id="L85">        Doctor doctor = doctorRepository.findById(doctorId)</span>
+<span class="pc" id="L86">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Doctor&quot;, &quot;id&quot;, doctorId));</span>
+
+<span class="fc" id="L88">        List&lt;DoctorSchedule&gt; existing = doctorScheduleRepository.findByDoctor(doctor);</span>
+
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        for (DoctorScheduleRequest req : weekly) {</span>
+<span class="pc bpc" id="L91" title="2 of 4 branches missed.">            if (req.getStartTime() != null &amp;&amp; req.getEndTime() != null</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">                    &amp;&amp; !req.getStartTime().isBefore(req.getEndTime())) {</span>
+<span class="fc" id="L93">                throw new IllegalArgumentException(</span>
+<span class="fc" id="L94">                        &quot;startTime must be before endTime for &quot; + req.getWeekDay());</span>
+            }
+
+<span class="fc" id="L97">            DoctorSchedule entry = existing.stream()</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">                    .filter(s -&gt; s.getWeekDay() == req.getWeekDay())</span>
+<span class="fc" id="L99">                    .findFirst()</span>
+<span class="fc" id="L100">                    .orElse(null);</span>
+
+<span class="fc bfc" id="L102" title="All 2 branches covered.">            if (entry == null) {</span>
+<span class="fc" id="L103">                entry = DoctorSchedule.builder()</span>
+<span class="fc" id="L104">                        .doctor(doctor)</span>
+<span class="fc" id="L105">                        .weekDay(req.getWeekDay())</span>
+<span class="fc" id="L106">                        .startTime(req.getStartTime())</span>
+<span class="fc" id="L107">                        .endTime(req.getEndTime())</span>
+<span class="pc bpc" id="L108" title="2 of 4 branches missed.">                        .active(req.getActive() == null || req.getActive())</span>
+<span class="fc" id="L109">                        .build();</span>
+<span class="fc" id="L110">            } else {</span>
+<span class="fc" id="L111">                entry.setStartTime(req.getStartTime());</span>
+<span class="fc" id="L112">                entry.setEndTime(req.getEndTime());</span>
+<span class="pc bpc" id="L113" title="2 of 4 branches missed.">                entry.setActive(req.getActive() == null || req.getActive());</span>
+            }
+<span class="fc" id="L115">            doctorScheduleRepository.save(entry);</span>
+        }
+
+<span class="fc" id="L118">        return doctorScheduleRepository.findByDoctor(doctor).stream()</span>
+<span class="fc" id="L119">                .map(this::toDTO)</span>
+<span class="fc" id="L120">                .collect(Collectors.toList());</span>
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public DoctorAvailabilityDTO getAvailability(UUID doctorId, LocalDate date) {
+<span class="fc" id="L126">        Doctor doctor = doctorRepository.findById(doctorId)</span>
+<span class="pc" id="L127">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Doctor&quot;, &quot;id&quot;, doctorId));</span>
+
+<span class="fc" id="L129">        Weekday weekday = Weekday.valueOf(date.getDayOfWeek().name());</span>
+
+<span class="fc" id="L131">        DoctorSchedule schedule = doctorScheduleRepository</span>
+<span class="fc" id="L132">                .findByDoctorAndWeekDay(doctor, weekday)</span>
+<span class="fc" id="L133">                .orElse(null);</span>
+
+<span class="fc" id="L135">        boolean onLeave = doctorLeaveRepository.findByDoctorAndStatus(doctor, LeaveStatus.APPROVED)</span>
+<span class="fc" id="L136">                .stream()</span>
+<span class="pc bpc" id="L137" title="2 of 4 branches missed.">                .anyMatch(l -&gt; !date.isBefore(l.getStartDate()) &amp;&amp; !date.isAfter(l.getEndDate()));</span>
+
+<span class="fc" id="L139">        DoctorAvailabilityDTO.DoctorAvailabilityDTOBuilder dto = DoctorAvailabilityDTO.builder()</span>
+<span class="fc" id="L140">                .weekDay(weekday.name())</span>
+<span class="fc" id="L141">                .onLeave(onLeave);</span>
+
+<span class="pc bpc" id="L143" title="1 of 4 branches missed.">        if (schedule == null || !schedule.isActive()) {</span>
+<span class="fc" id="L144">            return dto.working(false).slots(List.of()).build();</span>
+        }
+
+<span class="fc" id="L147">        dto.working(true)</span>
+<span class="fc" id="L148">                .startTime(schedule.getStartTime())</span>
+<span class="fc" id="L149">                .endTime(schedule.getEndTime());</span>
+
+<span class="fc" id="L151">        Set&lt;LocalTime&gt; booked = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L152">        LocalDateTime dayStart = date.atStartOfDay();</span>
+<span class="fc" id="L153">        LocalDateTime dayEnd = date.plusDays(1).atStartOfDay();</span>
+<span class="fc" id="L154">        List&lt;Appointment&gt; dayAppts = appointmentRepository</span>
+<span class="fc" id="L155">                .findByDoctorAndDateTimeBetween(doctor, dayStart, dayEnd);</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">        for (Appointment a : dayAppts) {</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">            if (a.getStatus() == AppointmentStatus.PENDING</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">                    || a.getStatus() == AppointmentStatus.CONFIRMED) {</span>
+<span class="fc" id="L159">                booked.add(a.getDateTime().toLocalTime().withMinute(0).withSecond(0).withNano(0));</span>
+            }
+        }
+
+<span class="fc" id="L163">        List&lt;DoctorAvailabilityDTO.Slot&gt; slots = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L164">        LocalTime t = schedule.getStartTime().withMinute(0).withSecond(0).withNano(0);</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">        while (t.isBefore(schedule.getEndTime())) {</span>
+<span class="fc" id="L166">            slots.add(DoctorAvailabilityDTO.Slot.builder()</span>
+<span class="fc" id="L167">                    .time(String.format(&quot;%02d:%02d&quot;, t.getHour(), t.getMinute()))</span>
+<span class="fc bfc" id="L168" title="All 4 branches covered.">                    .booked(onLeave || booked.contains(t))</span>
+<span class="fc" id="L169">                    .build());</span>
+<span class="fc" id="L170">            t = t.plusHours(1);</span>
+        }
+
+<span class="fc" id="L173">        return dto.slots(slots).build();</span>
+    }
+
+    private DoctorScheduleDTO toDTO(DoctorSchedule schedule) {
+<span class="fc" id="L177">        return DoctorScheduleDTO.builder()</span>
+<span class="fc" id="L178">                .id(schedule.getId())</span>
+<span class="fc" id="L179">                .dayOfWeek(schedule.getWeekDay().name())</span>
+<span class="fc" id="L180">                .startTime(schedule.getStartTime())</span>
+<span class="fc" id="L181">                .endTime(schedule.getEndTime())</span>
+<span class="fc" id="L182">                .active(schedule.isActive())</span>
+<span class="fc" id="L183">                .build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

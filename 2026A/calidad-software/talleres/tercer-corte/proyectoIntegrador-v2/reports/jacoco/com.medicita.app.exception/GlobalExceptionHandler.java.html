@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GlobalExceptionHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report"></a> &gt; <a href="index.source.html" class="el_package">com.medicita.app.exception</a> &gt; <span class="el_source">GlobalExceptionHandler.java</span></div><h1>GlobalExceptionHandler.java</h1><pre class="source lang-java linenums">package com.medicita.app.exception;
+
+import com.medicita.app.dto.common.ApiResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
+
+import java.util.HashMap;
+import java.util.Map;
+
+<span class="nc" id="L18">@Slf4j</span>
+@RestControllerAdvice
+<span class="nc" id="L20">public class GlobalExceptionHandler {</span>
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity&lt;ApiResponse&lt;?&gt;&gt; handleResourceNotFound(ResourceNotFoundException ex) {
+<span class="nc" id="L24">        return ResponseEntity.status(HttpStatus.NOT_FOUND)</span>
+<span class="nc" id="L25">                .body(ApiResponse.error(ex.getMessage()));</span>
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity&lt;ApiResponse&lt;?&gt;&gt; handleValidation(MethodArgumentNotValidException ex) {
+<span class="nc" id="L30">        Map&lt;String, String&gt; errors = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L31" title="All 2 branches missed.">        for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {</span>
+<span class="nc" id="L32">            errors.put(fieldError.getField(), fieldError.getDefaultMessage());</span>
+        }
+<span class="nc" id="L34">        return ResponseEntity.badRequest()</span>
+<span class="nc" id="L35">                .body(ApiResponse.&lt;Map&lt;String, String&gt;&gt;builder()</span>
+<span class="nc" id="L36">                        .success(false)</span>
+<span class="nc" id="L37">                        .message(&quot;Validation failed&quot;)</span>
+<span class="nc" id="L38">                        .data(errors)</span>
+<span class="nc" id="L39">                        .timestamp(java.time.LocalDateTime.now())</span>
+<span class="nc" id="L40">                        .build());</span>
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity&lt;ApiResponse&lt;?&gt;&gt; handleAccessDenied(AccessDeniedException ex) {
+<span class="nc" id="L45">        return ResponseEntity.status(HttpStatus.FORBIDDEN)</span>
+<span class="nc" id="L46">                .body(ApiResponse.error(&quot;Access denied&quot;));</span>
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity&lt;ApiResponse&lt;?&gt;&gt; handleBadCredentials(BadCredentialsException ex) {
+<span class="nc" id="L51">        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)</span>
+<span class="nc" id="L52">                .body(ApiResponse.error(&quot;Invalid credentials&quot;));</span>
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity&lt;ApiResponse&lt;?&gt;&gt; handleNoResourceFound(NoResourceFoundException ex) {
+<span class="nc" id="L57">        return ResponseEntity.status(HttpStatus.NOT_FOUND)</span>
+<span class="nc" id="L58">                .body(ApiResponse.error(ex.getMessage()));</span>
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity&lt;ApiResponse&lt;?&gt;&gt; handleGeneral(Exception ex) {
+<span class="nc" id="L63">        log.error(&quot;Unhandled exception: {}&quot;, ex.getMessage(), ex);</span>
+<span class="nc" id="L64">        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)</span>
+<span class="nc" id="L65">                .body(ApiResponse.error(&quot;Internal server error&quot;));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

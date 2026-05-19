@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DoctorLeaveServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report"></a> &gt; <a href="index.source.html" class="el_package">com.medicita.app.service.impl</a> &gt; <span class="el_source">DoctorLeaveServiceImpl.java</span></div><h1>DoctorLeaveServiceImpl.java</h1><pre class="source lang-java linenums">package com.medicita.app.service.impl;
+
+import com.medicita.app.dto.leave.DoctorLeaveDTO;
+import com.medicita.app.dto.leave.DoctorLeaveRequest;
+import com.medicita.app.entity.Doctor;
+import com.medicita.app.entity.DoctorLeave;
+import com.medicita.app.enums.LeaveStatus;
+import com.medicita.app.exception.ResourceNotFoundException;
+import com.medicita.app.repository.DoctorLeaveRepository;
+import com.medicita.app.repository.DoctorRepository;
+import com.medicita.app.service.DoctorLeaveService;
+import com.medicita.app.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class DoctorLeaveServiceImpl implements DoctorLeaveService {
+
+    private final DoctorLeaveRepository doctorLeaveRepository;
+    private final DoctorRepository doctorRepository;
+    private final UserService userService;
+
+    @Override
+    public DoctorLeaveDTO requestLeave(DoctorLeaveRequest request) {
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        if (request.getEndDate().isBefore(request.getStartDate())) {</span>
+<span class="fc" id="L33">            throw new RuntimeException(&quot;End date must be after or equal to start date&quot;);</span>
+        }
+
+<span class="fc" id="L36">        Doctor doctor = doctorRepository.findByUser(userService.getCurrentUser())</span>
+<span class="fc" id="L37">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Doctor profile not found for current user&quot;));</span>
+
+<span class="fc" id="L39">        if (doctorLeaveRepository.existsByDoctorAndStartDateLessThanEqualAndEndDateGreaterThanEqual(</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">                doctor, request.getEndDate(), request.getStartDate())) {</span>
+<span class="fc" id="L41">            throw new RuntimeException(&quot;A leave request already exists overlapping the selected dates&quot;);</span>
+        }
+
+<span class="fc" id="L44">        DoctorLeave leave = DoctorLeave.builder()</span>
+<span class="fc" id="L45">                .doctor(doctor)</span>
+<span class="fc" id="L46">                .startDate(request.getStartDate())</span>
+<span class="fc" id="L47">                .endDate(request.getEndDate())</span>
+<span class="fc" id="L48">                .type(request.getType())</span>
+<span class="fc" id="L49">                .reason(request.getReason())</span>
+<span class="fc" id="L50">                .build();</span>
+<span class="fc" id="L51">        return toDTO(doctorLeaveRepository.save(leave));</span>
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List&lt;DoctorLeaveDTO&gt; findByCurrentDoctor() {
+<span class="fc" id="L57">        Doctor doctor = doctorRepository.findByUser(userService.getCurrentUser())</span>
+<span class="pc" id="L58">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Doctor profile not found for current user&quot;));</span>
+<span class="fc" id="L59">        return doctorLeaveRepository.findByDoctor(doctor).stream()</span>
+<span class="fc" id="L60">                .map(this::toDTO)</span>
+<span class="fc" id="L61">                .collect(Collectors.toList());</span>
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List&lt;DoctorLeaveDTO&gt; findApprovedByCurrentDoctor() {
+<span class="fc" id="L67">        Doctor doctor = doctorRepository.findByUser(userService.getCurrentUser())</span>
+<span class="pc" id="L68">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Doctor profile not found for current user&quot;));</span>
+<span class="fc" id="L69">        return doctorLeaveRepository.findByDoctorAndStatus(doctor, LeaveStatus.APPROVED).stream()</span>
+<span class="fc" id="L70">                .map(this::toDTO)</span>
+<span class="fc" id="L71">                .collect(Collectors.toList());</span>
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List&lt;DoctorLeaveDTO&gt; findApprovedByDoctor(UUID doctorId) {
+<span class="nc" id="L77">        Doctor doctor = doctorRepository.findById(doctorId)</span>
+<span class="nc" id="L78">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Doctor&quot;, &quot;id&quot;, doctorId));</span>
+<span class="nc" id="L79">        return doctorLeaveRepository.findByDoctorAndStatus(doctor, LeaveStatus.APPROVED).stream()</span>
+<span class="nc" id="L80">                .map(this::toDTO)</span>
+<span class="nc" id="L81">                .collect(Collectors.toList());</span>
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List&lt;DoctorLeaveDTO&gt; findPending() {
+<span class="fc" id="L87">        return doctorLeaveRepository.findByStatus(LeaveStatus.PENDING).stream()</span>
+<span class="fc" id="L88">                .map(this::toDTO)</span>
+<span class="fc" id="L89">                .collect(Collectors.toList());</span>
+    }
+
+    @Override
+    public DoctorLeaveDTO approve(UUID id) {
+<span class="fc" id="L94">        DoctorLeave leave = doctorLeaveRepository.findById(id)</span>
+<span class="fc" id="L95">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;DoctorLeave&quot;, &quot;id&quot;, id));</span>
+<span class="fc" id="L96">        leave.setStatus(LeaveStatus.APPROVED);</span>
+<span class="fc" id="L97">        return toDTO(doctorLeaveRepository.save(leave));</span>
+    }
+
+    @Override
+    public DoctorLeaveDTO reject(UUID id) {
+<span class="fc" id="L102">        DoctorLeave leave = doctorLeaveRepository.findById(id)</span>
+<span class="pc" id="L103">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;DoctorLeave&quot;, &quot;id&quot;, id));</span>
+<span class="fc" id="L104">        leave.setStatus(LeaveStatus.REJECTED);</span>
+<span class="fc" id="L105">        return toDTO(doctorLeaveRepository.save(leave));</span>
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List&lt;DoctorLeaveDTO&gt; findAll() {
+<span class="fc" id="L111">        return doctorLeaveRepository.findAll().stream()</span>
+<span class="fc" id="L112">                .map(this::toDTO)</span>
+<span class="fc" id="L113">                .collect(Collectors.toList());</span>
+    }
+
+    private DoctorLeaveDTO toDTO(DoctorLeave leave) {
+<span class="fc" id="L117">        String fullName = leave.getDoctor().getUser().getFirstName()</span>
+<span class="fc" id="L118">                + &quot; &quot; + leave.getDoctor().getUser().getLastName();</span>
+<span class="fc" id="L119">        return DoctorLeaveDTO.builder()</span>
+<span class="fc" id="L120">                .id(leave.getId())</span>
+<span class="fc" id="L121">                .doctorFullName(fullName)</span>
+<span class="fc" id="L122">                .startDate(leave.getStartDate())</span>
+<span class="fc" id="L123">                .endDate(leave.getEndDate())</span>
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">                .type(leave.getType() != null ? leave.getType().name() : null)</span>
+<span class="fc" id="L125">                .status(leave.getStatus().name())</span>
+<span class="fc" id="L126">                .reason(leave.getReason())</span>
+<span class="fc" id="L127">                .build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
