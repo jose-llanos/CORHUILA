@@ -1,6 +1,5 @@
 package com.autospark.migueljuliana.selenium.pages;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -33,9 +32,11 @@ public class RegisterPage extends BasePage {
     @FindBy(css = "button[type='submit']")
     private WebElement submitButton;
 
-    private final By successModal = By.cssSelector(".modal-content");
+    @FindBy(css = ".modal-content")
+    private WebElement successModal;
 
-    private final By modalCloseButton = By.cssSelector(".modal button");
+    @FindBy(css = ".modal button")
+    private WebElement modalCloseButton;
 
     public RegisterPage(WebDriver driver) {
         super(driver);
@@ -49,25 +50,14 @@ public class RegisterPage extends BasePage {
                          String identityCard, String phone, String licensePlate) {
         wait.until(ExpectedConditions.elementToBeClickable(fullNameInput));
 
-        fullNameInput.clear();
         fullNameInput.sendKeys(fullName);
-
-        emailInput.clear();
         emailInput.sendKeys(email);
-
-        passwordInput.clear();
         passwordInput.sendKeys(password);
-
-        identityCardInput.clear();
         identityCardInput.sendKeys(identityCard);
-
-        phoneInput.clear();
         phoneInput.sendKeys(phone);
-
-        licensePlateInput.clear();
         licensePlateInput.sendKeys(licensePlate);
 
-        wait.until(ExpectedConditions.elementToBeClickable(submitButton)).click();
+        submitButton.click();
     }
 
     public void registerWithRole(String fullName, String email, String password,
@@ -75,49 +65,33 @@ public class RegisterPage extends BasePage {
                                  String role) {
         wait.until(ExpectedConditions.elementToBeClickable(fullNameInput));
 
-        fullNameInput.clear();
         fullNameInput.sendKeys(fullName);
-
-        emailInput.clear();
         emailInput.sendKeys(email);
-
-        passwordInput.clear();
         passwordInput.sendKeys(password);
-
-        identityCardInput.clear();
         identityCardInput.sendKeys(identityCard);
-
-        phoneInput.clear();
         phoneInput.sendKeys(phone);
-
-        licensePlateInput.clear();
         licensePlateInput.sendKeys(licensePlate);
 
         Select roleSelector = new Select(roleSelect);
         roleSelector.selectByVisibleText(role);
 
-        wait.until(ExpectedConditions.elementToBeClickable(submitButton)).click();
+        submitButton.click();
     }
 
     public boolean isSuccessModalDisplayed() {
         try {
-            return wait.until(
-                    ExpectedConditions.visibilityOfElementLocated(successModal)
-            ).isDisplayed();
+            wait.until(ExpectedConditions.visibilityOf(successModal));
+            return successModal.isDisplayed();
         } catch (Exception e) {
             return false;
         }
     }
 
     public String getSuccessMessage() {
-        return wait.until(
-                ExpectedConditions.visibilityOfElementLocated(successModal)
-        ).getText();
+        return successModal.getText();
     }
 
     public void closeModal() {
-        wait.until(
-                ExpectedConditions.elementToBeClickable(modalCloseButton)
-        ).click();
+        wait.until(ExpectedConditions.elementToBeClickable(modalCloseButton)).click();
     }
 }

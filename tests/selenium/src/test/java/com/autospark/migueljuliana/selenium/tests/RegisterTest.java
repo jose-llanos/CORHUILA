@@ -4,8 +4,12 @@ import com.autospark.migueljuliana.selenium.pages.HomePage;
 import com.autospark.migueljuliana.selenium.pages.RegisterPage;
 import com.aventstack.extentreports.Status;
 
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.time.Duration;
 
 public class RegisterTest extends BaseTest {
 
@@ -44,6 +48,12 @@ public class RegisterTest extends BaseTest {
         test.log(
                 Status.INFO,
                 "Formulario de registro completado con email: " + email
+        );
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        wait.until(driver ->
+                registerPage.isSuccessModalDisplayed()
         );
 
         Assert.assertTrue(
