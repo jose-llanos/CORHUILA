@@ -109,7 +109,7 @@ pipeline {
                         -v $WORKSPACE/tests/jmeter:/tests \
                         justb4/jmeter:5.5 \
                         -n \
-                        -t /tests/task-manager-load.jmx \
+                        -t /tests/plan_de_carga.jmx \
                         -Jusers=10 \
                         -Jrampup=5 \
                         -Jduration=60 \
