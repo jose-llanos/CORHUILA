@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Tareas - Autenticación</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div id="login-card" class="auth-card">
+            <h2>Iniciar Sesión</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-username">Usuario</label>
+                    <input type="text" id="login-username" data-test="login-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Contraseña</label>
+                    <input type="password" id="login-password" data-test="login-password" required>
+                </div>
+                <button type="submit" data-test="btn-login-submit">Ingresar</button>
+            </form>
+            <p>¿No tienes cuenta? <a href="#" id="go-to-register" data-test="link-to-register">Regístrate aquí</a></p>
+        </div>
+
+        <div id="register-card" class="auth-card hidden">
+            <h2>Crear Cuenta</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="reg-username">Usuario</label>
+                    <input type="text" id="reg-username" data-test="reg-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-email">Correo Electrónico</label>
+                    <input type="email" id="reg-email" data-test="reg-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">Contraseña</label>
+                    <input type="password" id="reg-password" data-test="reg-password" required>
+                </div>
+                <button type="submit" data-test="btn-register-submit">Registrarme</button>
+            </form>
+            <p>¿Ya tienes cuenta? <a href="#" id="go-to-login" data-test="link-to-login">Inicia sesión</a></p>
+        </div>
+        <div id="auth-error" class="error-msg hidden" data-test="auth-error-message"></div>
+    </div>
+    <script src="/js/auth.js"></script>
+</body>
+</html>

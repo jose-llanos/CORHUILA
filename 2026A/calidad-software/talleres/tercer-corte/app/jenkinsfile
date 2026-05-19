@@ -1,0 +1,200 @@
+pipeline {
+    agent any
+
+    options {
+        timestamps()
+        timeout(time: 45, unit: 'MINUTES')
+        disableConcurrentBuilds()
+    }
+
+    environment {
+        SONAR_TOKEN  = credentials('sonar-token')
+        E2E_BASE_URL = 'http://app:8080'
+        E2E_GRID_URL = 'http://selenium-hub:4444'
+        APP_CONTAINER = 'docker-app-1'
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Esperar a la app') {
+            steps {
+                sh '''
+                    echo "Esperando app en ${E2E_BASE_URL}/actuator/health ..."
+                    for i in $(seq 1 30); do
+                        if curl -sf "${E2E_BASE_URL}/actuator/health" >/dev/null; then
+                            echo "App OK"
+                            exit 0
+                        fi
+                        echo "  intento $i/30..."
+                        sleep 5
+                    done
+
+                    echo "App no respondió a tiempo"
+                    exit 1
+                '''
+            }
+        }
+
+        stage('Unit Tests + JaCoCo') {
+            steps {
+                sh '''
+                    docker exec ${APP_CONTAINER} \
+                        ./mvnw -f /app/pom.xml clean verify
+                '''
+            }
+
+            post {
+                always {
+                    junit(
+                        allowEmptyResults: true,
+                        testResults: 'app/target/surefire-reports/*.xml'
+                    )
+
+                    publishHTML(target: [
+                        allowMissing: true,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: 'app/target/site/jacoco',
+                        reportFiles: 'index.html',
+                        reportName: 'JaCoCo Coverage'
+                    ])
+                }
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh '''
+                        docker exec ${APP_CONTAINER} \
+                            ./mvnw -f /app/pom.xml sonar:sonar \
+                            -Dsonar.token=${SONAR_TOKEN}
+                    '''
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: false
+                }
+            }
+        }
+
+        stage('Esperar app antes de pruebas dinámicas') {
+            steps {
+                sh '''
+                    for i in $(seq 1 30); do
+                        if curl -sf "${E2E_BASE_URL}/actuator/health" >/dev/null; then
+                            echo "App OK"
+                            exit 0
+                        fi
+                        sleep 5
+                    done
+
+                    exit 1
+                '''
+            }
+        }
+
+        stage('JMeter Performance') {
+            steps {
+                sh '''
+                    docker run --rm --network qa-net \
+                        -v $WORKSPACE/tests/jmeter:/tests \
+                        justb4/jmeter:5.5 \
+                        -n \
+                        -t /tests/task-manager-load.jmx \
+                        -Jusers=10 \
+                        -Jrampup=5 \
+                        -Jduration=60 \
+                        -l /tests/results.jtl \
+                        -e \
+                        -o /tests/report
+                '''
+            }
+
+            post {
+                always {
+                    perfReport sourceDataFiles: 'tests/jmeter/results.jtl'
+
+                    publishHTML(target: [
+                        allowMissing: true,
+                        keepAll: true,
+                        reportDir: 'tests/jmeter/report',
+                        reportFiles: 'index.html',
+                        reportName: 'JMeter Report'
+                    ])
+
+                    archiveArtifacts(
+                        artifacts: 'tests/jmeter/results.jtl',
+                        allowEmptyArchive: true
+                    )
+                }
+            }
+        }
+
+        stage('Esperar al Selenium Grid') {
+            steps {
+                sh '''
+                    for i in $(seq 1 30); do
+                        if curl -sf "${E2E_GRID_URL}/status" | grep -q '"ready": *true'; then
+                            echo "Grid OK"
+                            exit 0
+                        fi
+
+                        echo "  intento $i/30..."
+                        sleep 5
+                    done
+
+                    exit 1
+                '''
+            }
+        }
+
+        stage('E2E Tests (Selenium)') {
+            steps {
+                sh '''
+                    docker exec \
+                        -e E2E_BASE_URL=${E2E_BASE_URL} \
+                        -e E2E_GRID_URL=${E2E_GRID_URL} \
+                        ${APP_CONTAINER} \
+                        ./mvnw -f /app/pom.xml test -Pe2e \
+                        -De2e.baseUrl=${E2E_BASE_URL} \
+                        -De2e.gridUrl=${E2E_GRID_URL}
+                '''
+            }
+
+            post {
+                always {
+                    junit(
+                        allowEmptyResults: true,
+                        testResults: 'app/target/surefire-reports/*.xml'
+                    )
+
+                    archiveArtifacts(
+                        artifacts: 'app/target/screenshots/*.png',
+                        allowEmptyArchive: true
+                    )
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline completo ✅'
+        }
+
+        failure {
+            echo 'Pipeline falló — revisa reportes y screenshots.'
+        }
+    }
+}

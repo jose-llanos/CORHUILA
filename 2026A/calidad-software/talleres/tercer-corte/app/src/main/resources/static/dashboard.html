@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablero de Proyectos</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">TaskApp</div>
+        <div class="user-profile" data-test="profile-box">
+            <span id="user-display" data-test="username-display" class="user-display-clickable"></span>
+            <button id="btn-logout" data-test="btn-logout">Cerrar Sesión</button>
+        </div>
+    </header>
+
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3>Mis Proyectos</h3>
+                <button id="open-project-modal" data-test="btn-new-project">+</button>
+            </div>
+            <ul id="projects-list" data-test="projects-list-container">
+                </ul>
+        </aside>
+
+        <main class="main-content">
+            <div id="empty-state" data-test="empty-view">
+                <p>Selecciona o crea un proyecto para comenzar a trabajar.</p>
+            </div>
+
+            <div id="project-detail" class="hidden" data-test="project-detail-view">
+                <div class="project-header">
+                    <div>
+                        <h2 id="view-project-name" data-test="project-title"></h2>
+                        <p id="view-project-desc" data-test="project-description"></p>
+                    </div>
+                    <div class="project-actions" id="owner-actions-container">
+                        </div>
+                </div>
+
+                <section class="members-section">
+                    <h3>Equipo de Trabajo</h3>
+                    <div class="member-management-box">
+                        <div id="invite-member-wrapper">
+                            </div>
+                        <ul id="project-members-list" data-test="members-list"></ul>
+                    </div>
+                </section>
+
+                <div class="kanban-controls">
+                    <h3>Tareas</h3>
+                    <button id="open-task-modal" data-test="btn-new-task">Nueva Tarea</button>
+                </div>
+                
+                <div class="kanban-board">
+                    <div class="kanban-column" data-status="PENDING" data-test="col-pending">
+                        <h4>Pendientes</h4>
+                        <div class="tasks-holder" id="tasks-pending"></div>
+                    </div>
+                    <div class="kanban-column" data-status="IN_PROGRESS" data-test="col-in-progress">
+                        <h4>En Progreso</h4>
+                        <div class="tasks-holder" id="tasks-in-progress"></div>
+                    </div>
+                    <div class="kanban-column" data-status="DONE" data-test="col-done">
+                        <h4>Terminadas</h4>
+                        <div class="tasks-holder" id="tasks-done"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="generic-modal" class="modal hidden" data-test="modal-container">
+        <div class="modal-content">
+            <span class="close-modal" id="close-modal-btn">&times;</span>
+            <h3 id="modal-title"></h3>
+            <form id="modal-form">
+                <div id="modal-fields"></div>
+                <button type="submit" id="modal-submit-btn" data-test="modal-save-btn">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+# ========================
+# Java / Maven
+# ========================
+target/
+*.class
+*.jar
+*.war
+*.ear
+!**/src/main/**/target/
+!**/src/test/**/target/
+!**/src/main/**/build/
+!**/src/test/**/build/
+.mvn/wrapper/maven-wrapper.jar
+HELP.md
+ 
+# ========================
+# Spring Boot
+# ========================
+app/src/main/resources/application-local.properties
+app/src/main/resources/application-local.yml
+ 
+# ========================
+# IDEs
+# ========================
+# IntelliJ
+.idea/
+*.iws
+*.iml
+*.ipr
+ 
+# VS Code
+.vscode/
+ 
+# Eclipse / STS
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+ 
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+ 
+# ========================
+# Docker
+# ========================
+docker/.env
+ 
+# ========================
+# OS
+# ========================
+.DS_Store
+Thumbs.db
+*~
+ 
+# ========================
+# Logs
+# ========================
+*.log
+logs/
+ 
