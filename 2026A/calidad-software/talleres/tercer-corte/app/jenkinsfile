@@ -1,16 +1,17 @@
 pipeline {
     agent any
 
-    options {      
+    options {
         timeout(time: 45, unit: 'MINUTES')
         disableConcurrentBuilds()
     }
 
     environment {
-        SONAR_TOKEN  = credentials('sonar-token')
-        E2E_BASE_URL = 'http://app:8080'
-        E2E_GRID_URL = 'http://selenium-hub:4444'
+        SONAR_TOKEN   = credentials('sonar-token')
+        E2E_BASE_URL  = 'http://app:8080'
+        E2E_GRID_URL  = 'http://selenium-hub:4444'
         APP_CONTAINER = 'docker-app-1'
+        PROJECT_DIR   = '2026A/calidad-software/talleres/tercer-corte'
     }
 
     stages {
@@ -51,16 +52,16 @@ pipeline {
             post {
                 always {
                     sh '''
-                        mkdir -p app/target/surefire-reports app/target/site
-                        docker cp ${APP_CONTAINER}:/app/target/surefire-reports/. app/target/surefire-reports/ || true
-                        docker cp ${APP_CONTAINER}:/app/target/site/. app/target/site/ || true
+                        mkdir -p ${PROJECT_DIR}/app/target/surefire-reports ${PROJECT_DIR}/app/target/site
+                        docker cp ${APP_CONTAINER}:/app/target/surefire-reports/. ${PROJECT_DIR}/app/target/surefire-reports/ || true
+                        docker cp ${APP_CONTAINER}:/app/target/site/. ${PROJECT_DIR}/app/target/site/ || true
                     '''
-                    junit allowEmptyResults: true, testResults: 'app/target/surefire-reports/*.xml'
+                    junit allowEmptyResults: true, testResults: "${PROJECT_DIR}/app/target/surefire-reports/*.xml"
                     publishHTML(target: [
                         allowMissing: true,
                         alwaysLinkToLastBuild: true,
                         keepAll: true,
-                        reportDir: 'app/target/site/jacoco',
+                        reportDir: "${PROJECT_DIR}/app/target/site/jacoco",
                         reportFiles: 'index.html',
                         reportName: 'JaCoCo Coverage'
                     ])
@@ -76,14 +77,12 @@ pipeline {
                             ./mvnw -f /app/pom.xml sonar:sonar \
                             -Dsonar.token=${SONAR_TOKEN}
 
-                        mkdir -p app/target/sonar
-                        docker cp ${APP_CONTAINER}:/app/target/sonar/. app/target/sonar/ || true
+                        mkdir -p ${PROJECT_DIR}/app/target/sonar
+                        docker cp ${APP_CONTAINER}:/app/target/sonar/. ${PROJECT_DIR}/app/target/sonar/ || true
                     '''
                 }
             }
         }
-
-        
 
         stage('Esperar app antes de pruebas dinámicas') {
             steps {
@@ -106,7 +105,7 @@ pipeline {
                 sh '''
                     docker run --rm --network docker_qa-net \
                         -v jenkins-docker_jenkins_home:/var/jenkins_home \
-                        -w /var/jenkins_home/workspace/pipeline/tests/jmeter \
+                        -w /var/jenkins_home/workspace/pipeline/${PROJECT_DIR}/tests/jmeter \
                         justb4/jmeter:5.5 \
                         -n \
                         -t plan_de_carga.jmx \
@@ -121,18 +120,18 @@ pipeline {
 
             post {
                 always {
-                    perfReport sourceDataFiles: 'tests/jmeter/results.jtl'
+                    perfReport sourceDataFiles: "${PROJECT_DIR}/tests/jmeter/results.jtl"
 
                     publishHTML(target: [
                         allowMissing: true,
                         keepAll: true,
-                        reportDir: 'tests/jmeter/report',
+                        reportDir: "${PROJECT_DIR}/tests/jmeter/report",
                         reportFiles: 'index.html',
                         reportName: 'JMeter Report'
                     ])
 
                     archiveArtifacts(
-                        artifacts: 'tests/jmeter/results.jtl',
+                        artifacts: "${PROJECT_DIR}/tests/jmeter/results.jtl",
                         allowEmptyArchive: true
                     )
                 }
@@ -172,13 +171,17 @@ pipeline {
 
             post {
                 always {
+                    sh '''
+                        mkdir -p ${PROJECT_DIR}/app/target/surefire-reports ${PROJECT_DIR}/app/target/screenshots
+                        docker cp ${APP_CONTAINER}:/app/target/surefire-reports/. ${PROJECT_DIR}/app/target/surefire-reports/ || true
+                        docker cp ${APP_CONTAINER}:/app/target/screenshots/. ${PROJECT_DIR}/app/target/screenshots/ || true
+                    '''
                     junit(
                         allowEmptyResults: true,
-                        testResults: 'app/target/surefire-reports/*.xml'
+                        testResults: "${PROJECT_DIR}/app/target/surefire-reports/*.xml"
                     )
-
                     archiveArtifacts(
-                        artifacts: 'app/target/screenshots/*.png',
+                        artifacts: "${PROJECT_DIR}/app/target/screenshots/*.png",
                         allowEmptyArchive: true
                     )
                 }
@@ -190,7 +193,6 @@ pipeline {
         success {
             echo 'Pipeline completo ✅'
         }
-
         failure {
             echo 'Pipeline falló — revisa reportes y screenshots.'
         }
