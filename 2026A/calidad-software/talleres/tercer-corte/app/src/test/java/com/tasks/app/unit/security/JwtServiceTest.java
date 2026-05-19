@@ -116,12 +116,12 @@ public class JwtServiceTest {
     @Test
     @DisplayName("TU05-04: Un token con firma alterada NO es válido (isTokenValid retorna false)")
     void validarToken_firmaAlterada_esInvalido() {
-        // Dado: generamos un token válido y le cambiamos el último carácter
+        // Dado: generamos un token válido y le alteramos un carácter en medio de la firma
         String tokenOriginal = jwtService.generateToken(usuario);
-        // Alteramos el token sumando o restando un carácter al final
-        char ultimoCaracter = tokenOriginal.charAt(tokenOriginal.length() - 1);
-        char caracterAlterado = (ultimoCaracter == 'A') ? 'B' : 'A';
-        String tokenAlterado = tokenOriginal.substring(0, tokenOriginal.length() - 1) + caracterAlterado;
+        int mid = tokenOriginal.length() / 2;
+        char c = tokenOriginal.charAt(mid);
+        char alterado = (c == 'A') ? 'B' : 'A';
+        String tokenAlterado = tokenOriginal.substring(0, mid) + alterado + tokenOriginal.substring(mid + 1);
 
         // Cuando: se verifica el token adulterado
         boolean esValido = jwtService.isTokenValid(tokenAlterado);

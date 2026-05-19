@@ -50,11 +50,12 @@ pipeline {
 
             post {
                 always {
-                    junit(
-                        allowEmptyResults: true,
-                        testResults: 'app/target/surefire-reports/*.xml'
-                    )
-
+                    sh '''
+                        mkdir -p app/target/surefire-reports app/target/site
+                        docker cp ${APP_CONTAINER}:/app/target/surefire-reports/. app/target/surefire-reports/ || true
+                        docker cp ${APP_CONTAINER}:/app/target/site/. app/target/site/ || true
+                    '''
+                    junit allowEmptyResults: true, testResults: 'app/target/surefire-reports/*.xml'
                     publishHTML(target: [
                         allowMissing: true,
                         alwaysLinkToLastBuild: true,
