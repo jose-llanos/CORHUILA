@@ -2,9 +2,11 @@ name: CI - Calidad de Software
 
 on:
   push:
-    branches: [grupo7]
+    branches: 
+    - grupo7
   pull_request:
-    branches: [grupo7]
+    branches: 
+    - grupo7
   workflow_dispatch:
 
 jobs:
