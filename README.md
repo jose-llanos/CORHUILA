@@ -5,8 +5,7 @@
 
 | # | Nombre |
 |---|--------|
-| 1 | Anderson Kaleth Camacho Cabezas |
+| 1 | Elkin Stiven Contreras Rojas |
 | 2 | David Felipe Perdomo Castillo |
-| 3 | Elkin Stiven Contreras Rojas |
-| 4 | Edwar Alexis Serrudo Ariza |
-| 5 | David Santiago Gomez Gutierrez |
+| 3 | David Santiago Gomez Gutierrez |
+
