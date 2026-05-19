@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SaleController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">migueljuliana</a> &gt; <a href="index.source.html" class="el_package">com.autospark.migueljuliana.controllers</a> &gt; <span class="el_source">SaleController.java</span></div><h1>SaleController.java</h1><pre class="source lang-java linenums">package com.autospark.migueljuliana.controllers;
+
+import com.autospark.migueljuliana.models.Sale;
+import com.autospark.migueljuliana.services.ISaleService;
+import com.autospark.migueljuliana.exception.ResourceNotFoundException;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+<span class="fc" id="L16">@Slf4j</span>
+@CrossOrigin(origins = &quot;http://localhost:4200&quot;, allowCredentials = &quot;true&quot;)
+@RestController
+@RequestMapping(&quot;/autospark/sales&quot;)
+@RequiredArgsConstructor
+public class SaleController {
+
+    private final ISaleService saleService;
+
+    @GetMapping
+    public ResponseEntity&lt;List&lt;Sale&gt;&gt; getAllSales() {
+        // No usa log.debug ni log.info
+<span class="fc" id="L28">        List&lt;Sale&gt; sales = saleService.findAll();</span>
+<span class="fc" id="L29">        return ResponseEntity.ok(sales);</span>
+    }
+
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;Sale&gt; getSaleById(@PathVariable Long id) {
+<span class="fc" id="L34">        log.debug(&quot;Fetching sale with id: {}&quot;, id);</span>
+
+<span class="fc" id="L36">        Sale sale = saleService.findById(id)</span>
+<span class="pc" id="L37">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Sale&quot;, id));</span>
+
+<span class="fc" id="L39">        return ResponseEntity.ok(sale);</span>
+    }
+
+    @PostMapping
+    public ResponseEntity&lt;Sale&gt; createSale(@RequestBody Sale sale) {
+<span class="fc" id="L44">        log.info(&quot;Creating new sale for vehicle: {}&quot;, sale.getVehiclePlate());</span>
+
+<span class="fc" id="L46">        Sale newSale = saleService.save(sale);</span>
+
+<span class="fc" id="L48">        log.info(&quot;Sale created successfully with id: {}&quot;, newSale.getId());</span>
+
+<span class="fc" id="L50">        return ResponseEntity.status(HttpStatus.CREATED).body(newSale);</span>
+    }
+
+    @PostMapping(&quot;/convert/{reservationId}&quot;)
+    public ResponseEntity&lt;Sale&gt; convertReservationToSale(@PathVariable Long reservationId) {
+<span class="fc" id="L55">        log.info(&quot;Converting reservation with id: {} to sale&quot;, reservationId);</span>
+
+<span class="fc" id="L57">        Sale sale = saleService.convertReservationToSale(reservationId);</span>
+
+<span class="fc" id="L59">        log.info(&quot;Reservation {} converted to sale successfully with id: {}&quot;, reservationId, sale.getId());</span>
+
+<span class="fc" id="L61">        return ResponseEntity.ok(sale);</span>
+    }
+
+    @DeleteMapping(&quot;/{id}&quot;)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteSale(@PathVariable Long id) {
+<span class="fc" id="L67">        log.info(&quot;Deleting sale with id: {}&quot;, id);</span>
+
+<span class="fc" id="L69">        saleService.findById(id)</span>
+<span class="pc" id="L70">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Sale&quot;, id));</span>
+
+<span class="fc" id="L72">        saleService.delete(id);</span>
+
+<span class="fc" id="L74">        log.info(&quot;Sale with id: {} deleted successfully&quot;, id);</span>
+<span class="fc" id="L75">    }</span>
+
+    @DeleteMapping(&quot;/by-plate/{plate}&quot;)
+    public ResponseEntity&lt;Void&gt; deleteSalesByPlate(@PathVariable String plate) {
+<span class="fc" id="L79">        log.warn(&quot;Deleting all sales for vehicle plate: {}&quot;, plate);</span>
+
+<span class="fc" id="L81">        saleService.deleteByPlate(plate);</span>
+
+<span class="fc" id="L83">        return ResponseEntity.ok().build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
